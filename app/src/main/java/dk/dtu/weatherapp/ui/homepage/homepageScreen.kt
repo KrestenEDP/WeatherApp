@@ -30,16 +30,16 @@ import dk.dtu.weatherapp.ui.theme.Typography
 
 
 val forecast = arrayOf(
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
-    Hour("14:00", "someurl", 18, 2.4, 12),
+    Hour("14:00", "someurl", 18, 2.4, 12, 0),
+    Hour("14:00", "someurl", 18, 2.4, 12, 360),
+    Hour("14:00", "someurl", 18, 2.4, 12, 90),
+    Hour("14:00", "someurl", 18, 2.4, 12, 93),
+    Hour("14:00", "someurl", 18, 2.4, 12, 93),
+    Hour("14:00", "someurl", 18, 2.4, 12, 93),
+    Hour("14:00", "someurl", 18, 2.4, 12, 93),
+    Hour("14:00", "someurl", 18, 2.4, 12, 93),
+    Hour("14:00", "someurl", 18, 2.4, 12, 93),
+    Hour("14:00", "someurl", 18, 2.4, 12, 93),
 )
 
 val dailycast = arrayOf(

@@ -23,7 +23,8 @@ data class Hour(
     val iconURL: String,
     val temp: Int,
     val rain: Double,
-    val wind: Int
+    val wind: Int,
+    val windDegree: Int
 )
 
 @Composable
@@ -36,6 +37,7 @@ fun HourlyForecast(forecast: Array<Hour>, modifier: Modifier = Modifier) {
                 temp = hour.temp,
                 rain = hour.rain,
                 wind = hour.wind,
+                windDegree = hour.windDegree,
                 modifier
                     .padding(end = 20.dp)
                     .fillMaxHeight()
