@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -39,7 +40,7 @@ fun Day(date: String, dayTemp: Int, nightTemp: Int, rain: Double, modifier: Modi
             )
             Column {
                 Text(date)
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "$dayTemp / $nightTemp \u2103",modifier.padding(end = 32.dp)) // @TODO use settings for unit
                     Text(text = "$rain mm") // @TODO use settings for unit
                 }
