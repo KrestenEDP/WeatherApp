@@ -29,7 +29,7 @@ data class Hour(
 
 @Composable
 fun HourlyForecast(forecast: Array<Hour>, modifier: Modifier = Modifier) {
-    LazyRow(modifier = Modifier.height(170.dp)) {
+    LazyRow(modifier = modifier.height(170.dp)) {
         items(forecast.size) { index ->
             val hour = forecast[index]
             Hour(
