@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.forecast
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,66 +13,36 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
+import dk.dtu.weatherapp.ui.homepage.HourlyForecast
 import dk.dtu.weatherapp.ui.theme.Typography
 import kotlin.math.abs
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TempScreen() {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors( // Change color layout
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        "January 16", // TODO make into resource
-                        textAlign = TextAlign.Start,
-                        style = Typography.titleLarge,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /* do something with navController */ }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                }
-            )
-        },
-    ) { innerPadding ->
-        ForecastScreen(innerPadding)
-    }
-}
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -81,23 +52,80 @@ fun ForecastScreen(innerPadding: PaddingValues = PaddingValues(16.dp)) {
             10
         })
 
+        val indicatorState = rememberPagerState(pageCount = {
+            pagerState.pageCount
+        })
+
+        LaunchedEffect(pagerState) {
+            snapshotFlow { pagerState.currentPage }.collect { page ->
+                Log.d("Page change", "Page changed to $page")
+            }
+        }
+
         HorizontalPager(state = pagerState) {
             Column(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
             ) {
+                Text(
+                    text = "January " + (it + 16),
+                    style = Typography.titleLarge,
+                    modifier = Modifier.padding(8.dp),
+                )
                 HourlyForecast()
             }
         }
+
         Row(
-            Modifier
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.Center
+                .padding(innerPadding)
         ) {
-            repeat(pagerState.pageCount) { iteration ->
-                val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+            HorizontalPager(
+                state = indicatorState,
+                pageSize = PageSize.Fixed(20.dp),
+                modifier = Modifier
+                    .width(60.dp)
+                    .align(Alignment.CenterVertically)
+
+            ) { page ->
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer {
+                            // Calculate the absolute offset for the current page from the
+                            // scroll position. We use the absolute value which allows us to mirror
+                            // any effects for both directions
+                            val pageOffset = (
+                                    (pagerState.currentPage - page) + pagerState
+                                        .currentPageOffsetFraction
+                                    ).absoluteValue
+
+                            // We animate the alpha, between 50% and 100%
+                            alpha = lerp(
+                                start = 0.5f,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            )
+                        }
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(2.dp)
+                            .clip(CircleShape)
+                            .background(Color.DarkGray)
+                            .size(16.dp)
+                    )
+                }
+            }
+            /*repeat(pagerState.pageCount) { iteration ->
+                val color =
+                    if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
                 if (abs(pagerState.currentPage - iteration) < 2) {
                     Box(
                         modifier = Modifier
@@ -107,8 +135,20 @@ fun ForecastScreen(innerPadding: PaddingValues = PaddingValues(16.dp)) {
                             .size(16.dp)
                     )
                 }
+            }*/
+        }
+
+        LaunchedEffect(Unit) {
+            snapshotFlow {
+                Pair(
+                    pagerState.currentPage,
+                    pagerState.currentPageOffsetFraction
+                )
+            }.collect { (page, offset) ->
+                indicatorState.scrollToPage(page, offset)
             }
         }
+
     }
 }
 
@@ -130,10 +170,9 @@ fun ForecastElement(index: Int) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "$index:00",
+            text = if (index < 10) "0$index:00" else "$index:00",
             style = Typography.bodyLarge,
             overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .padding(PaddingValues(8.dp))
@@ -143,22 +182,20 @@ fun ForecastElement(index: Int) {
             imageVector = Icons.Filled.Face,
             contentDescription = null, // TODO: Add weather type as content description
             modifier = Modifier
-                .padding(PaddingValues(start=16.dp, end=8.dp))
+                .padding(PaddingValues(start = 16.dp, end = 8.dp))
                 .weight(1f)
         )
         Text(
-            text = "20°C",
+            text = "${index*(index%3-1)}°C",
             style = Typography.bodyLarge,
-            maxLines = 1,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .padding(PaddingValues(8.dp))
                 .weight(1.5f)
         )
         Text(
-            text = "0,0 mm",
+            text = "$index,0 mm",
             style = Typography.bodyLarge,
-            maxLines = 1,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .padding(PaddingValues(8.dp))
@@ -180,7 +217,6 @@ fun ForecastElement(index: Int) {
             Text(
                 text = "23 m/s",
                 style = Typography.bodyLarge,
-                maxLines = 1,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(0.dp)
@@ -190,8 +226,13 @@ fun ForecastElement(index: Int) {
     }
 }
 
-@Preview
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
 @Composable
 fun ForecastScreenPreview() {
-    TempScreen()
+    Scaffold { innerPadding ->
+        ForecastScreen(innerPadding)
+    }
 }
