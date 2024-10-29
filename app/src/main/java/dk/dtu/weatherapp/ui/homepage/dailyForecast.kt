@@ -1,9 +1,8 @@
 package dk.dtu.weatherapp.ui.homepage
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,12 +19,11 @@ data class Day(
 
 @Composable
 fun DailyForecast(dailycast: Array<Day>, modifier: Modifier = Modifier) {
-    LazyColumn(
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        items(dailycast.size) { index ->
-            val day = dailycast[index]
+        dailycast.forEach { day ->
             Day(
                 day.date,
                 day.dayTemp,
