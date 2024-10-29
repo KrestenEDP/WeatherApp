@@ -37,7 +37,7 @@ fun HourlyForecast(forecast: Array<Hour>, modifier: Modifier = Modifier) {
                 rain = hour.rain,
                 wind = hour.wind,
                 modifier
-                    .padding(horizontal = 20.dp)
+                    .padding(end = 20.dp)
                     .fillMaxHeight()
             )
             Spacer(modifier = modifier
@@ -45,6 +45,7 @@ fun HourlyForecast(forecast: Array<Hour>, modifier: Modifier = Modifier) {
                 .fillMaxHeight()
                 .background(Color.Gray)
             )
+            Spacer(modifier = Modifier.padding(end = 20.dp))
         }
     }
 }
