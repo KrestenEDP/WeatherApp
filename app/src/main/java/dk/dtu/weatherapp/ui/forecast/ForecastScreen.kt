@@ -88,15 +88,15 @@ fun ForecastScreen(innerPadding: PaddingValues = PaddingValues(16.dp)) {
             HorizontalPager(
                 state = indicatorState,
                 pageSize = PageSize.Fixed(20.dp),
+                contentPadding = PaddingValues(horizontal = 40.dp),
+                userScrollEnabled = false,
                 modifier = Modifier
-                    .width(60.dp)
+                    .width(100.dp)
                     .align(Alignment.CenterVertically)
 
             ) { page ->
-                Row(
-                    horizontalArrangement = Arrangement.Center,
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .graphicsLayer {
                             // Calculate the absolute offset for the current page from the
                             // scroll position. We use the absolute value which allows us to mirror
@@ -106,11 +106,10 @@ fun ForecastScreen(innerPadding: PaddingValues = PaddingValues(16.dp)) {
                                         .currentPageOffsetFraction
                                     ).absoluteValue
 
-                            // We animate the alpha, between 50% and 100%
                             alpha = lerp(
-                                start = 0.5f,
+                                start = 0f,
                                 stop = 1f,
-                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                fraction = 1f - pageOffset.coerceIn(0f, 2f)/2
                             )
                         }
                 ) {
