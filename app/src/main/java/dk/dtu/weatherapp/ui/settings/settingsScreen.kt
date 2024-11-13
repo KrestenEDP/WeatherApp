@@ -1,6 +1,7 @@
 package dk.dtu.weatherapp.ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -41,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -131,40 +133,60 @@ private fun temperatureUnit(modifier: Modifier = Modifier) {
     // If unit 0 it is celcius, if 1 it is fahrenheit and if 2 it is kelvin
     var temperatureUnit by remember { mutableIntStateOf(0) }
     var expanded by remember { mutableStateOf(false) }
+    var unit = tempToString(temperatureUnit)
     Row (
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Text (
+        Text(
             text = "Temperature unit",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
-        IconButton(onClick = { expanded = true }) {
-            Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Drop down menu")
-        }
 
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = {expanded = false}
-        ) {
-            DropdownMenuItem(
-                text = { Text("Celsius") },
-                onClick = { temperatureUnit = 0},
-                leadingIcon = { Text("°C") }
-            )
-            DropdownMenuItem(
-                text = { Text("Fahrenheit") },
-                onClick = { temperatureUnit = 1 },
-                leadingIcon = { Text("°F") }
-            )
-            DropdownMenuItem(
-                text = { Text("Kelvin") },
-                onClick = { temperatureUnit = 2 },
-                leadingIcon = { Text("°K") }
-            )
+        Box() {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "$unit",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                IconButton(onClick = { expanded = true }) {
+                    Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Drop down menu")
+                }
+
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Celsius") },
+                        onClick = {
+                            temperatureUnit = 0
+                            expanded = false },
+                        leadingIcon = { Text("°C") }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Fahrenheit") },
+                        onClick = {
+                            temperatureUnit = 1
+                            expanded = false },
+                        leadingIcon = { Text("°F") }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Kelvin") },
+                        onClick = {
+                            temperatureUnit = 2
+                            expanded = false },
+                        leadingIcon = { Text("°K") }
+                    )
+                }
+            }
+
         }
     }
 }
@@ -202,3 +224,14 @@ fun PagePreview() {
     WeatherSettingsPage()
 }
 
+fun tempToString(temp: Int): String {
+    var unit = ""
+    if (temp == 0) {
+        unit = temperatureUnits[0]
+    } else if (temp == 1) {
+        unit = temperatureUnits[1]
+    } else
+        unit = temperatureUnits[2]
+
+    return unit
+}

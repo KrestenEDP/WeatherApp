@@ -39,18 +39,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import dk.dtu.weatherapp.ui.homepage.HourlyForecast
 import dk.dtu.weatherapp.ui.theme.Typography
-import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ForecastScreen(innerPadding: PaddingValues = PaddingValues(16.dp)) {
+fun SingleDayForecastScreen(
+    singleDayIndex: Int? = 0,
+) {
     Box {
-        val pagerState = rememberPagerState(pageCount = {
-            10
-        })
+        val pagerState = rememberPagerState(
+            pageCount = { 10 },
+            initialPage = singleDayIndex ?: 0
+        )
 
         val indicatorState = rememberPagerState(pageCount = {
             pagerState.pageCount
@@ -65,7 +66,6 @@ fun ForecastScreen(innerPadding: PaddingValues = PaddingValues(16.dp)) {
         HorizontalPager(state = pagerState) {
             Column(
                 modifier = Modifier
-                    .padding(innerPadding)
                     .fillMaxSize()
             ) {
                 Text(
@@ -83,7 +83,6 @@ fun ForecastScreen(innerPadding: PaddingValues = PaddingValues(16.dp)) {
                 .align(Alignment.BottomCenter)
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .padding(innerPadding)
         ) {
             HorizontalPager(
                 state = indicatorState,
@@ -230,8 +229,8 @@ fun ForecastElement(index: Int) {
     showSystemUi = true
 )
 @Composable
-fun ForecastScreenPreview() {
+fun SingleDayForecastScreenPreview() {
     Scaffold { innerPadding ->
-        ForecastScreen(innerPadding)
+        SingleDayForecastScreen()
     }
 }
