@@ -1,7 +1,9 @@
 package dk.dtu.weatherapp.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
@@ -30,7 +32,7 @@ fun WeatherNavHost(
             )
         }
         composable(route = Map.route) {
-            TODO()
+            Log.i("Debug", "${navController.popBackStack()}")
         }
         composable(route = Alerts.route) {
             AlertsScreen()
