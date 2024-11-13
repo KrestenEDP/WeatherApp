@@ -11,52 +11,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dk.dtu.weatherapp.data.mock.MockCurrentWeatherDataSource
+import dk.dtu.weatherapp.data.mock.MockDayDataSource
+import dk.dtu.weatherapp.data.mock.MockHourDataSource
 
-
-val forecast = arrayOf(
-    Hour("14:00", "someurl", 18, 2.4, 12, 0),
-    Hour("14:00", "someurl", 18, 2.4, 12, 360),
-    Hour("14:00", "someurl", 18, 2.4, 12, 90),
-    Hour("14:00", "someurl", 18, 2.4, 12, 93),
-    Hour("14:00", "someurl", 18, 2.4, 12, 93),
-    Hour("14:00", "someurl", 18, 2.4, 12, 93),
-    Hour("14:00", "someurl", 18, 2.4, 12, 93),
-    Hour("14:00", "someurl", 18, 2.4, 12, 93),
-    Hour("14:00", "someurl", 18, 2.4, 12, 93),
-    Hour("14:00", "someurl", 18, 2.4, 12, 93),
-)
-
-val dailycast = arrayOf(
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-    Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
-)
 
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    Homepage("Dalby", 17, 14, 12, 2.4)
+    Homepage()
 }
+
 @Composable
-fun Homepage(location: String, temp: Int, chill: Int, wind: Int, rain: Double, modifier: Modifier = Modifier) {
+fun Homepage(modifier: Modifier = Modifier) {
+    val current = MockCurrentWeatherDataSource().getCurrentWeather()
+    val days = MockDayDataSource().getDailyWeather()
+    val hours = MockHourDataSource().getHourlyWeather()
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Location(location = location)
+        Location(location = "Dalby") // @TODO Don't hardcode location
         Spacer(Modifier.height(50.dp))
-        CurrentWeather(temp, chill, wind, rain)
+        CurrentWeather(current)
         Spacer(modifier = Modifier.height(40.dp))
-        HourlyForecast(forecast)
+        HourlyForecast(hours)
         Spacer(modifier = Modifier.height(20.dp))
-        DailyForecast(dailycast, modifier = Modifier.fillMaxWidth())
+        DailyForecast(days, modifier = Modifier.fillMaxWidth())
     }
 }

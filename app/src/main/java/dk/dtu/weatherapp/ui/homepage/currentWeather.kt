@@ -21,10 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dk.dtu.weatherapp.R
+import dk.dtu.weatherapp.models.Current
 import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
-fun CurrentWeather(temp: Int, chill: Int, wind: Int, rain: Double) {
+fun CurrentWeather(data: Current) {
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
@@ -36,25 +37,25 @@ fun CurrentWeather(temp: Int, chill: Int, wind: Int, rain: Double) {
         )
         Spacer(modifier = Modifier.width(14.dp))
         Column {
-            Text("$temp \u2103", style = Typography.titleLarge) // @TODO use either C \u2103 or F \u2109 depending on settings
-            Text("Feels like $chill \u2103", fontSize = 14.sp, color = Color(0xFF5E5959)) // @TODO change font'
+            Text("${data.temp} \u2103", style = Typography.titleLarge) // @TODO use either C \u2103 or F \u2109 depending on settings
+            Text("Feels like ${data.chill} \u2103", fontSize = 14.sp, color = Color(0xFF5E5959)) // @TODO change font'
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 Icon(
                     Icons.Default.ThumbUp, // @TODO use dynamic icon
-                    contentDescription = "Current wind strength $wind meters per second",
+                    contentDescription = "Current wind strength ${data.wind} meters per second",
                     modifier = Modifier.size(24.dp)
                 )
-                Text("$wind m/s", style = Typography.titleMedium) // @TODO use unit from settings
+                Text("${data.wind} m/s", style = Typography.titleMedium) // @TODO use unit from settings
             }
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 Icon(
                     Icons.Default.ThumbUp, // @TODO use dynamic icon
-                    contentDescription = "Current rain fall $rain millimeters",
+                    contentDescription = "Current rain fall ${data.rain} millimeters",
                     modifier = Modifier.size(24.dp)
                 )
-                Text("$rain m/s", style = Typography.titleMedium) // @TODO use unit from settings
+                Text("${data.rain} m/s", style = Typography.titleMedium) // @TODO use unit from settings
             }
         }
     }
@@ -63,5 +64,5 @@ fun CurrentWeather(temp: Int, chill: Int, wind: Int, rain: Double) {
 @Preview
 @Composable
 fun CurrentPrev() {
-    CurrentWeather(temp = 17, chill = 14, wind = 12, rain = 2.4)
+    CurrentWeather(Current(17, 14, 12, 2.2, "02d"))
 }
