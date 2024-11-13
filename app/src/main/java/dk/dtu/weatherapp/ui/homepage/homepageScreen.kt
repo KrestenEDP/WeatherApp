@@ -20,12 +20,17 @@ import dk.dtu.weatherapp.data.mock.MockHourDataSource
 @Composable
 fun Preview() {
     Homepage(
-        onDayClicked = {}
+        onDayClicked = {},
+        onSearchClicked = {}
     )
 }
 
 @Composable
-fun Homepage(onDayClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
+fun Homepage(
+    onDayClicked: (Int) -> Unit,
+    onSearchClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val current = MockCurrentWeatherDataSource().getCurrentWeather()
     val days = MockDayDataSource().getDailyWeather()
     val hours = MockHourDataSource().getHourlyWeather()
@@ -34,7 +39,10 @@ fun Homepage(onDayClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Location(location = "Dalby") // @TODO Don't hardcode location
+        Location(
+            onSearchClicked = onSearchClicked,
+            location = "Dalby" // @TODO Don't hardcode location
+        )
         Spacer(Modifier.height(50.dp))
         CurrentWeather(current)
         Spacer(modifier = Modifier.height(40.dp))

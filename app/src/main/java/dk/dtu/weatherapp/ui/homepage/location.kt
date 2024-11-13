@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.homepage
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -16,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
-fun Location(location: String) {
+fun Location(
+    onSearchClicked: () -> Unit,
+    location: String
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -29,9 +33,13 @@ fun Location(location: String) {
                 .padding(0.dp)
                 .width(40.dp)
                 .height(40.dp)
+                .clickable { onSearchClicked() }
         )
         Spacer(Modifier.width(8.dp))
-        Text(text = location, style = Typography.titleLarge // @TODO use larger font
+        Text(
+            text = location,
+            style = Typography.titleLarge, // @TODO use larger font
+            modifier = Modifier.clickable { onSearchClicked() }
         )
     }
 }
