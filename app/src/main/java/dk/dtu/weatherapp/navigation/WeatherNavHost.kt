@@ -32,7 +32,7 @@ fun WeatherNavHost(
             )
         }
         composable(route = Map.route) {
-            Log.i("Debug", "${navController.popBackStack()}")
+            TODO()
         }
         composable(route = Alerts.route) {
             AlertsScreen()
@@ -57,10 +57,11 @@ fun WeatherNavHost(
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
-        popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
+        /*popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
             saveState = true
-        }
+        }*/
         launchSingleTop = true
+        //restoreState = true
     }
 
 private fun NavHostController.navigateToSingleDayForecast(index: Int) {

@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -22,7 +23,6 @@ import java.util.Locale
     NavigationBar(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp),
     ) {
         allScreens.forEach { screen ->
             NavigationBarItem(
@@ -35,7 +35,9 @@ import java.util.Locale
                 },
                 label = { Text(screen.route.replaceFirstChar { it.titlecase(Locale.getDefault()) }) },
                 selected = currentScreen == screen,
-                onClick = { onTabSelected(screen) }
+                onClick = {
+                    onTabSelected(screen)
+                }
             )
         }
     }

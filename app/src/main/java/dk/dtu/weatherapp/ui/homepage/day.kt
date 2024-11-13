@@ -25,11 +25,12 @@ fun Day(date: String, dayTemp: Int, nightTemp: Int, rain: Double, modifier: Modi
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
+            modifier = Modifier
         ) {
             Icon(
                 Icons.Default.ThumbUp, // @TODO use dynamic icon and desc
@@ -41,7 +42,7 @@ fun Day(date: String, dayTemp: Int, nightTemp: Int, rain: Double, modifier: Modi
             Column {
                 Text(date)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "$dayTemp / $nightTemp \u2103",modifier.padding(end = 32.dp)) // @TODO use settings for unit
+                    Text(text = "$dayTemp / $nightTemp \u2103",Modifier.padding(end = 32.dp)) // @TODO use settings for unit
                     Text(text = "$rain mm") // @TODO use settings for unit
                 }
             }
@@ -49,7 +50,7 @@ fun Day(date: String, dayTemp: Int, nightTemp: Int, rain: Double, modifier: Modi
         Icon(
             Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Arrow right",
-            modifier = modifier.size(36.dp)
+            modifier = Modifier.size(36.dp)
         )
     }
 }
