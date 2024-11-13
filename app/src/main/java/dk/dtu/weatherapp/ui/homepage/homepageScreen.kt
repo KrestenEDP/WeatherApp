@@ -26,7 +26,7 @@ val forecast = arrayOf(
     Hour("14:00", "someurl", 18, 2.4, 12, 93),
 )
 
-val dailycast = arrayOf(
+val dailyForecast = arrayOf(
     Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
     Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
     Day("someurl", "Wednesday 16. January", 21, 14, 2.4),
@@ -42,10 +42,15 @@ val dailycast = arrayOf(
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    Homepage("Dalby", 17, 14, 12, 2.4)
+    Homepage(
+        onDayClicked = {},
+        "Dalby", 17, 14, 12, 2.4)
 }
+
 @Composable
-fun Homepage(location: String, temp: Int, chill: Int, wind: Int, rain: Double, modifier: Modifier = Modifier) {
+fun Homepage(
+    onDayClicked: (Int) -> Unit,
+    location: String, temp: Int, chill: Int, wind: Int, rain: Double, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -57,6 +62,8 @@ fun Homepage(location: String, temp: Int, chill: Int, wind: Int, rain: Double, m
         Spacer(modifier = Modifier.height(40.dp))
         HourlyForecast(forecast)
         Spacer(modifier = Modifier.height(20.dp))
-        DailyForecast(dailycast, modifier = Modifier.fillMaxWidth())
+        DailyForecast(
+            onDayClicked = onDayClicked,
+            dailyForecast, modifier = Modifier.fillMaxWidth())
     }
 }

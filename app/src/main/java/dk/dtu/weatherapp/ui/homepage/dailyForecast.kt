@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.homepage
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -18,18 +19,23 @@ data class Day(
 )
 
 @Composable
-fun DailyForecast(dailycast: Array<Day>, modifier: Modifier = Modifier) {
+fun DailyForecast(
+    onDayClicked: (Int) -> Unit,
+    dailyForecast: Array<Day>,
+    modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        dailycast.forEach { day ->
+        dailyForecast.forEachIndexed { index, day ->
             Day(
                 day.date,
                 day.dayTemp,
                 day.nightTemp,
                 day.rain,
-                modifier = Modifier.padding(vertical = 4.dp)
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .clickable { onDayClicked(index) }
             )
         }
     }
@@ -38,5 +44,5 @@ fun DailyForecast(dailycast: Array<Day>, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun DailyPrev() {
-    DailyForecast(dailycast)
+    DailyForecast(onDayClicked = { } ,dailyForecast)
 }
