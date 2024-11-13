@@ -27,8 +27,7 @@ fun WeatherNavHost(
             Homepage(
                 onDayClicked = { singleDayIndex ->
                     navController.navigateToSingleDayForecast(singleDayIndex)
-                },
-                "Dalby", 17, 14, 12, 2.4
+                }
             )
         }
         composable(route = Map.route) {
