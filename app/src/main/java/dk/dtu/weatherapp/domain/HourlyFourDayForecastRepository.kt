@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 class HourlyFourDayForecastRepository {
     private val currentDataSource = MockHourlyFourDayForecast()
 
-    private val mutableHourlyForecastFlow = MutableSharedFlow<List<Hour>>()
+    private val mutableHourlyForecastFlow = MutableSharedFlow<List<List<Hour>>>()
     val fourDayForecastFlow = mutableHourlyForecastFlow.asSharedFlow()
 
     suspend fun getFourDayForecast() = mutableHourlyForecastFlow.emit(
-        currentDataSource.getFourDayHourlyForecast()
+        currentDataSource.getFourDayHourlyForecast().chunked(24)
     )
 }
