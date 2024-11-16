@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -46,7 +48,16 @@ import kotlin.math.absoluteValue
 @Composable
 fun SingleDayForecastScreen(
     singleDayIndex: Int? = 0,
+
 ) {
+    val singleDayViewModel: SingleDayViewModel = viewModel()
+    val singleDayUIModel = singleDayViewModel.singleDayUIState.collectAsState().value
+    var data: FourDayHourlyUIModel.Data? = null
+    when (singleDayUIModel) {
+        FourDayHourlyUIModel.Empty -> Text("No data")
+        FourDayHourlyUIModel.Loading -> Text("Loading")
+        is FourDayHourlyUIModel.Data -> { data = FourDayHourlyUIModel.Data(singleDayUIModel.fourDayHourly) }
+    }
     Box {
         val pagerState = rememberPagerState(
             pageCount = { 10 },
