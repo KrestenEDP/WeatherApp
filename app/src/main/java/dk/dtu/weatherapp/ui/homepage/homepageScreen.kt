@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -28,13 +29,10 @@ fun Preview() {
 
 @Composable
 fun Homepage(onDayClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
-    val current = MockCurrentWeatherDataSource().getCurrentWeather()
-    val days = MockDayDataSource().getDailyWeather()
-    val hours = MockHourDataSource().getHourlyWeather()
-
     val homepageViewModel: HomepageViewModel = viewModel()
-    val homepageUIModel = homepageViewModel.weatherUIState.collectAsState().value
-
+    val currentWeatherUIModel = homepageViewModel.weatherUIState.collectAsState().value
+    val dailyForecastUIModel = homepageViewModel.dailyUIState.collectAsState().value
+    val hourlyForecastUIModel = homepageViewModel.hourlyUIState.collectAsState().value
 
     Column(
         modifier = modifier
@@ -43,10 +41,23 @@ fun Homepage(onDayClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
     ) {
         Location(location = "Dalby") // @TODO Don't hardcode location
         Spacer(Modifier.height(50.dp))
-        CurrentWeather(current)
+        when (currentWeatherUIModel) {
+            WeatherUIModel.Empty -> Text("No data")
+            WeatherUIModel.Loading -> Text("Loading")
+            is WeatherUIModel.Data -> CurrentWeather(currentWeatherUIModel.currentWeather)
+        }
         Spacer(modifier = Modifier.height(40.dp))
-        HourlyForecast(hours)
+        when (hourlyForecastUIModel) {
+            HourlyUIModel.Empty -> Text("No data")
+            HourlyUIModel.Loading -> Text("Loading")
+            is HourlyUIModel.Data -> HourlyForecast(hourlyForecastUIModel.hourly)
+        }
         Spacer(modifier = Modifier.height(20.dp))
-        DailyForecast(onDayClicked = onDayClicked, days, modifier = Modifier.fillMaxWidth())
+        when (dailyForecastUIModel) {
+            DailyUIModel.Empty -> Text("No data")
+            DailyUIModel.Loading -> Text("Loading")
+            is DailyUIModel.Data ->
+                DailyForecast(onDayClicked = onDayClicked, dailyForecastUIModel.daily, modifier = Modifier.fillMaxWidth())
+        }
     }
 }

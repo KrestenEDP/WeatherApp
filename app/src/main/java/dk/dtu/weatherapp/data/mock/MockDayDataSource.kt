@@ -1,6 +1,7 @@
 package dk.dtu.weatherapp.data.mock
 
 import dk.dtu.weatherapp.models.Day
+import kotlinx.coroutines.delay
 
 class MockDayDataSource {
     private val data = listOf (
@@ -14,7 +15,7 @@ class MockDayDataSource {
         Day("01n", "Wednesday 23. January", 11, 13, 0.0)
     )
 
-    fun getDailyWeather(): List<Day> {
+    suspend fun getDailyWeather(): List<Day> {
         return data
     }
 }

@@ -1,6 +1,7 @@
 package dk.dtu.weatherapp.data.mock
 
 import dk.dtu.weatherapp.models.Hour
+import kotlinx.coroutines.delay
 
 class MockHourDataSource {
     private val data = listOf (
@@ -54,7 +55,7 @@ class MockHourDataSource {
         Hour("23:00", "10n", 32, 4.7, 52, 345)
     )
 
-    fun getHourlyWeather(): List<Hour> {
+    suspend fun getHourlyWeather(): List<Hour> {
         return data
     }
 }
