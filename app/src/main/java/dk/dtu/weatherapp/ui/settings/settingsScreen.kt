@@ -76,7 +76,7 @@ private fun darkMode(modifier: Modifier = Modifier) {
     // aka "turned on", aka "horny"
     var darkmodeOn by remember { mutableStateOf(true) }
     Row (
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -105,7 +105,7 @@ private fun dynamicBackground(modifier: Modifier = Modifier) {
     // aka "turned on", aka "horny"
     var dynamicBackgroundOn by remember { mutableStateOf(true) }
     Row (
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -135,7 +135,7 @@ private fun temperatureUnit(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var unit = tempToString(temperatureUnit)
     Row (
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -197,7 +197,7 @@ private fun pushNotification(modifier: Modifier = Modifier) {
     // aka "turned on", aka "horny"
     var pushNotificationsOn by remember { mutableStateOf(true) }
     Row (
-        modifier =  modifier.fillMaxWidth(),
+        modifier =  modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
