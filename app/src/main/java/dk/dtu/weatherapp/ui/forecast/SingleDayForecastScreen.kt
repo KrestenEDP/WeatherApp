@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.forecast
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,8 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -31,6 +34,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -207,9 +211,11 @@ fun ForecastElement(hour: Hour) {
                 .padding(PaddingValues(8.dp))
         ) {
             Icon(
-                imageVector = Icons.Filled.Menu, // TODO Use arrow icons indicating wind direction hour.windDegree
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward, // TODO Use arrow icons indicating wind direction hour.windDegree
                 contentDescription = null, // TODO: Add more options as content description
-                modifier = Modifier.padding(start=8.dp, end=0.dp)
+                modifier = Modifier
+                    .padding(start=8.dp, end=0.dp)
+                    .rotate(hour.windDegree.toFloat()-90)
             )
             Text(
                 text = "${hour.wind}" + " m/s", // Todo change to string resource
@@ -229,7 +235,5 @@ fun ForecastElement(hour: Hour) {
 )
 @Composable
 fun SingleDayForecastScreenPreview() {
-    Scaffold { innerPadding ->
-        SingleDayForecastScreen()
-    }
+    SingleDayForecastScreen()
 }
