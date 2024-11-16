@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Alert
-import dk.dtu.weatherapp.ui.homepage.HomepageViewModel
 
 
 @Composable
