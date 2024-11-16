@@ -67,12 +67,12 @@ fun SingleDayForecastScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-            ) {
+            ) {/*
                 Text(
                     text = "January " + (it + 16),
                     style = Typography.titleLarge,
                     modifier = Modifier.padding(8.dp),
-                )
+                )*/
                 HourlyForecast()
             }
         }

@@ -38,14 +38,11 @@ fun WeatherApp() {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
-        println("Current destination: ${currentDestination?.route}")
-        allScreens.forEach { println("Available screen route: ${it.route}") }
 
         val currentScreen =
-            allScreens.find { it.route == currentDestination?.route } ?: Settings
-
-
-        println("Current Screen after: ${currentScreen.route}")
+            allScreens.find {
+                currentDestination?.route?.contains(it.route) == true
+            } ?: Settings
 
         val navBarDestination =
             navBarScreens.find { it.route == currentDestination?.route } ?: Weather
