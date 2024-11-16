@@ -78,10 +78,5 @@ fun MyTopAppBar(
 @Composable
 fun barPreview() {
     val navController = rememberNavController()
-    val currentBackStack by navController.currentBackStackEntryAsState()
-    val currentDestination = currentBackStack?.destination
-    val currentScreen =
-        navBarScreens.find { it.route == currentDestination?.route } ?: Weather
-
-      MyTopAppBar(currentScreen, navController)
+    MyTopAppBar(Weather, navController)
 }
