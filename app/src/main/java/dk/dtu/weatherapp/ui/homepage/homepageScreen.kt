@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.data.mock.MockCurrentWeatherDataSource
 import dk.dtu.weatherapp.data.mock.MockDayDataSource
 import dk.dtu.weatherapp.data.mock.MockHourDataSource
@@ -29,6 +31,11 @@ fun Homepage(onDayClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
     val current = MockCurrentWeatherDataSource().getCurrentWeather()
     val days = MockDayDataSource().getDailyWeather()
     val hours = MockHourDataSource().getHourlyWeather()
+
+    val homepageViewModel: HomepageViewModel = viewModel()
+    val homepageUIModel = homepageViewModel.weatherUIState.collectAsState().value
+
+
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
