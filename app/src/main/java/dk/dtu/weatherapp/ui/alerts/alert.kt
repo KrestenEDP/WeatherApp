@@ -34,6 +34,7 @@ fun Alert(title: String, text: String, modifier: Modifier = Modifier) {
                 fontSize = 24.sp
             )
         }
+        Text(text = "Fra 15. januar til 19 januar")
         Text(text = text)
     }
 }
