@@ -56,6 +56,10 @@ private val temperatureUnits = listOf(
     "°C", "°F", "°K"
 )
 
+private val windUnits = listOf(
+    "m/s", "km/h", "footballfields/election"
+)
+
 private val rowHeight = 60
 
 @Composable
@@ -66,6 +70,7 @@ fun WeatherSettingsPage(modifier: Modifier = Modifier) {
         darkMode(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
         dynamicBackground(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
         temperatureUnit(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
+        windspeedUnit(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
         pushNotification(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
     }
 }
@@ -192,6 +197,66 @@ private fun temperatureUnit(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun windspeedUnit(modifier: Modifier = Modifier) {
+    // If unit 0 it is m/s, if 1 it is km/h and if 2 it is footballfields/election
+    var windUnit by remember { mutableIntStateOf(0) }
+    var expanded by remember { mutableStateOf(false) }
+    var unit = windToString(windUnit)
+    Row (
+        modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(
+            text = "Windspeed unit",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+        )
+
+        Box() {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "$unit",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                IconButton(onClick = { expanded = true }) {
+                    Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Drop down menu")
+                }
+
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("m/s") },
+                        onClick = {
+                            windUnit = 0
+                            expanded = false },
+                    )
+                    DropdownMenuItem(
+                        text = { Text("km/h") },
+                        onClick = {
+                            windUnit = 1
+                            expanded = false },
+                    )
+                    DropdownMenuItem(
+                        text = { Text("footballfields/election") },
+                        onClick = {
+                            windUnit = 2
+                            expanded = false },
+                    )
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
 private fun pushNotification(modifier: Modifier = Modifier) {
     // If this is set to true, darkmode is on, aka "enabled",
     // aka "turned on", aka "horny"
@@ -232,6 +297,18 @@ fun tempToString(temp: Int): String {
         unit = temperatureUnits[1]
     } else
         unit = temperatureUnits[2]
+
+    return unit
+}
+
+fun windToString(wind: Int): String {
+    var unit = ""
+    if (wind == 0) {
+        unit = windUnits[0]
+    } else if (wind == 1) {
+        unit = windUnits[1]
+    } else
+        unit = windUnits[2]
 
     return unit
 }
