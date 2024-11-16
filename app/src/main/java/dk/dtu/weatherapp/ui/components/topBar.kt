@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import dk.dtu.weatherapp.navigation.Weather
 import dk.dtu.weatherapp.navigation.WeatherDestination
 import dk.dtu.weatherapp.navigation.navBarScreens
+import dk.dtu.weatherapp.ui.theme.Typography
 
 import java.lang.reflect.Modifier
 
@@ -40,23 +42,13 @@ fun MyTopAppBar(
     currentDestination: WeatherDestination,
     navController: NavController
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         title = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { /* Handle navigation icon click */ }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
-                        tint = Color.White
-                    )
-                }
                 Text(
                     text = currentDestination.appBarTitle,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = Typography.titleLarge,
                     color = Color.White
                 )
-            }
 
         },
         navigationIcon = {
