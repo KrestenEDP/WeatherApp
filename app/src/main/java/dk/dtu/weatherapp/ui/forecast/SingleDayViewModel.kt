@@ -35,7 +35,7 @@ class SingleDayViewModel : ViewModel() {
 sealed class FourDayHourlyUIModel {
     data object Empty: FourDayHourlyUIModel()
     data object Loading: FourDayHourlyUIModel()
-    data class Data(val fourDayHourly: List<Hour>) : FourDayHourlyUIModel()
+    data class Data(val fourDayHourly: List<List<Hour>>) : FourDayHourlyUIModel()
 }
 
 

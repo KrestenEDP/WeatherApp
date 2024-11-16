@@ -1,7 +1,7 @@
 package dk.dtu.weatherapp.models
 
 data class Day(
-    val iconURL: String,
+    val iconURL: Int,
     val date: String,
     val dayTemp: Int,
     val nightTemp: Int,
