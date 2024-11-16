@@ -7,6 +7,7 @@ class MockCurrentWeatherDataSource {
     private val data = Current(17, 14, 12, 2.4, R.drawable.i01n)
 
     suspend fun getCurrentWeather(): Current {
+        delay(4000)
         return data
     }
 }

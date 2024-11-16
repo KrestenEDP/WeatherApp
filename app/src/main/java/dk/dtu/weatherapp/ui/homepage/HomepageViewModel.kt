@@ -20,40 +20,47 @@ class HomepageViewModel : ViewModel() {
 
     private val weatherMutableCurrent = MutableStateFlow<WeatherUIModel>(WeatherUIModel.Loading)
     val weatherUIState: StateFlow<WeatherUIModel> = weatherMutableCurrent
-    private val dailyMutableCurrent = MutableStateFlow<DailyUIModel>(DailyUIModel.Loading)
-    val dailyUIState: StateFlow<DailyUIModel> = dailyMutableCurrent
-    private val hourlyMutableCurrent = MutableStateFlow<HourlyUIModel>(HourlyUIModel.Loading)
-    val hourlyUIState: StateFlow<HourlyUIModel> = hourlyMutableCurrent
+
+    private lateinit var current: Current
+    private lateinit var daily: List<Day>
+    private lateinit var hourly: List<Hour>
 
     init {
         viewModelScope.launch {
             currentWeatherRepository.currentWeatherFlow
                 .collect { data ->
-                    weatherMutableCurrent.update {
-                        WeatherUIModel.Data(data)
-                    }
+                    current = data
+                    update()
                 }
         }
         viewModelScope.launch {
             dayRepository.dayFlow
                 .collect { data ->
-                    dailyMutableCurrent.update {
-                        DailyUIModel.Data(data)
-                    }
+                    daily = data
+                    update()
                 }
         }
         viewModelScope.launch {
             hourRepository.hourFlow
                 .collect { data ->
-                    hourlyMutableCurrent.update {
-                        HourlyUIModel.Data(data)
-                    }
+                    hourly = data
+                    update()
                 }
         }
 
         getCurrentWeather()
         getHourlyWeather()
         getDailyWeather()
+    }
+
+    private fun update() {
+        if (this::current.isInitialized
+            && this::daily.isInitialized
+            && this::hourly.isInitialized) {
+            weatherMutableCurrent.update {
+                WeatherUIModel.Data(current, daily, hourly)
+            }
+        }
     }
 
     private fun getCurrentWeather() = viewModelScope.launch {
@@ -70,19 +77,7 @@ class HomepageViewModel : ViewModel() {
 sealed class WeatherUIModel {
     data object Empty: WeatherUIModel()
     data object Loading: WeatherUIModel()
-    data class Data(val currentWeather: Current) : WeatherUIModel()
-}
-
-sealed class DailyUIModel {
-    data object Empty: DailyUIModel()
-    data object Loading: DailyUIModel()
-    data class Data(val daily: List<Day>) : DailyUIModel()
-}
-
-sealed class HourlyUIModel {
-    data object Empty: HourlyUIModel()
-    data object Loading: HourlyUIModel()
-    data class Data(val hourly: List<Hour>) : HourlyUIModel()
+    data class Data(val currentWeather: Current, val daily: List<Day>, val hourly: List<Hour>) : WeatherUIModel()
 }
 
 

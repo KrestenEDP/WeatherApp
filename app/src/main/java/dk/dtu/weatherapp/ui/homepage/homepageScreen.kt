@@ -30,10 +30,22 @@ fun Preview() {
 @Composable
 fun Homepage(onDayClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
     val homepageViewModel: HomepageViewModel = viewModel()
-    val currentWeatherUIModel = homepageViewModel.weatherUIState.collectAsState().value
-    val dailyForecastUIModel = homepageViewModel.dailyUIState.collectAsState().value
-    val hourlyForecastUIModel = homepageViewModel.hourlyUIState.collectAsState().value
 
+    when (val weatherUIModel = homepageViewModel.weatherUIState.collectAsState().value) {
+        WeatherUIModel.Empty -> Text("No data")
+        WeatherUIModel.Loading -> Text("Loading")
+        is WeatherUIModel.Data ->{
+            HomePageContent(weatherUIModel, onDayClicked, modifier)
+        }
+    }
+}
+
+@Composable
+fun HomePageContent(
+    weatherUIModel: WeatherUIModel.Data,
+    onDayClicked: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -41,23 +53,10 @@ fun Homepage(onDayClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
     ) {
         Location(location = "Dalby") // @TODO Don't hardcode location
         Spacer(Modifier.height(50.dp))
-        when (currentWeatherUIModel) {
-            WeatherUIModel.Empty -> Text("No data")
-            WeatherUIModel.Loading -> Text("Loading")
-            is WeatherUIModel.Data -> CurrentWeather(currentWeatherUIModel.currentWeather)
-        }
+        CurrentWeather(weatherUIModel.currentWeather)
         Spacer(modifier = Modifier.height(40.dp))
-        when (hourlyForecastUIModel) {
-            HourlyUIModel.Empty -> Text("No data")
-            HourlyUIModel.Loading -> Text("Loading")
-            is HourlyUIModel.Data -> HourlyForecast(hourlyForecastUIModel.hourly)
-        }
+        HourlyForecast(weatherUIModel.hourly)
         Spacer(modifier = Modifier.height(20.dp))
-        when (dailyForecastUIModel) {
-            DailyUIModel.Empty -> Text("No data")
-            DailyUIModel.Loading -> Text("Loading")
-            is DailyUIModel.Data ->
-                DailyForecast(onDayClicked = onDayClicked, dailyForecastUIModel.daily, modifier = Modifier.fillMaxWidth())
-        }
+        DailyForecast(onDayClicked = onDayClicked, weatherUIModel.daily, modifier = Modifier.fillMaxWidth())
     }
 }
