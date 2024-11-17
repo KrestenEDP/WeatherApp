@@ -34,12 +34,8 @@ import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
 fun Locationlist(location: String, currTemp: Double, currWeather: String, modifier: Modifier = Modifier) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
-        modifier = modifier.fillMaxWidth()
-    ) {
         Row(
+            //horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
         ) {
@@ -47,12 +43,12 @@ fun Locationlist(location: String, currTemp: Double, currWeather: String, modifi
                 Icons.Default.FavoriteBorder, // @TODO change icon when added to favorites
                 contentDescription = "favorite icon",
                 Modifier
-                    .padding(end = 24.dp)
+                    .padding(end = 5.dp)
                     .size(36.dp)
-                    .weight(1f)
             )
             Text(
                 style = Typography.bodyLarge,
+                textAlign = TextAlign.Right,
                 text = "$currTemp°C",
                 modifier = Modifier
                     .padding(end = 32.dp)
@@ -60,26 +56,26 @@ fun Locationlist(location: String, currTemp: Double, currWeather: String, modifi
 
             )
 
-            Icon(
-                Icons.Default.Home, // @TODO icon has to change when weather changes (switch case)
-                // @TODO change icons to real weather icons
-                contentDescription = "Weather icon",
-                Modifier
-                    .padding(start = 24.dp, end = 24.dp) //@TODO allign icons to center
-                    .size(36.dp)
-                    .weight(1f)
-            )
+//            Icon(
+//                Icons.Default.Home, // @TODO icon has to change when weather changes (switch case)
+//                // @TODO change icons to real weather icons
+//                contentDescription = "Weather icon",
+//                Modifier
+//                    .padding(start = 24.dp, end = 24.dp) //@TODO allign icons to center
+//                    .size(36.dp)
+//                    .weight(1f)
+//            )
             Text(
                 style = Typography.bodyLarge,
                 text = location,
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(2.5f)
 
             )
 
         }
         }
-    }
+
 
 @Preview(showBackground = true)
 @Composable
