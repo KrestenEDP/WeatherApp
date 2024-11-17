@@ -1,11 +1,10 @@
 package dk.dtu.weatherapp.ui.map
 
-import android.icu.text.Transliterator.Position
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MapScreen(){
@@ -24,6 +23,6 @@ fun MapScreen(){
 @Preview(showBackground = true)
 @Composable
 
-fun juan(){
+fun Juan(){
     MapScreen()
 }

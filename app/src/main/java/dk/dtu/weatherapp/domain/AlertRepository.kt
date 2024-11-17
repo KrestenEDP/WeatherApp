@@ -1,9 +1,7 @@
 package dk.dtu.weatherapp.domain
 
 import dk.dtu.weatherapp.data.mock.MockAlertDataSource
-import dk.dtu.weatherapp.data.mock.MockCurrentWeatherDataSource
 import dk.dtu.weatherapp.models.Alert
-import dk.dtu.weatherapp.models.Current
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 

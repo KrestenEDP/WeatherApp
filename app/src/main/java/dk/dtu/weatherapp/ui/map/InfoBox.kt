@@ -1,9 +1,6 @@
 package dk.dtu.weatherapp.ui.map
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
-fun InfoBox(Weekday: String, Date: String){
+fun InfoBox(weekday: String, date: String){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -24,13 +21,13 @@ fun InfoBox(Weekday: String, Date: String){
     {
         ScrollBar()
         Text(
-            Weekday,
+            weekday,
             textAlign = TextAlign.Center,
             style = Typography.titleLarge,
             modifier = Modifier
         )
         Text(
-            Date,
+            date,
             textAlign = TextAlign.Center,
             style = Typography.titleLarge
         )
@@ -39,6 +36,6 @@ fun InfoBox(Weekday: String, Date: String){
 
 @Preview(showBackground = true)
 @Composable
-fun james(){
+fun James(){
     InfoBox("Saturday", "16. November")
 }

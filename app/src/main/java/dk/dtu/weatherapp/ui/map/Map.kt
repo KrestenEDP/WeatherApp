@@ -19,6 +19,6 @@ fun MapImage(){
 
 @Preview
 @Composable
-fun jameson(){
+fun Jameson(){
     MapImage()
 }

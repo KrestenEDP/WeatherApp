@@ -1,15 +1,9 @@
 package dk.dtu.weatherapp.navigation
 
-import android.util.Log
-import androidx.annotation.AnimRes
-import androidx.annotation.AnimatorRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.ui.alerts.AlertsScreen
@@ -57,7 +51,7 @@ fun WeatherNavHost(
             deepLinks = SingleDayForecast.deepLinks
         ) { navBackStackEntry ->
             val singleDayIndex =
-                navBackStackEntry.arguments?.getInt(SingleDayForecast.singleDayIndex)
+                navBackStackEntry.arguments?.getInt(SingleDayForecast.INDEX)
             SingleDayForecastScreen(singleDayIndex)
         }
     }

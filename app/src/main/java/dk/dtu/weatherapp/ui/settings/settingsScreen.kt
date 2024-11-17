@@ -3,31 +3,16 @@ package dk.dtu.weatherapp.ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults.shape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,15 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dk.dtu.weatherapp.ui.theme.Typography
 
 private val temperatureNames= listOf(
     "Celsius (°C)", "Fahrenheit (°F)", "Kelvin (°K)"
@@ -57,29 +37,29 @@ private val temperatureUnits = listOf(
 )
 
 private val windUnits = listOf(
-    "m/s", "km/h", "footballfields/election"
+    "m/s", "km/h"
 )
 
-private val rowHeight = 60
+private const val rowHeight = 60
 
 @Composable
 fun WeatherSettingsPage(modifier: Modifier = Modifier) {
     Column(
         modifier.fillMaxWidth()
     ) {
-        darkMode(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
-        dynamicBackground(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
-        temperatureUnit(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
-        windspeedUnit(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
-        pushNotification(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
+        DarkMode(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
+        DynamicBackground(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
+        TemperatureUnit(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
+        WindSpeedUnit(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
+        PushNotification(modifier = Modifier.height(rowHeight.dp).fillMaxWidth())
     }
 }
 
 @Composable
-private fun darkMode(modifier: Modifier = Modifier) {
-    // If this is set to true, darkmode is on, aka "enabled",
+private fun DarkMode(modifier: Modifier = Modifier) {
+    // If this is set to true, darkMode is on, aka "enabled",
     // aka "turned on", aka "horny"
-    var darkmodeOn by remember { mutableStateOf(true) }
+    var darkModeOn by remember { mutableStateOf(true) }
     Row (
         modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -95,9 +75,9 @@ private fun darkMode(modifier: Modifier = Modifier) {
 
 
         Switch(
-            checked = darkmodeOn,
+            checked = darkModeOn,
             onCheckedChange = {
-                darkmodeOn = it
+                darkModeOn = it
             },
             enabled = true
         )
@@ -105,7 +85,7 @@ private fun darkMode(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun dynamicBackground(modifier: Modifier = Modifier) {
+private fun DynamicBackground(modifier: Modifier = Modifier) {
     // If this is set to true, dynamic background is on, aka "enabled",
     // aka "turned on", aka "horny"
     var dynamicBackgroundOn by remember { mutableStateOf(true) }
@@ -134,11 +114,11 @@ private fun dynamicBackground(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun temperatureUnit(modifier: Modifier = Modifier) {
-    // If unit 0 it is celcius, if 1 it is fahrenheit and if 2 it is kelvin
+private fun TemperatureUnit(modifier: Modifier = Modifier) {
+    // If unit 0 it is celsius, if 1 it is fahrenheit and if 2 it is kelvin
     var temperatureUnit by remember { mutableIntStateOf(0) }
     var expanded by remember { mutableStateOf(false) }
-    var unit = tempToString(temperatureUnit)
+    val unit = tempToString(temperatureUnit)
     Row (
         modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -151,12 +131,12 @@ private fun temperatureUnit(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
         )
 
-        Box() {
+        Box {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "$unit",
+                    text = unit,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -169,25 +149,22 @@ private fun temperatureUnit(modifier: Modifier = Modifier) {
                     onDismissRequest = { expanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Celsius") },
+                        text = { Text(temperatureNames[0]) },
                         onClick = {
                             temperatureUnit = 0
-                            expanded = false },
-                        leadingIcon = { Text("°C") }
+                            expanded = false }
                     )
                     DropdownMenuItem(
-                        text = { Text("Fahrenheit") },
+                        text = { Text(temperatureNames[1]) },
                         onClick = {
                             temperatureUnit = 1
-                            expanded = false },
-                        leadingIcon = { Text("°F") }
+                            expanded = false }
                     )
                     DropdownMenuItem(
-                        text = { Text("Kelvin") },
+                        text = { Text(temperatureNames[2]) },
                         onClick = {
                             temperatureUnit = 2
-                            expanded = false },
-                        leadingIcon = { Text("°K") }
+                            expanded = false }
                     )
                 }
             }
@@ -197,11 +174,11 @@ private fun temperatureUnit(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun windspeedUnit(modifier: Modifier = Modifier) {
-    // If unit 0 it is m/s, if 1 it is km/h and if 2 it is footballfields/election
+private fun WindSpeedUnit(modifier: Modifier = Modifier) {
+    // If unit 0 it is m/s and if 1 it is km/h
     var windUnit by remember { mutableIntStateOf(0) }
     var expanded by remember { mutableStateOf(false) }
-    var unit = windToString(windUnit)
+    val unit = windToString(windUnit)
     Row (
         modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -209,17 +186,17 @@ private fun windspeedUnit(modifier: Modifier = Modifier) {
     ) {
 
         Text(
-            text = "Windspeed unit",
+            text = "Wind speed unit",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
 
-        Box() {
+        Box {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "$unit",
+                    text = unit,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -251,8 +228,8 @@ private fun windspeedUnit(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun pushNotification(modifier: Modifier = Modifier) {
-    // If this is set to true, darkmode is on, aka "enabled",
+private fun PushNotification(modifier: Modifier = Modifier) {
+    // If this is set to true, darkMode is on, aka "enabled",
     // aka "turned on", aka "horny"
     var pushNotificationsOn by remember { mutableStateOf(true) }
     Row (
@@ -285,12 +262,11 @@ fun PagePreview() {
 
 fun tempToString(temp: Int): String {
     var unit = ""
-    if (temp == 0) {
-        unit = temperatureUnits[0]
-    } else if (temp == 1) {
-        unit = temperatureUnits[1]
-    } else
-        unit = temperatureUnits[2]
+    unit = when (temp) {
+        0 -> temperatureUnits[0]
+        1 -> temperatureUnits[1]
+        else -> temperatureUnits[2]
+    }
 
     return unit
 }

@@ -14,9 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dk.dtu.weatherapp.data.mock.MockCurrentWeatherDataSource
-import dk.dtu.weatherapp.data.mock.MockDayDataSource
-import dk.dtu.weatherapp.data.mock.MockHourDataSource
 
 
 @Preview(showBackground = true)

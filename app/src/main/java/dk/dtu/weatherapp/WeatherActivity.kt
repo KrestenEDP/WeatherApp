@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dk.dtu.weatherapp.navigation.Settings
-import dk.dtu.weatherapp.navigation.SingleDayForecast
 import dk.dtu.weatherapp.navigation.Weather
 import dk.dtu.weatherapp.navigation.WeatherNavHost
 import dk.dtu.weatherapp.navigation.allScreens

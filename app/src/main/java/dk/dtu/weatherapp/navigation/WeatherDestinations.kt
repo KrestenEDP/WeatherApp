@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.navigation
 
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
@@ -10,7 +9,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -47,7 +45,7 @@ object Alerts : WeatherDestination {
     override val iconUnselected: ImageVector = Icons.Outlined.Warning
     override val iconSelected: ImageVector = Icons.Filled.Warning
     override val route: String = "alerts"
-    override val appBarTitle: String = "Dangerzone"
+    override val appBarTitle: String = "Alerts"
     override val showBackButton: Boolean = true
 }
 
@@ -74,13 +72,13 @@ object SingleDayForecast : WeatherDestination {
     override var appBarTitle by mutableStateOf("") // TODO: make dynamic
     override val showBackButton: Boolean = true
 
-    const val singleDayIndex = "index"
-    val routeWithArgs = "$route/{$singleDayIndex}"
+    const val INDEX = "index"
+    val routeWithArgs = "$route/{$INDEX}"
     val arguments = listOf(
-        navArgument(singleDayIndex) { type = NavType.IntType }
+        navArgument(INDEX) { type = NavType.IntType }
     )
     val deepLinks = listOf(
-        navDeepLink { uriPattern = "rally://$route/{$singleDayIndex}" }
+        navDeepLink { uriPattern = "rally://$route/{$INDEX}" }
     )
 }
 

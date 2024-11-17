@@ -1,11 +1,9 @@
 package dk.dtu.weatherapp.ui.map
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -34,6 +32,6 @@ fun ScrollBar(){
 
 @Preview(showBackground = true)
 @Composable
-fun scrollbarprev(){
+fun ScrollbarPrev(){
 ScrollBar()
 }
