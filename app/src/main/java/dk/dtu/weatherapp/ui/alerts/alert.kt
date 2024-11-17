@@ -20,7 +20,7 @@ fun Alert(title: String, text: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier.padding(bottom = 4.dp).padding(start = 16.dp, end = 16.dp)
+            modifier = modifier.padding(bottom = 4.dp).padding(end = 16.dp)
         ) {
             Icon(
                 Icons.Default.ThumbUp, // @TODO use dynamic icon

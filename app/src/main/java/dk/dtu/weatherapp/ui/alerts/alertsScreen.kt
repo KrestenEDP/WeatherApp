@@ -44,7 +44,7 @@ private fun AlertsContent(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier.padding(top = 16.dp)
     ) {
         items(alerts.size) { index ->
             Alert(
