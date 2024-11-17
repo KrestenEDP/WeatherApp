@@ -40,7 +40,7 @@ fun Homepage(
         WeatherUIModel.Empty -> Text("No data")
         WeatherUIModel.Loading -> Text("Loading")
         is WeatherUIModel.Data ->{
-            HomePageContent(weatherUIModel, onDayClicked, modifier)
+            HomePageContent(weatherUIModel, onDayClicked, onSearchClicked, modifier)
         }
     }
 }
