@@ -69,7 +69,7 @@ fun Locationlist(location: String, currTemp: Double, currWeather: String, modifi
                 style = Typography.bodyLarge,
                 text = location,
                 modifier = Modifier
-                    .weight(2.5f)
+                    .weight(2f)
 
             )
 

@@ -32,10 +32,11 @@ fun FavoriteView(
     modifier: Modifier = Modifier
 ){
     Column(modifier = Modifier
-        .padding(bottom = 64.dp)) {
+        .padding(16.dp)) {
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier.padding(bottom = 8.dp)
         ) {
             Icon(
                 Icons.Default.Favorite,

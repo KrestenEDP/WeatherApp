@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
@@ -28,29 +29,22 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SearchField() {
     var text by remember { mutableStateOf("") }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    OutlinedTextField(
+        leadingIcon = {
+            Icon(
+                Icons.Default.Search,
+                contentDescription = "Search icon",
+                Modifier
+                    .size(36.dp)
+            )
+                      },
+        value = text,
+        onValueChange = {text = it},
+        label = { Text("Search for cities") },
         modifier = Modifier
-            .padding(top = 16.dp, bottom = 32.dp)
-    ) {
-        Icon(
-            Icons.Default.Search, // @TODO change icon when added to favorites
-            contentDescription = "Search icon",
-            Modifier
-                .padding(start = 16.dp)
-                .size(36.dp)
-                .align(Alignment.CenterVertically)// TODO fix offset of icon
-        )
-        OutlinedTextField(
-            value = text,
-            onValueChange = {text = it},
-            label = { Text("Search") },
-            modifier = Modifier
-                .padding(start = 16.dp)
-
-        )
-    }
-
+            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .fillMaxWidth()
+    )
 }
 
 @Preview(showBackground = true)
