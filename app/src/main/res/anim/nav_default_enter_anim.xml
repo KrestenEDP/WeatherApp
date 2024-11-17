@@ -3,6 +3,6 @@
     <!--Empty to disable animation-->
     <alpha
         android:interpolator="@android:interpolator/decelerate_quad"
-        android:fromAlpha="0.0" android:toAlpha="3.0"
+        android:fromAlpha="0.0" android:toAlpha="1.0"
         android:duration="@android:integer/config_longAnimTime" />
 </set>
