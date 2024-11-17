@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.ui.homepage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +27,7 @@ fun CurrentWeather(data: Current) {
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Image(
+        Icon(
             painter = painterResource(data.icon),
             contentDescription = "Dynamic weather icon", // @TODO use description from API
             modifier = Modifier.size(150.dp)
