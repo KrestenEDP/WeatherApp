@@ -5,5 +5,5 @@ data class Current(
     val chill: Int,
     val wind: Int,
     val rain: Double,
-    val icon: String
+    val icon: Int
 )

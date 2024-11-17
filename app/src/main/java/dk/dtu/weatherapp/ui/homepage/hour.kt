@@ -16,11 +16,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dk.dtu.weatherapp.R
 
 @Composable
-fun Hour(time: String, temp: Int,rain: Double, wind: Int, windDegree: Int, modifier: Modifier = Modifier) {
+fun Hour(
+    time: String,
+    temp: Int,
+    rain: Double,
+    wind: Int,
+    windDegree: Int,
+    icon: Int,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -28,7 +38,7 @@ fun Hour(time: String, temp: Int,rain: Double, wind: Int, windDegree: Int, modif
     ) {
         Text(text = time)
         Icon(
-            Icons.Default.ThumbUp,
+            painterResource(icon),
             contentDescription = null, // @TODO use dynamic icon and description
             modifier = Modifier.size(50.dp)
         )
@@ -50,5 +60,5 @@ fun Hour(time: String, temp: Int,rain: Double, wind: Int, windDegree: Int, modif
 @Preview(showBackground = true)
 @Composable
 fun HourPrev() {
-    Hour("14:00",18,2.4,12, 93)
+    Hour("14:00",18,2.4,12, 93, R.drawable.i01n)
 }

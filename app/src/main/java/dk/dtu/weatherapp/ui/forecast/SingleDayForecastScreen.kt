@@ -1,6 +1,6 @@
 package dk.dtu.weatherapp.ui.forecast
 
-import android.util.Log
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,24 +21,31 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.models.Hour
 import dk.dtu.weatherapp.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -47,9 +54,24 @@ import kotlin.math.absoluteValue
 fun SingleDayForecastScreen(
     singleDayIndex: Int? = 0,
 ) {
+    val singleDayViewModel: SingleDayViewModel = viewModel()
+    when (val singleDayUIModel = singleDayViewModel.singleDayUIState.collectAsState().value) {
+        FourDayHourlyUIModel.Empty -> Text("No data")
+        FourDayHourlyUIModel.Loading -> Text("Loading")
+        is FourDayHourlyUIModel.Data -> {
+            SingleDayForecastContent(singleDayUIModel, singleDayIndex)
+        }
+    }
+}
+
+@Composable
+fun SingleDayForecastContent(
+    forecastUiModel: FourDayHourlyUIModel.Data,
+    singleDayIndex: Int? = 0
+) {
     Box {
         val pagerState = rememberPagerState(
-            pageCount = { 10 },
+            pageCount = { forecastUiModel.fourDayHourly.size },
             initialPage = singleDayIndex ?: 0
         )
 
@@ -57,23 +79,17 @@ fun SingleDayForecastScreen(
             pagerState.pageCount
         })
 
-        LaunchedEffect(pagerState) {
-            snapshotFlow { pagerState.currentPage }.collect { page ->
-                Log.d("Page change", "Page changed to $page")
-            }
-        }
-
         HorizontalPager(state = pagerState) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
             ) {/*
                 Text(
-                    text = "January " + (it + 16),
+                    text = forecastUiModel.fourDayHourly[it][0].time, // TODO Change to day instead of hour
                     style = Typography.titleLarge,
                     modifier = Modifier.padding(8.dp),
-                )*/
-                HourlyForecast()
+                )
+                HourlyForecast(forecastUiModel.fourDayHourly[it])
             }
         }
 
@@ -121,19 +137,6 @@ fun SingleDayForecastScreen(
                     )
                 }
             }
-            /*repeat(pagerState.pageCount) { iteration ->
-                val color =
-                    if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
-                if (abs(pagerState.currentPage - iteration) < 2) {
-                    Box(
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .clip(CircleShape)
-                            .background(color)
-                            .size(16.dp)
-                    )
-                }
-            }*/
         }
 
         LaunchedEffect(Unit) {
@@ -146,21 +149,20 @@ fun SingleDayForecastScreen(
                 indicatorState.scrollToPage(page, offset)
             }
         }
-
     }
 }
 
 @Composable
-fun HourlyForecast() {
+fun HourlyForecast(forecast: List<Hour>) {
     LazyColumn {
-         items(24) { index ->
-            ForecastElement(index)
+         items(forecast.size) {
+            ForecastElement(forecast[it])
         }
     }
 }
 
 @Composable
-fun ForecastElement(index: Int) {
+fun ForecastElement(hour: Hour) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -168,7 +170,7 @@ fun ForecastElement(index: Int) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = if (index < 10) "0$index:00" else "$index:00",
+            text = hour.time,
             style = Typography.bodyLarge,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.End,
@@ -176,15 +178,16 @@ fun ForecastElement(index: Int) {
                 .padding(PaddingValues(8.dp))
                 .weight(1.5f)
         )
+
         Icon(
-            imageVector = Icons.Filled.Face,
+            imageVector = ImageVector.vectorResource(id = hour.iconURL),
             contentDescription = null, // TODO: Add weather type as content description
             modifier = Modifier
                 .padding(PaddingValues(start = 16.dp, end = 8.dp))
                 .weight(1f)
         )
         Text(
-            text = "${index*(index%3-1)}°C",
+            text = "${hour.temp}" + " °C", // Todo make temperature type to string resource
             style = Typography.bodyLarge,
             textAlign = TextAlign.End,
             modifier = Modifier
@@ -192,7 +195,7 @@ fun ForecastElement(index: Int) {
                 .weight(1.5f)
         )
         Text(
-            text = "$index,0 mm",
+            text = "${hour.rain}" + " mm", // Todo change to string resource
             style = Typography.bodyLarge,
             textAlign = TextAlign.End,
             modifier = Modifier
@@ -208,12 +211,14 @@ fun ForecastElement(index: Int) {
                 .padding(PaddingValues(8.dp))
         ) {
             Icon(
-                imageVector = Icons.Filled.Menu,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward, // TODO Use arrow icons indicating wind direction hour.windDegree
                 contentDescription = null, // TODO: Add more options as content description
-                modifier = Modifier.padding(start=8.dp, end=0.dp)
+                modifier = Modifier
+                    .padding(start=8.dp, end=0.dp)
+                    .rotate(hour.windDegree.toFloat()-90)
             )
             Text(
-                text = "23 m/s",
+                text = "${hour.wind}" + " m/s", // Todo change to string resource
                 style = Typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -230,7 +235,5 @@ fun ForecastElement(index: Int) {
 )
 @Composable
 fun SingleDayForecastScreenPreview() {
-    Scaffold { innerPadding ->
-        SingleDayForecastScreen()
-    }
+    SingleDayForecastScreen()
 }

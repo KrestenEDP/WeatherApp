@@ -31,7 +31,7 @@ fun CurrentWeather(data: Current) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+            painter = painterResource(data.icon),
             contentDescription = "Dynamic weather icon", // @TODO use description from API
             modifier = Modifier.size(150.dp)
         )
@@ -42,7 +42,7 @@ fun CurrentWeather(data: Current) {
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 Icon(
-                    Icons.Default.ThumbUp, // @TODO use dynamic icon
+                    painterResource(R.drawable.wind), // @TODO use dynamic icon
                     contentDescription = "Current wind strength ${data.wind} meters per second",
                     modifier = Modifier.size(24.dp)
                 )
@@ -51,7 +51,7 @@ fun CurrentWeather(data: Current) {
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 Icon(
-                    Icons.Default.ThumbUp, // @TODO use dynamic icon
+                    painterResource(R.drawable.i09d), // @TODO use dynamic icon
                     contentDescription = "Current rain fall ${data.rain} millimeters",
                     modifier = Modifier.size(24.dp)
                 )
@@ -64,5 +64,5 @@ fun CurrentWeather(data: Current) {
 @Preview
 @Composable
 fun CurrentPrev() {
-    CurrentWeather(Current(17, 14, 12, 2.2, "02d"))
+    CurrentWeather(Current(17, 14, 12, 2.2, R.drawable.i02d))
 }

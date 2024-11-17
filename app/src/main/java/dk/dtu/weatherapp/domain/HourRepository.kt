@@ -13,7 +13,7 @@ class HourRepository {
     private val mutableHourlyFlow = MutableSharedFlow<List<Hour>>()
     val hourFlow = mutableHourlyFlow.asSharedFlow()
 
-    suspend fun getDailyForecast() = mutableHourlyFlow.emit(
+    suspend fun getHourlyForecast() = mutableHourlyFlow.emit(
         hourDataSource.getHourlyWeather()
     )
 }
