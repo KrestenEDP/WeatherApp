@@ -23,12 +23,16 @@ import androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dk.dtu.weatherapp.navigation.SingleDayForecast
 import dk.dtu.weatherapp.navigation.Weather
 import dk.dtu.weatherapp.navigation.WeatherDestination
 import dk.dtu.weatherapp.navigation.navBarScreens
@@ -44,12 +48,11 @@ fun MyTopAppBar(
 ) {
     TopAppBar(
         title = {
-                Text(
-                    text = currentDestination.appBarTitle,
-                    style = Typography.titleLarge,
-                    color = Color.White
-                )
-
+            Text(
+                text = currentDestination.appBarTitle,
+                style = Typography.titleLarge,
+                color = Color.White
+            )
         },
         navigationIcon = {
             if (currentDestination.showBackButton) {
@@ -61,14 +64,12 @@ fun MyTopAppBar(
         colors = topAppBarColors(
             containerColor = Color(0xFF6200EE),
             ),
-
     )
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun barPreview() {
+fun BarPreview() {
     val navController = rememberNavController()
     MyTopAppBar(Weather, navController)
 }

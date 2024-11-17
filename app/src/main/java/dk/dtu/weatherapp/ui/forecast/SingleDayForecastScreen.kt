@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Hour
+import dk.dtu.weatherapp.navigation.SingleDayForecast
 import dk.dtu.weatherapp.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -83,12 +84,12 @@ fun SingleDayForecastContent(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-            ) {/*
-                Text(
+            ) {
+                /*Text(
                     text = forecastUiModel.fourDayHourly[it][0].time, // TODO Change to day instead of hour
                     style = Typography.titleLarge,
                     modifier = Modifier.padding(8.dp),
-                )
+                )*/
                 HourlyForecast(forecastUiModel.fourDayHourly[it])
             }
         }
@@ -147,6 +148,7 @@ fun SingleDayForecastContent(
                 )
             }.collect { (page, offset) ->
                 indicatorState.scrollToPage(page, offset)
+                SingleDayForecast.appBarTitle = forecastUiModel.fourDayHourly[page][page].time
             }
         }
     }

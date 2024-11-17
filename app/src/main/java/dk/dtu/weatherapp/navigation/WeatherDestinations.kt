@@ -11,6 +11,9 @@ import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -68,7 +71,7 @@ object SingleDayForecast : WeatherDestination {
     override val iconUnselected: ImageVector = Icons.Outlined.Home
     override val iconSelected: ImageVector = Icons.Filled.Home
     override val route: String = "single_day_forecast"
-    override val appBarTitle: String = "January 17" // TODO: make dynamic
+    override var appBarTitle by mutableStateOf("") // TODO: make dynamic
     override val showBackButton: Boolean = true
 
     const val singleDayIndex = "index"
