@@ -10,7 +10,7 @@ class MockAlertDataSource {
     Alert("Thunderstorm", "Thunderstorm is expected in your area", "10/10", "12/10", listOf("thunderstorm")),
 )
 
-    suspend fun getAlerts(): List<Alert> {
+    fun getAlerts(): List<Alert> {
         return data
     }
 }

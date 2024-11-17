@@ -107,7 +107,7 @@ class MockHourlyFourDayForecast {
     /*val id = LocalContext.current.resources.getIdentifier(hour.iconURL,
         "drawable", LocalContext.current.packageName)*/
 
-    suspend fun getFourDayHourlyForecast(): List<Hour> {
+    fun getFourDayHourlyForecast(): List<Hour> {
         return data
     }
 }

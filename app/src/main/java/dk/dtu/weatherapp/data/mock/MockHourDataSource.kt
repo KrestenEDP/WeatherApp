@@ -55,7 +55,7 @@ class MockHourDataSource {
         Hour("23:00", R.drawable.i01n, 32, 4.7, 52, 345)
     )
 
-    suspend fun getHourlyWeather(): List<Hour> {
+    fun getHourlyWeather(): List<Hour> {
         return data
     }
 }

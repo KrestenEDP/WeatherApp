@@ -11,7 +11,7 @@ class MockDayDataSource {
         Day(R.drawable.i13d, "Saturday 19. January", 24, 15, 5.2)
     )
 
-    suspend fun getDailyWeather(): List<Day> {
+    fun getDailyWeather(): List<Day> {
         return data
     }
 }
