@@ -148,7 +148,7 @@ fun SingleDayForecastContent(
                 )
             }.collect { (page, offset) ->
                 indicatorState.scrollToPage(page, offset)
-                SingleDayForecast.appBarTitle = forecastUiModel.fourDayHourly[page][page].time
+                SingleDayForecast.appBarTitle = "January ${16 + page}"/*forecastUiModel.fourDayHourly[page][page].time*/
             }
         }
     }
