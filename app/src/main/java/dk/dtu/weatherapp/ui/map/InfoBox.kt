@@ -16,38 +16,24 @@ import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
 fun InfoBox(Weekday: String, Date: String){
-    Column(modifier = Modifier
-        .padding(bottom = 32.dp)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(bottom = 32.dp)
     )
     {
         ScrollBar()
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-            ) {
-            Text(
-                Weekday,
-                textAlign = TextAlign.Center,
-                style = Typography.titleLarge,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-            )
-        }
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                Date,
-                textAlign = TextAlign.Center,
-                style = Typography.titleLarge,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-            )
-        }
+        Text(
+            Weekday,
+            textAlign = TextAlign.Center,
+            style = Typography.titleLarge,
+            modifier = Modifier
+        )
+        Text(
+            Date,
+            textAlign = TextAlign.Center,
+            style = Typography.titleLarge
+        )
     }
 }
 
