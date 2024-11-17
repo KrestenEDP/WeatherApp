@@ -25,8 +25,12 @@ import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
 fun RecentView(recent1: String, recent2: String, recent3: String, modifier: Modifier = Modifier){
-    Column {
-        Row(horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically,) {
+    Column(modifier = modifier.padding(16.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier.padding(bottom = 8.dp)
+        ) {
             Icon(
                 Icons.Default.CheckCircle,
                 contentDescription = "Weather icon",
