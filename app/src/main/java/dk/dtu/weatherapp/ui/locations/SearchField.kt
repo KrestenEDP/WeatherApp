@@ -31,7 +31,7 @@ fun SearchField() {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(bottom = 32.dp)
+            .padding(top = 16.dp, bottom = 32.dp)
     ) {
         Icon(
             Icons.Default.Search, // @TODO change icon when added to favorites

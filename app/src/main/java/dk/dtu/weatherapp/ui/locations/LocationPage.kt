@@ -33,30 +33,9 @@ import dk.dtu.weatherapp.ui.theme.Typography
 @Composable
 fun LocationPage(){
    Column(Modifier.fillMaxHeight()){
-       Row(
-           horizontalArrangement = Arrangement.Start,
-           verticalAlignment = Alignment.CenterVertically,
-           modifier = Modifier
-               .padding(top = 16.dp, bottom = 16.dp)
-       ) {
-           Icon(
-               Icons.Default.Place,
-               contentDescription = "Weather icon",
-               Modifier
-                   .size(64.dp)
-           )
-           Text(
-               text = "Location",
-               textAlign = TextAlign.Center,
-               style = Typography.titleLarge,
-               modifier = Modifier
-                   .padding(start = 16.dp)
-           )
-       }
         SearchField()
         FavoriteView("Copenhagen", "London", "Paris")
         RecentView("Lisbon", "Stockholm", "Oslo")
-
     }
 }
 
