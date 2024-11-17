@@ -243,12 +243,6 @@ private fun windspeedUnit(modifier: Modifier = Modifier) {
                             windUnit = 1
                             expanded = false },
                     )
-                    DropdownMenuItem(
-                        text = { Text("footballfields/election") },
-                        onClick = {
-                            windUnit = 2
-                            expanded = false },
-                    )
                 }
             }
 
@@ -307,8 +301,7 @@ fun windToString(wind: Int): String {
         unit = windUnits[0]
     } else if (wind == 1) {
         unit = windUnits[1]
-    } else
-        unit = windUnits[2]
+    }
 
     return unit
 }
