@@ -24,10 +24,10 @@ class AlertsViewModel : ViewModel() {
                 }
         }
 
-        getCurrentWeather()
+        getAlerts()
     }
 
-    private fun getCurrentWeather() = viewModelScope.launch {
+    private fun getAlerts() = viewModelScope.launch {
         alertRepository.getAlerts()
     }
 }

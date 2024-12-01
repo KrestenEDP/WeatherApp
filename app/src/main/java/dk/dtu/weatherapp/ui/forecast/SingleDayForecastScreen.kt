@@ -103,6 +103,7 @@ fun SingleDayForecastContent(
                 modifier = Modifier
                     .width(100.dp)
                     .align(Alignment.CenterVertically)
+                    .padding(bottom=8.dp)
 
             ) { page ->
                 Box(
