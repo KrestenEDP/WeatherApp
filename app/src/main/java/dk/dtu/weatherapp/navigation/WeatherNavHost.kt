@@ -1,5 +1,10 @@
 package dk.dtu.weatherapp.navigation
 
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -21,6 +26,20 @@ fun WeatherNavHost(
     NavHost(
         navController = navController,
         startDestination = Weather.route,
+        enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    200, 200, easing = EaseIn
+                )
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = tween(
+                    200, 100, easing = EaseOut
+                )
+            )
+        },
         modifier = modifier,
     ) {
         composable(route = Weather.route) {
