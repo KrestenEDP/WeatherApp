@@ -28,14 +28,14 @@ fun WeatherNavHost(
         enterTransition = {
             fadeIn(
                 animationSpec = tween(
-                    200, 200, easing = EaseIn
+                    50, 50, easing = EaseIn
                 )
             )
         },
         exitTransition = {
             fadeOut(
                 animationSpec = tween(
-                    200, 100, easing = EaseOut
+                    50, 50, easing = EaseOut
                 )
             )
         },
