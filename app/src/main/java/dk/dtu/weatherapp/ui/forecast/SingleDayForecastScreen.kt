@@ -40,6 +40,7 @@ import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Hour
 import dk.dtu.weatherapp.navigation.SingleDayForecast
+import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -50,7 +51,7 @@ fun SingleDayForecastScreen(
     val singleDayViewModel: SingleDayViewModel = viewModel()
     when (val singleDayUIModel = singleDayViewModel.singleDayUIState.collectAsState().value) {
         FourDayHourlyUIModel.Empty -> Text("No data")
-        FourDayHourlyUIModel.Loading -> Text("Loading")
+        FourDayHourlyUIModel.Loading -> LoadingScreen()
         is FourDayHourlyUIModel.Data -> {
             SingleDayForecastContent(singleDayUIModel, singleDayIndex)
         }
