@@ -18,11 +18,12 @@ class RemoteWeatherDataSource {
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(
             json.asConverterFactory(CONTENT_TYPE.toMediaType())
+
         )
         .baseUrl(BASE_URL)
         .build()
 
     private val weatherApi: WeatherApiService = retrofit.create(WeatherApiService::class.java)
 
-    suspend fun getWeather() = weatherApi.getWeather()
+    suspend fun getCurrentWeather() = weatherApi.getCurrentWeather()
 }
