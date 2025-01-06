@@ -29,7 +29,7 @@ object Weather : WeatherDestination {
     override val iconUnselected: ImageVector = Icons.Outlined.Home
     override val iconSelected: ImageVector = Icons.Filled.Home
     override val route: String = "weather"
-    override val appBarTitle: String = "Dolby" // TODO: make dynamic
+    override val appBarTitle: String = "" // TODO: make dynamic
     override val showBackButton: Boolean = false
 }
 

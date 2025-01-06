@@ -52,13 +52,13 @@ fun HomePageContent(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(16.dp)
+            .padding(16.dp, top=0.dp)
     ) {
         Location(
             onSearchClicked = onSearchClicked,
             location = "Dalby" // @TODO Don't hardcode location
         )
-        Spacer(Modifier.height(50.dp))
+        Spacer(Modifier.height(20.dp))
         CurrentWeather(weatherUIModel.currentWeather)
         Spacer(modifier = Modifier.height(40.dp))
         HourlyForecast(weatherUIModel.hourly)

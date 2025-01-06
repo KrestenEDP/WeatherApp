@@ -24,21 +24,21 @@ fun Location(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(start = 34.dp, top = 14.dp)
+            .padding(start = 34.dp)
     ) {
         Icon(
             Icons.Default.Search,
             contentDescription = "Search button",
             Modifier
                 .padding(0.dp)
-                .width(40.dp)
-                .height(40.dp)
+                .width(50.dp)
+                .height(50.dp)
                 .clickable { onSearchClicked() }
         )
         Spacer(Modifier.width(8.dp))
         Text(
             text = location,
-            style = Typography.titleLarge, // @TODO use larger font
+            style = Typography.displayMedium, // @TODO use larger font
             modifier = Modifier.clickable { onSearchClicked() }
         )
     }

@@ -48,9 +48,7 @@ fun WeatherApp() {
 
         Scaffold(
             topBar = {
-                if (currentDestination?.route != "weather") {
-                    MyTopAppBar(currentScreen, navController)
-                }
+                MyTopAppBar(currentScreen, navController)
             },
             bottomBar = {
                 NavBar(

@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.ui.forecast
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -119,8 +117,8 @@ fun SingleDayForecastContent(
 
                             alpha = lerp(
                                 start = 0f,
-                                stop = 1f,
-                                fraction = 1f - pageOffset.coerceIn(0f, 2f)/2
+                                stop = 0.8f,
+                                fraction = 0.8f - pageOffset.coerceIn(0f, 2f)/2
                             )
                         }
                 ) {
@@ -128,7 +126,6 @@ fun SingleDayForecastContent(
                         modifier = Modifier
                             .padding(2.dp)
                             .clip(CircleShape)
-                            .background(Color.DarkGray)
                             .size(16.dp)
                     )
                 }

@@ -7,10 +7,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.ui.alerts.AlertsScreen
 import dk.dtu.weatherapp.ui.forecast.SingleDayForecastScreen
 import dk.dtu.weatherapp.ui.homepage.Homepage
@@ -83,12 +82,6 @@ fun NavHostController.navigateSingleTopTo(route: String) {
         }*/
         launchSingleTop = true
         //restoreState = true
-        anim {
-            enter = R.anim.nav_default_enter_anim
-            exit = R.anim.nav_default_exit_anim
-            popEnter = R.anim.nav_default_pop_enter_anim
-            popExit = R.anim.nav_default_pop_exit_anim
-        }
     }
 }
 
