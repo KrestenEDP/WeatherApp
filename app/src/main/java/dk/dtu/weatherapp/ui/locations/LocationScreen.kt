@@ -8,13 +8,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.ui.components.LoadingScreen
 
 @Composable
 fun LocationPage(){
     val locationsViewModel: LocationsViewModel = viewModel()
     when (val locationsUIModel = locationsViewModel.locationsUIState.collectAsState().value) {
         LocationsUIModel.Empty -> Text("No data")
-        LocationsUIModel.Loading -> Text("Loading")
+        LocationsUIModel.Loading -> LoadingScreen()
         is LocationsUIModel.Data -> {
             Column(Modifier.fillMaxHeight()){
                 SearchField()

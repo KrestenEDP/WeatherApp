@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.ui.components.LoadingScreen
 
 
 @Preview(showBackground = true)
@@ -35,7 +36,7 @@ fun Homepage(
 
     when (val weatherUIModel = homepageViewModel.weatherUIState.collectAsState().value) {
         WeatherUIModel.Empty -> Text("No data")
-        WeatherUIModel.Loading -> Text("Loading")
+        WeatherUIModel.Loading -> LoadingScreen()
         is WeatherUIModel.Data ->{
             HomePageContent(weatherUIModel, onDayClicked, onSearchClicked, modifier)
         }
