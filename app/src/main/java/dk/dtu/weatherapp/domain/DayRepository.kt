@@ -1,17 +1,41 @@
 package dk.dtu.weatherapp.domain
 
-import dk.dtu.weatherapp.data.mock.MockDayDataSource
+import dk.dtu.weatherapp.data.model.DailyWeatherDao
+import dk.dtu.weatherapp.data.remote.RemoteWeatherDataSource
 import dk.dtu.weatherapp.models.Day
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class DayRepository {
-    private val dayDataSource = MockDayDataSource()
+    private val dayDataSource = RemoteWeatherDataSource()
 
     private val mutableDayFlow = MutableSharedFlow<List<Day>>()
     val dayFlow = mutableDayFlow.asSharedFlow()
 
     suspend fun getDailyForecast() = mutableDayFlow.emit(
-        dayDataSource.getDailyWeather()
+        dayDataSource.getDailyWeather().mapToDays()
     )
+}
+
+fun DailyWeatherDao.mapToDays(): List<Day> {
+    return days.map {
+        Day(
+            iconURL = "i" + it.weather[0].icon,
+            date = getDateFromUnixTimestamp(it.dt),
+            dayTemp = String.format(Locale.ROOT, "%.1f", it.temp.day - 273.15).toDouble().toDouble(),
+            nightTemp = String.format(Locale.ROOT, "%.1f", it.temp.night - 273.15).toDouble().toDouble(),
+            rain = it.rain ?: 0.0
+        )
+    }
+}
+
+fun getDateFromUnixTimestamp(unixTimestamp: Long): String {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = unixTimestamp * 1000
+    val formatter = SimpleDateFormat("EEEE d. MMMM", Locale.ENGLISH)
+    val formattedDate = formatter.format(calendar.time)
+    return formattedDate
 }

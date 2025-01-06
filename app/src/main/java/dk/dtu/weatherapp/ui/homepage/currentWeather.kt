@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.ui.homepage
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.Current
 import dk.dtu.weatherapp.ui.theme.Typography
+import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
 fun CurrentWeather(data: Current) {
@@ -64,12 +64,4 @@ fun CurrentWeather(data: Current) {
 @Composable
 fun CurrentPrev() {
     CurrentWeather(Current(17.0, 14.0, 12.0, 2.2, "i02d"))
-}
-
-fun getPainterResource(id: String, context: Context): Int {
-    val icon = context.resources.getIdentifier(id, "drawable", context.packageName)
-    if (icon == 0) {
-        return R.drawable.ic_launcher_foreground
-    }
-    return icon
 }

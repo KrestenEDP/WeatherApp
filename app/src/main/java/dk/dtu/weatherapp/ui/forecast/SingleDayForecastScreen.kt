@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.forecast
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,8 +30,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,9 +41,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.data.mock.MockHourlyFourDayForecast
 import dk.dtu.weatherapp.models.Hour
 import dk.dtu.weatherapp.navigation.SingleDayForecast
 import dk.dtu.weatherapp.ui.theme.Typography
+import dk.dtu.weatherapp.ui.util.getPainterResource
 import kotlin.math.absoluteValue
 
 @Composable
@@ -126,6 +131,7 @@ fun SingleDayForecastContent(
                         modifier = Modifier
                             .padding(2.dp)
                             .clip(CircleShape)
+                            .background(color = Color.Black)
                             .size(16.dp)
                     )
                 }
@@ -174,7 +180,7 @@ fun ForecastElement(hour: Hour) {
         )
 
         Icon(
-            imageVector = ImageVector.vectorResource(id = hour.iconURL),
+            imageVector = ImageVector.vectorResource(getPainterResource(hour.iconURL, LocalContext.current)),
             contentDescription = null, // TODO: Add weather type as content description
             modifier = Modifier
                 .padding(PaddingValues(start = 16.dp, end = 8.dp))
@@ -229,5 +235,6 @@ fun ForecastElement(hour: Hour) {
 )
 @Composable
 fun SingleDayForecastScreenPreview() {
-    SingleDayForecastScreen()
+    val data = FourDayHourlyUIModel.Data(MockHourlyFourDayForecast().getHourlyWeather().chunked(24))
+    SingleDayForecastContent(data, 0)
 }

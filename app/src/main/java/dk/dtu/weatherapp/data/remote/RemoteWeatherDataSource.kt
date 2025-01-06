@@ -26,4 +26,7 @@ class RemoteWeatherDataSource {
     private val weatherApi: WeatherApiService = retrofit.create(WeatherApiService::class.java)
 
     suspend fun getCurrentWeather() = weatherApi.getCurrentWeather()
+    suspend fun getHourlyWeatherToday() = weatherApi.getHourlyWeather(12)
+    suspend fun getHourlyWeather() = weatherApi.getHourlyWeather()
+    suspend fun getDailyWeather() = weatherApi.getDailyWeather()
 }

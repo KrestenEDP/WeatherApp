@@ -2,9 +2,9 @@ package dk.dtu.weatherapp.models
 
 data class Hour(
     val time: String,
-    val iconURL: Int,
-    val temp: Int,
+    val iconURL: String,
+    val temp: Double,
     val rain: Double,
-    val wind: Int,
+    val wind: Double,
     val windDegree: Int
 )
