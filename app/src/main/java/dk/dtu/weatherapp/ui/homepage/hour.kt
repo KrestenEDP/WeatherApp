@@ -46,7 +46,7 @@ fun Hour(
                 Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "Wind degree $windDegree",
                 Modifier
-                    .rotate(windDegree.toFloat()-90)
+                    .rotate(windDegree.toFloat()+90)
                     .size(16.dp)
             )
             Text(text = "$wind m/s") // @TODO use unit from settings

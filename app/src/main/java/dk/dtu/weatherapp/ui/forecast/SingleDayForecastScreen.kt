@@ -215,7 +215,7 @@ fun ForecastElement(hour: Hour) {
                 contentDescription = null, // TODO: Add more options as content description
                 modifier = Modifier
                     .padding(start=8.dp, end=0.dp)
-                    .rotate(hour.windDegree.toFloat()-90)
+                    .rotate(hour.windDegree.toFloat()+90)
             )
             Text(
                 text = "${hour.wind}" + " m/s", // Todo change to string resource

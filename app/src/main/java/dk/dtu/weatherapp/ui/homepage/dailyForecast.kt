@@ -25,7 +25,7 @@ fun DailyForecast(onDayClicked: (Int) -> Unit, days: List<Day>, modifier: Modifi
                 day.rain,
                 day.iconURL,
                 modifier = Modifier
-                    .padding(vertical = 4.dp)
+                    .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clickable { onDayClicked(index) }
             )
         }
