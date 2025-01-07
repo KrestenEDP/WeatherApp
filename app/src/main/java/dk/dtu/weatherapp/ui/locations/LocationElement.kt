@@ -4,10 +4,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -15,23 +21,59 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dk.dtu.weatherapp.Firebase.FirebaseHelper
+import dk.dtu.weatherapp.Firebase.GetMacAddress
 import dk.dtu.weatherapp.models.Location
 import dk.dtu.weatherapp.ui.theme.Typography
+import androidx.compose.ui.platform.LocalContext
+
 
 @Composable
 fun LocationElement(location: Location, modifier: Modifier = Modifier) {
+    var isFavorite by remember { mutableStateOf(false) }
+
+    val userId = GetMacAddress(LocalContext.current) ?: "unknownUserId"
+
     Row(
-        //horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-        Icon(
-            Icons.Default.FavoriteBorder, // @TODO change icon when added to favorites
-            contentDescription = "favorite icon",
-            Modifier
-                .padding(end = 5.dp)
-                .size(36.dp)
-        )
+        IconButton(
+            onClick = {
+                isFavorite = !isFavorite
+
+                if (isFavorite) {
+                    // Save to Firebase
+                    FirebaseHelper.saveFavoriteToFirestore(
+                        userId = userId,
+                        cityName = location.name,
+                        onSuccess = {
+                            println("City added to favorites successfully!")
+                        },
+                        onFailure = { exception ->
+                            println("Error saving city: ${exception.message}")
+                        }
+                    )
+                } else {
+                    // Remove from Firebase
+                    FirebaseHelper.removeFavoriteFromFirestore(
+                        userId = userId,
+                        cityName = location.name,
+                        onSuccess = {
+                            println("City removed from favorites successfully!")
+                        },
+                        onFailure = { exception ->
+                            println("Error removing city: ${exception.message}")
+                        }
+                    )
+                }
+            }
+        ) {
+            Icon(
+                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite icon"
+            )
+        }
         Text(
             style = Typography.bodyLarge,
             textAlign = TextAlign.Right,
