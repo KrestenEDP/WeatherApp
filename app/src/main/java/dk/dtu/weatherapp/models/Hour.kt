@@ -6,5 +6,6 @@ data class Hour(
     val temp: Double,
     val rain: Double,
     val wind: Double,
-    val windDegree: Int
+    val windDegree: Int,
+    val date: String = ""
 )

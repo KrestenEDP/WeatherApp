@@ -15,18 +15,25 @@ class RemoteWeatherDataSource {
         ignoreUnknownKeys = true
     }
 
+    private val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB
+    //private val cache = Cache(context.cacheDir, cacheSize)
+    //private val okHttpClient = OkHttpClient.Builder()
+        //.cache(cache)
+        //.build()
+
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(
             json.asConverterFactory(CONTENT_TYPE.toMediaType())
 
         )
+        //.client(okHttpClient)
         .baseUrl(BASE_URL)
         .build()
 
     private val weatherApi: WeatherApiService = retrofit.create(WeatherApiService::class.java)
 
     suspend fun getCurrentWeather() = weatherApi.getCurrentWeather()
-    suspend fun getHourlyWeatherToday() = weatherApi.getHourlyWeather(12)
+    suspend fun getHourlyWeatherToday() = weatherApi.getHourlyWeather(count=12)
     suspend fun getHourlyWeather() = weatherApi.getHourlyWeather()
     suspend fun getDailyWeather() = weatherApi.getDailyWeather()
 }

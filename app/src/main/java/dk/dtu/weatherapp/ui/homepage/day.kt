@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
-fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: String, modifier: Modifier = Modifier) {
+fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: String, clickable: Boolean = true, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -46,11 +46,13 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
                 }
             }
         }
-        Icon(
-            Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "Arrow right",
-            modifier = Modifier.size(36.dp)
-        )
+        if (clickable) {
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "Arrow right",
+                modifier = Modifier.size(36.dp)
+            )
+        }
     }
 }
 

@@ -46,6 +46,8 @@ import dk.dtu.weatherapp.models.Hour
 import dk.dtu.weatherapp.navigation.SingleDayForecast
 import dk.dtu.weatherapp.ui.theme.Typography
 import dk.dtu.weatherapp.ui.util.getPainterResource
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 @Composable
@@ -146,7 +148,7 @@ fun SingleDayForecastContent(
                 )
             }.collect { (page, offset) ->
                 indicatorState.scrollToPage(page, offset)
-                SingleDayForecast.appBarTitle = "January ${16 + page}"/*forecastUiModel.fourDayHourly[page][page].time*/
+                SingleDayForecast.appBarTitle = formatDate(forecastUiModel.fourDayHourly[page][0].date)
             }
         }
     }
@@ -237,4 +239,10 @@ fun ForecastElement(hour: Hour) {
 fun SingleDayForecastScreenPreview() {
     val data = FourDayHourlyUIModel.Data(MockHourlyFourDayForecast().getHourlyWeather().chunked(24))
     SingleDayForecastContent(data, 0)
+}
+fun formatDate(dateString: String): String {
+    val inputFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val date = inputFormatter.parse(dateString) ?: ""
+    val outputFormatter = SimpleDateFormat("MMMM d", Locale.getDefault())
+    return outputFormatter.format(date)
 }

@@ -26,7 +26,8 @@ fun HourlyWeatherDao.mapToHours(): List<Hour> {
             temp = String.format(Locale.ROOT, "%.1f", it.main.temp - 273.15).toDouble(),
             rain = it.rain.amount,
             wind = String.format(Locale.ROOT, "%.1f", it.wind.speed).toDouble(),
-            windDegree = it.wind.deg
+            windDegree = it.wind.deg,
+            date = it.dt_txt?.split(" ")[0] ?: ""
         )
     }
 }
