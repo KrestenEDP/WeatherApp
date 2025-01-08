@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.gms.googleservices)
 }
 
 android {
@@ -71,11 +71,11 @@ dependencies {
     implementation(libs.kotlin.serialization)
     implementation(libs.kotlin.serialization.converter)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore.ktx)
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.play.services.location)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
