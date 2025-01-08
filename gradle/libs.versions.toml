@@ -1,6 +1,7 @@
 [versions]
 agp = "8.7.3"
-converterScalars = "2.9.0"
+datastorePreferences = "1.1.1"
+firebaseBom = "33.7.0"
 kotlin = "2.0.21"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -12,13 +13,17 @@ composeBom = "2024.04.01"
 navigationCompose = "2.8.3"
 navigationRuntimeKtx = "2.8.3"
 coilCompose = "3.0.1"
+playServicesLocation = "21.3.0"
 retrofit = "2.11.0"
 kotlinSerialization = "1.7.3"
 firebaseFirestoreKtx = "25.1.1"
+gms = "4.4.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterScalars" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -39,6 +44,7 @@ firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-fires
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
 coil-httpok = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilCompose" }
 
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 kotlin-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref="retrofit" }
@@ -47,5 +53,6 @@ kotlin-serialization-converter = { group = "com.squareup.retrofit2", name = "con
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+gms-googleservices = { id = "com.google.gms.google-services", version.ref = "gms" }
 
