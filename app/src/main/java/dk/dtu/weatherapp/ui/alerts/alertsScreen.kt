@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Alert
+import dk.dtu.weatherapp.ui.components.LoadingScreen
 
 
 @Composable
@@ -26,7 +27,7 @@ fun AlertsScreen(
             Text("No data")
         }
         AlertsUIModel.Loading -> Column {
-            Text("Loading")
+            LoadingScreen()
         }
         is AlertsUIModel.Data -> {
             AlertsContent(alertsUIModel.alerts, modifier)

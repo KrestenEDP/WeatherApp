@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.navigation
 
+import android.content.Context
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
@@ -21,6 +22,7 @@ import dk.dtu.weatherapp.ui.settings.WeatherSettingsPage
 fun WeatherNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    context: Context
 ) {
     NavHost(
         navController = navController,
@@ -58,7 +60,7 @@ fun WeatherNavHost(
             AlertsScreen()
         }
         composable(route = Settings.route) {
-            WeatherSettingsPage()
+            WeatherSettingsPage(context)
         }
         composable(route = Locations.route) {
             LocationPage()

@@ -22,6 +22,9 @@ import dk.dtu.weatherapp.navigation.navigateSingleTopTo
 import dk.dtu.weatherapp.ui.components.MyTopAppBar
 import dk.dtu.weatherapp.ui.components.NavBar
 import dk.dtu.weatherapp.ui.theme.WeatherAppTheme
+import androidx.compose.ui.platform.LocalContext
+
+
 
 class WeatherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +33,8 @@ class WeatherActivity : ComponentActivity() {
         setContent {
             WeatherApp()
         }
+
+
     }
 }
 
@@ -45,6 +50,7 @@ fun WeatherApp() {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
+        val context = LocalContext.current
 
         val currentScreen =
             allScreens.find {
@@ -70,7 +76,8 @@ fun WeatherApp() {
         ) { innerPadding ->
             WeatherNavHost(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                context = context
             )
         }
     }
