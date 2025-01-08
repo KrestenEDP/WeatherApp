@@ -14,7 +14,7 @@ class HourRepository {
     val hourFlow = mutableHourlyFlow.asSharedFlow()
 
     suspend fun getHourlyForecast() = mutableHourlyFlow.emit(
-        hourDataSource.getHourlyWeatherToday().mapToHours()
+        hourDataSource.getHourlyWeatherToday(count = 12).mapToHours()
     )
 }
 

@@ -14,3 +14,4 @@
 .cxx
 local.properties
 /app/src/main/java/dk/dtu/weatherapp/data/remote/ApiKey.kt
+app/src/main/java/dk/dtu/weatherapp/data/remote/ApiKeys.kt
