@@ -39,7 +39,7 @@ private val unitNames= listOf(
 )
 
 private val temperatureUnits = listOf(
-    "°C", "°F", "°K"
+    "Metric", "Imperial", "Scientific"
 )
 
 private const val rowHeight = 60
