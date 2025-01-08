@@ -19,8 +19,8 @@ class CurrentWeatherRepository {
 }
 
 fun WeatherHourDao.mapToCurrent() = Current(
-    temp = String.format(Locale.ROOT, "%.2f", main.temp - 273.15).toDouble(),
-    chill = String.format(Locale.ROOT, "%.2f", main.chill - 273.15).toDouble(),
+    temp = String.format(Locale.ROOT, "%.1f", main.temp).toDouble(),
+    chill = String.format(Locale.ROOT, "%.1f", main.chill).toDouble(),
     wind = String.format(Locale.ROOT, "%.1f", wind.speed).toDouble(),
     rain = rain.amount,
     icon = "i" + weather[0].icon, //icon

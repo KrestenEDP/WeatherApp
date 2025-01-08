@@ -23,7 +23,7 @@ fun HourlyWeatherDao.mapToHours(): List<Hour> {
         Hour(
             time = it.dt_txt?.split(" ")[1]?.substring(0,5) ?: "",
             iconURL = "i" + it.weather[0].icon,
-            temp = String.format(Locale.ROOT, "%.1f", it.main.temp - 273.15).toDouble(),
+            temp = String.format(Locale.ROOT, "%.1f", it.main.temp).toDouble(),
             rain = it.rain.amount,
             wind = String.format(Locale.ROOT, "%.1f", it.wind.speed).toDouble(),
             windDegree = it.wind.deg,

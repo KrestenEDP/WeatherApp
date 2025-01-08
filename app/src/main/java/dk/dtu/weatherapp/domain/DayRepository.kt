@@ -25,8 +25,8 @@ fun DailyWeatherDao.mapToDays(): List<Day> {
         Day(
             iconURL = "i" + it.weather[0].icon,
             date = getDateFromUnixTimestamp(it.dt),
-            dayTemp = String.format(Locale.ROOT, "%.1f", it.temp.day - 273.15).toDouble().toDouble(),
-            nightTemp = String.format(Locale.ROOT, "%.1f", it.temp.night - 273.15).toDouble().toDouble(),
+            dayTemp = String.format(Locale.ROOT, "%.1f", it.temp.day).toDouble().toDouble(),
+            nightTemp = String.format(Locale.ROOT, "%.1f", it.temp.night).toDouble().toDouble(),
             rain = it.rain ?: 0.0
         )
     }

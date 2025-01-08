@@ -6,19 +6,19 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WeatherApiService {
-    @GET("/data/2.5/weather?appid=$ApiKey")
+    @GET("/data/2.5/weather?units=metric&appid=$ApiKey")
     suspend fun getCurrentWeather(
         @Query("lat") lat: Double = 55.77,
         @Query("lon") lon: Double = 12.50
     ): WeatherHourDao
 
-    @GET("/data/2.5/forecast/daily?appid=$ApiKey")
+    @GET("/data/2.5/forecast/daily?cont=16&units=metric&appid=$ApiKey")
     suspend fun getDailyWeather(
         @Query("lat") lat: Double = 55.77,
         @Query("lon") lon: Double = 12.50
         ): DailyWeatherDao
 
-    @GET("/data/2.5/forecast/hourly?appid=$ApiKey")
+    @GET("/data/2.5/forecast/hourly?units=metric&appid=$ApiKey")
     suspend fun getHourlyWeather(
         @Query("lat") lat: Double = 55.77,
         @Query("lon") lon: Double = 12.50,
