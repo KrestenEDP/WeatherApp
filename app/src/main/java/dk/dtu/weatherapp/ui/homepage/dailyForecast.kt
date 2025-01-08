@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.Day
 
 @Composable
@@ -19,16 +18,29 @@ fun DailyForecast(onDayClicked: (Int) -> Unit, days: List<Day>, modifier: Modifi
         verticalArrangement = Arrangement.Center,
     ) {
         days.forEachIndexed { index, day ->
-            Day(
-                day.date,
-                day.dayTemp,
-                day.nightTemp,
-                day.rain,
-                day.iconURL,
-                modifier = Modifier
-                    .padding(vertical = 4.dp)
-                    .clickable { onDayClicked(index) }
-            )
+            if (index < 5) {
+                Day(
+                    day.date,
+                    day.dayTemp,
+                    day.nightTemp,
+                    day.rain,
+                    day.iconURL,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp, horizontal = 8.dp)
+                        .clickable { onDayClicked(index) }
+                )
+            } else {
+                Day(
+                    day.date,
+                    day.dayTemp,
+                    day.nightTemp,
+                    day.rain,
+                    day.iconURL,
+                    clickable = false,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp, horizontal = 8.dp)
+                )
+            }
         }
     }
 }
@@ -39,14 +51,14 @@ fun DailyPrev() {
     DailyForecast(
         onDayClicked = { },
         listOf(
-            Day(R.drawable.i01n, "Wednesday 16. January", 21, 14, 2.4),
-            Day(R.drawable.i01n, "Thursday 17. January", 19, 13, 2.1),
-            Day(R.drawable.i01n, "Friday 18. January", 17, 12, 2.0),
-            Day(R.drawable.i01n, "Saturday 19. January", 24, 15, 5.2),
-            Day(R.drawable.i01n, "Sunday 20. January", 14, 11, 0.0),
-            Day(R.drawable.i01n, "Monday 21. January", 25, 12, 0.0),
-            Day(R.drawable.i01n, "Tuesday 22. January", 12, 13, 1.1),
-            Day(R.drawable.i01n, "Wednesday 23. January", 11, 13, 0.0)
+            Day("i01n", "Wednesday 16. January", 21.0, 14.0, 2.4),
+            Day("i01n", "Thursday 17. January", 19.0, 13.0, 2.1),
+            Day("i01n", "Friday 18. January", 17.0, 12.0, 2.0),
+            Day("i01n", "Saturday 19. January", 24.0, 15.0, 5.2),
+            Day("i01n", "Sunday 20. January", 14.0, 11.0, 0.0),
+            Day("i01n", "Monday 21. January", 25.0, 12.0, 0.0),
+            Day("i01n", "Tuesday 22. January", 12.0, 13.0, 1.1),
+            Day("i01n", "Wednesday 23. January", 11.0, 13.0, 0.0)
         )
     )
 }

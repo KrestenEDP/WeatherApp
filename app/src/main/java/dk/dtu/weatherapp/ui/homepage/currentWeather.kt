@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.Current
 import dk.dtu.weatherapp.ui.theme.Typography
+import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
 fun CurrentWeather(data: Current) {
@@ -28,7 +30,7 @@ fun CurrentWeather(data: Current) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Icon(
-            painter = painterResource(data.icon),
+            painter = painterResource(getPainterResource(data.icon, LocalContext.current)),
             contentDescription = "Dynamic weather icon", // @TODO use description from API
             modifier = Modifier.size(150.dp)
         )
@@ -39,7 +41,7 @@ fun CurrentWeather(data: Current) {
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 Icon(
-                    painterResource(R.drawable.wind), // @TODO use dynamic icon
+                    painterResource(R.drawable.wind), // @TODO maybe change to arrow to show direction
                     contentDescription = "Current wind strength ${data.wind} meters per second",
                     modifier = Modifier.size(24.dp)
                 )
@@ -48,7 +50,7 @@ fun CurrentWeather(data: Current) {
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 Icon(
-                    painterResource(R.drawable.i09d), // @TODO use dynamic icon
+                    painterResource(R.drawable.i09d),
                     contentDescription = "Current rain fall ${data.rain} millimeters",
                     modifier = Modifier.size(24.dp)
                 )
@@ -61,5 +63,5 @@ fun CurrentWeather(data: Current) {
 @Preview
 @Composable
 fun CurrentPrev() {
-    CurrentWeather(Current(17, 14, 12, 2.2, R.drawable.i02d))
+    CurrentWeather(Current(17.0, 14.0, 12.0, 2.2, "i02d"))
 }

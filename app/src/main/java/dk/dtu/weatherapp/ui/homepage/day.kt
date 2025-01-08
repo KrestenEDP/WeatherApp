@@ -13,13 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dk.dtu.weatherapp.R
+import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
-fun Day(date: String, dayTemp: Int, nightTemp: Int, rain: Double, icon: Int, modifier: Modifier = Modifier) {
+fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: String, clickable: Boolean = true, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -31,7 +32,7 @@ fun Day(date: String, dayTemp: Int, nightTemp: Int, rain: Double, icon: Int, mod
             modifier = Modifier
         ) {
             Icon(
-                painterResource(icon), // @TODO use dynamic icon and desc
+                painterResource(getPainterResource(icon, LocalContext.current)), // @TODO use dynamic icon and desc
                 contentDescription = "Dynamic weather icon",
                 Modifier
                     .padding(end = 16.dp)
@@ -45,16 +46,18 @@ fun Day(date: String, dayTemp: Int, nightTemp: Int, rain: Double, icon: Int, mod
                 }
             }
         }
-        Icon(
-            Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "Arrow right",
-            modifier = Modifier.size(36.dp)
-        )
+        if (clickable) {
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "Arrow right",
+                modifier = Modifier.size(36.dp)
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DayPrev() {
-    Day("Wednesday 16. January", 21, 14, 2.4, R.drawable.i01n)
+    Day("Wednesday 16. January", 21.0, 14.0, 2.4, "i01n")
 }

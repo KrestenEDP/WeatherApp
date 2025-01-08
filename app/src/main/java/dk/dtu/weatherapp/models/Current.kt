@@ -1,9 +1,9 @@
 package dk.dtu.weatherapp.models
 
 data class Current(
-    val temp: Int,
-    val chill: Int,
-    val wind: Int,
+    val temp: Double,
+    val chill: Double,
+    val wind: Double,
     val rain: Double,
-    val icon: Int
+    val icon: String
 )

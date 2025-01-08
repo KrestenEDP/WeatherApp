@@ -1,6 +1,6 @@
 package dk.dtu.weatherapp
 
-
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dk.dtu.weatherapp.navigation.Settings
@@ -37,8 +38,14 @@ class WeatherActivity : ComponentActivity() {
     }
 }
 
+private var appContext: Context? = null
+fun getAppContext(): Context {
+    return appContext!!
+}
+
 @Composable
 fun WeatherApp() {
+    appContext = LocalContext.current.applicationContext
     WeatherAppTheme {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
