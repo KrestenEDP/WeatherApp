@@ -14,12 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dk.dtu.weatherapp.domain.StatsRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticScreen() {
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
     var selectedDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    val statsRepo = StatsRepository()
     val datePickerState = rememberDatePickerState(
         yearRange = currentYear - 46..currentYear,
         selectableDates = object : SelectableDates {
@@ -33,17 +35,11 @@ fun StatisticScreen() {
         modifier = Modifier
             .fillMaxSize()
     ) {
+
         DatePicker(
             state = datePickerState
         )
     }
 
-    // Observe the selected date from the DatePicker state
     selectedDate = datePickerState.selectedDateMillis ?: System.currentTimeMillis()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun StatScreenPreview() {
-    StatisticScreen()
 }

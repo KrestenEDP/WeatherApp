@@ -33,11 +33,11 @@ object Weather : WeatherDestination {
     override val showBackButton: Boolean = false
 }
 
-object Map : WeatherDestination {
+object Stats : WeatherDestination {
     override val iconUnselected: ImageVector = Icons.Outlined.Menu
     override val iconSelected: ImageVector = Icons.Filled.Menu
-    override val route: String = "map"
-    override val appBarTitle: String = "Map"
+    override val route: String = "stats"
+    override val appBarTitle: String = "Stats"
     override val showBackButton: Boolean = true
 }
 
@@ -82,5 +82,5 @@ object SingleDayForecast : WeatherDestination {
     )
 }
 
-val navBarScreens = listOf(Weather, Map, Alerts, Settings)
-val allScreens = listOf(Weather, Map, Alerts, Settings, SingleDayForecast, Locations)
+val navBarScreens = listOf(Weather, Stats, Alerts, Settings)
+val allScreens = listOf(Weather, Stats, Alerts, Settings, SingleDayForecast, Locations)

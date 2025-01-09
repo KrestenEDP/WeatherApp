@@ -15,8 +15,8 @@ import dk.dtu.weatherapp.ui.alerts.AlertsScreen
 import dk.dtu.weatherapp.ui.forecast.SingleDayForecastScreen
 import dk.dtu.weatherapp.ui.homepage.Homepage
 import dk.dtu.weatherapp.ui.locations.LocationPage
-import dk.dtu.weatherapp.ui.map.MapScreen
 import dk.dtu.weatherapp.ui.settings.WeatherSettingsPage
+import dk.dtu.weatherapp.ui.statistics.StatisticScreen
 
 @Composable
 fun WeatherNavHost(
@@ -53,8 +53,8 @@ fun WeatherNavHost(
                 }
             )
         }
-        composable(route = Map.route) {
-            MapScreen()
+        composable(route = Stats.route) {
+            StatisticScreen()
         }
         composable(route = Alerts.route) {
             AlertsScreen()
