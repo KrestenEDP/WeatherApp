@@ -7,6 +7,8 @@ import dk.dtu.weatherapp.models.Location
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class LocationRepository(private val userId: String) {
     private val firestore = FirebaseFirestore.getInstance()
@@ -38,25 +40,37 @@ class LocationRepository(private val userId: String) {
     }
 
     suspend fun fetchFavorites(): List<Location> {
-        val deferred = CompletableDeferred<List<Location>>()
-
         val favoritesCollection = firestore.collection("users")
             .document(userId)
             .collection("favorites")
 
-        favoritesCollection.get()
-            .addOnSuccessListener { result ->
-                val favoriteCities = mutableListOf<Location>()
-                for (document in result) {
-                    val cityName = document.id
-                    favoriteCities.add(Location(name = cityName, 15.5, R.drawable.i01n))
-                }
-                deferred.complete(favoriteCities)
-            }
-            .addOnFailureListener { e ->
-                deferred.complete(emptyList())
+        val initialFavorites = favoritesCollection.get()
+            .await() // Requires `kotlinx-coroutines-play-services` for `Task.await()`
+            .documents.map { document ->
+                val cityName = document.id
+                Location(name = cityName, 15.5, R.drawable.i01n)
             }
 
-        return deferred.await()
+        // Set up the real-time listener
+        favoritesCollection.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                // Handle error (e.g., log it or show a message)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                val favoriteCities = snapshot.documents.map { document ->
+                    val cityName = document.id
+                    Location(name = cityName, 15.5, R.drawable.i01n)
+                }
+                kotlinx.coroutines.GlobalScope.launch {
+                    mutableFavoriteLocationFlow.emit(favoriteCities)
+                }
+            }
+        }
+
+        return initialFavorites
     }
+
+
 }
