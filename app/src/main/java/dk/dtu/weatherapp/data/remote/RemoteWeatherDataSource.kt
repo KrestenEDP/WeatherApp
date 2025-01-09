@@ -1,12 +1,11 @@
 package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.util.Log
 import androidx.datastore.preferences.core.intPreferencesKey
 import dk.dtu.weatherapp.domain.dataStore
 import dk.dtu.weatherapp.getAppContext
+import dk.dtu.weatherapp.ui.util.hasNetwork
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
@@ -60,15 +59,6 @@ class RemoteWeatherDataSource {
         .client(okHttpClient)
         .baseUrl(BASE_URL)
         .build()
-
-    fun hasNetwork(context: Context): Boolean? {
-        var isConnected: Boolean? = false // Initial Value
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        if (activeNetwork != null && activeNetwork.isConnected)
-            isConnected = true
-        return isConnected
-    }
 
     private val weatherApi: WeatherApiService = retrofit.create(WeatherApiService::class.java)
 
