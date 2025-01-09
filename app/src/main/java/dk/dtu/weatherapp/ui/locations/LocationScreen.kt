@@ -22,15 +22,20 @@ fun LocationPage() {
     val locationsViewModel: LocationsViewModel = viewModel(
         factory = LocationsViewModelFactory(userId))
 
-
-    when (val locationsUIModel = locationsViewModel.locationsUIState.collectAsState().value) {
-        LocationsUIModel.Empty -> Text("No data")
-        LocationsUIModel.Loading -> LoadingScreen()
-        is LocationsUIModel.Data -> {
-            Column(Modifier.fillMaxHeight()) {
-                SearchField()
+    Column(Modifier.fillMaxHeight()) {
+        SearchField(locationsViewModel)
+        when (val locationsUIModel = locationsViewModel.locationsUIState.collectAsState().value) {
+            LocationsUIModel.Empty -> Text("No data")
+            LocationsUIModel.Loading -> LoadingScreen()
+            is LocationsUIModel.Data -> {
                 LocationList(locations = locationsUIModel.locations, type = AllLocations)
-                LocationList(locations = locationsUIModel.locations, type = FavouriteLocations)
+            }
+        }
+        when (val favoriteLocationsUIModel = locationsViewModel.favoriteLocationsUIState.collectAsState().value) {
+            LocationsUIModel.Empty -> Text("No data")
+            LocationsUIModel.Loading -> LoadingScreen()
+            is LocationsUIModel.Data -> {
+                LocationList(locations = favoriteLocationsUIModel.locations, type = FavouriteLocations)
             }
         }
     }

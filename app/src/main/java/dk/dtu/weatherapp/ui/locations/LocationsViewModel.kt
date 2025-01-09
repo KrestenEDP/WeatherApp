@@ -2,45 +2,52 @@ package dk.dtu.weatherapp.ui.locations
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.FirebaseFirestore
-import dk.dtu.weatherapp.R
+import dk.dtu.weatherapp.domain.LocationRepository
 import dk.dtu.weatherapp.models.Location
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LocationsViewModel(private val userId: String) : ViewModel() {
-    private val firestore = FirebaseFirestore.getInstance()
+class LocationsViewModel(userId: String) : ViewModel() {
+    private val locationRepository = LocationRepository(userId)
 
-    private val _locationsUIState = MutableStateFlow<LocationsUIModel>(LocationsUIModel.Loading)
-    val locationsUIState: StateFlow<LocationsUIModel> = _locationsUIState
+    private val locationMutable = MutableStateFlow<LocationsUIModel>(LocationsUIModel.Loading)
+    val locationsUIState: StateFlow<LocationsUIModel> = locationMutable
+
+    private val favoriteLocationMutable = MutableStateFlow<LocationsUIModel>(LocationsUIModel.Loading)
+    val favoriteLocationsUIState: StateFlow<LocationsUIModel> = favoriteLocationMutable
 
     init {
-        getFavoriteCities()
+        viewModelScope.launch {
+            locationRepository.locationFlow
+                .collect { data ->
+                    locationMutable.update {
+                        LocationsUIModel.Data(data)
+                    }
+                }
+        }
+        viewModelScope.launch {
+            locationRepository.favoriteLocationFlow
+                .collect { data ->
+                    favoriteLocationMutable.update {
+                        LocationsUIModel.Data(data)
+                    }
+                }
+        }
+        getLocations()
+        getFavoriteLocations()
     }
 
-    private fun getFavoriteCities() = viewModelScope.launch {
-        _locationsUIState.value = LocationsUIModel.Loading
+    fun search(input: String) {
+        getLocations(input)
+    }
 
-        try {
-            val favoritesCollection = firestore.collection("users")
-                .document(userId)
-                .collection("favorites")
-
-            favoritesCollection.get().addOnSuccessListener { result ->
-                val favoriteCities = mutableListOf<Location>()
-                for (document in result) {
-                    val cityName = document.id
-                    favoriteCities.add(Location(name = cityName, 15.5, R.drawable.i01n))
-                }
-
-                _locationsUIState.value = LocationsUIModel.Data(favoriteCities)
-            }.addOnFailureListener {
-                _locationsUIState.value = LocationsUIModel.Empty
-            }
-        } catch (e: Exception) {
-            _locationsUIState.value = LocationsUIModel.Empty
-        }
+    private fun getLocations(input: String = "Lyng") = viewModelScope.launch {
+        locationRepository.getLocations(input)
+    }
+    private fun getFavoriteLocations() = viewModelScope.launch {
+        locationRepository.getFavoriteLocations()
     }
 }
 
