@@ -19,7 +19,11 @@ class AlertsViewModel : ViewModel() {
             alertRepository.currentAlertFlow
                 .collect { data ->
                     mutableCurrent.update {
-                        AlertsUIModel.Data(data)
+                        if (data.isEmpty()) {
+                            AlertsUIModel.Empty
+                        } else {
+                            AlertsUIModel.Data(data)
+                        }
                     }
                 }
         }
