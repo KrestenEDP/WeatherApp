@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.firebase.firestore)  // For Firestore
     implementation(libs.play.services.auth)  // For Google Sign-In and Auth
 
+    implementation(libs.gson)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
