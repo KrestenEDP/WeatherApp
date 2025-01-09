@@ -26,13 +26,31 @@ import dk.dtu.weatherapp.Firebase.GetMacAddress
 import dk.dtu.weatherapp.models.Location
 import dk.dtu.weatherapp.ui.theme.Typography
 import androidx.compose.ui.platform.LocalContext
+import dk.dtu.weatherapp.domain.LocationRepository
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 
 @Composable
-fun LocationElement(location: Location, modifier: Modifier = Modifier) {
+fun LocationElement(
+    location: Location,
+    modifier: Modifier = Modifier,
+    locationViewModel: LocationsViewModel
+) {
     var isFavorite by remember { mutableStateOf(false) }
-
     val userId = GetMacAddress(LocalContext.current) ?: "unknownUserId"
+
+    // Check if the location is already a favorite from Firebase (simulating with isFavorite flag)
+    FirebaseHelper.isFavoriteInFirestore(
+        userId = userId,
+        cityName = location.name,
+        onSuccess = { favorite ->
+            isFavorite = favorite
+        },
+        onFailure = { exception ->
+            println("Error checking favorite status: ${exception.message}")
+        }
+    )
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -43,24 +61,22 @@ fun LocationElement(location: Location, modifier: Modifier = Modifier) {
                 isFavorite = !isFavorite
 
                 if (isFavorite) {
-                    // Save to Firebase
                     FirebaseHelper.saveFavoriteToFirestore(
                         userId = userId,
                         cityName = location.name,
                         onSuccess = {
-                            println("City added to favorites successfully!")
+                            locationViewModel.addFavorite(location) // Use the passed ViewModel to add favorite
                         },
                         onFailure = { exception ->
                             println("Error saving city: ${exception.message}")
                         }
                     )
                 } else {
-                    // Remove from Firebase
                     FirebaseHelper.removeFavoriteFromFirestore(
                         userId = userId,
                         cityName = location.name,
                         onSuccess = {
-                            println("City removed from favorites successfully!")
+                            locationViewModel.removeFavorite(location) // Use the passed ViewModel to remove favorite
                         },
                         onFailure = { exception ->
                             println("Error removing city: ${exception.message}")
@@ -74,6 +90,8 @@ fun LocationElement(location: Location, modifier: Modifier = Modifier) {
                 contentDescription = "Favorite icon"
             )
         }
+
+        // The rest of your UI for displaying location
         Text(
             style = Typography.bodyLarge,
             textAlign = TextAlign.Right,
@@ -81,34 +99,33 @@ fun LocationElement(location: Location, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(end = 32.dp)
                 .weight(1f)
-
         )
+
         Icon(
-            imageVector = ImageVector.vectorResource(id = location.iconURL), // @TODO icon has to change when weather changes (switch case)
-            // @TODO change icons to real weather icons
+            imageVector = ImageVector.vectorResource(id = location.iconURL),
             contentDescription = "Weather icon",
             Modifier
-                .padding(start = 24.dp, end = 24.dp) //@TODO align icons to center
+                .padding(start = 24.dp, end = 24.dp)
                 .size(36.dp)
                 .weight(1f)
         )
+
         Text(
             style = Typography.bodyLarge,
             text = location.name,
             modifier = Modifier
                 .weight(2f)
-
         )
     }
 }
 
 
+
+
+
+
 @Preview(showBackground = true)
 @Composable
 fun LocPrev() {
-    /*Column {
-        LocationList("Copenhagen", 23.5, "sunny")
-        LocationList("james", 200.0, "sunny")
-        LocationList("cuba", -40.0, "sunny")
-    }*/
+
 }

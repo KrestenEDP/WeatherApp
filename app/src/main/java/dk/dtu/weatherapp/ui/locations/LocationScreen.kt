@@ -13,6 +13,8 @@ import dk.dtu.weatherapp.Firebase.GetMacAddress
 import dk.dtu.weatherapp.Firebase.LocationsViewModelFactory
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 
+
+
 @Composable
 fun LocationPage() {
     // Get the MAC address from the context

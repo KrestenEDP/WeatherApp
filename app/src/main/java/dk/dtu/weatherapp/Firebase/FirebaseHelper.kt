@@ -3,33 +3,55 @@ package dk.dtu.weatherapp.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 
 object FirebaseHelper {
-    private val firestore by lazy { FirebaseFirestore.getInstance() }
+    fun isFavoriteInFirestore(
+        userId: String,
+        cityName: String,
+        onSuccess: (Boolean) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val favoritesCollection = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(userId)
+            .collection("favorites")
 
-    fun saveFavoriteToFirestore(userId: String, cityName: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        val documentRef = firestore.collection("users").document(userId).collection("favorites").document(cityName)
-
-        val favoriteCity = mapOf(
-            "userId" to userId,
-            "cityName" to cityName,
-        )
-        documentRef.set(favoriteCity)
-            .addOnSuccessListener {
-                onSuccess()
+        favoritesCollection.document(cityName).get()
+            .addOnSuccessListener { document ->
+                onSuccess(document.exists())
             }
             .addOnFailureListener { exception ->
                 onFailure(exception)
             }
     }
 
-    fun removeFavoriteFromFirestore(userId: String, cityName: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        val documentRef = firestore.collection("users").document(userId).collection("favorites").document(cityName)
+    fun saveFavoriteToFirestore(
+        userId: String,
+        cityName: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val favoritesCollection = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(userId)
+            .collection("favorites")
 
-        documentRef.delete()
-            .addOnSuccessListener {
-                onSuccess()
-            }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        favoritesCollection.document(cityName).set(mapOf("name" to cityName))
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure(it) }
+    }
+
+    fun removeFavoriteFromFirestore(
+        userId: String,
+        cityName: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val favoritesCollection = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(userId)
+            .collection("favorites")
+
+        favoritesCollection.document(cityName).delete()
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure(it) }
     }
 }
