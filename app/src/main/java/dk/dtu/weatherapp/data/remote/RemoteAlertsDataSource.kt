@@ -3,6 +3,7 @@ package dk.dtu.weatherapp.data.remote
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.util.Log
 import dk.dtu.weatherapp.getAppContext
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
@@ -29,11 +30,22 @@ class RemoteAlertsDataSource {
         .cache(cache)
         .addInterceptor { chain ->
             var request = chain.request()
+
             request = if (hasNetwork(context)!!)
-                request.newBuilder().header("Cache-Control", "public, max-age=" + 300).build()
+                request.newBuilder().header("Cache-Control", "public, max-age=" + 1800 + ", stale-while-revalidate=" + 300).build()
             else
                 request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
-            chain.proceed(request)
+
+            val response = chain.proceed(request)
+
+            // Log whether the response is coming from the cache or network
+            if (response.cacheResponse != null) {
+                Log.d("RemoteTest","Serving from Cache")
+            } else {
+                Log.d("RemoteTest","Requesting from Network")
+            }
+
+            return@addInterceptor response
         }
         .build()
 

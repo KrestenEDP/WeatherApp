@@ -3,6 +3,7 @@ package dk.dtu.weatherapp.data.remote
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.util.Log
 import androidx.datastore.preferences.core.intPreferencesKey
 import dk.dtu.weatherapp.domain.dataStore
 import dk.dtu.weatherapp.getAppContext
@@ -16,7 +17,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 class RemoteWeatherDataSource {
-
     companion object {
         const val BASE_URL = "https://api.openweathermap.org"
         private const val CONTENT_TYPE = "application/json; charset=UTF8"
@@ -34,11 +34,22 @@ class RemoteWeatherDataSource {
         .cache(cache)
         .addInterceptor { chain ->
             var request = chain.request()
+
             request = if (hasNetwork(context)!!)
-                request.newBuilder().header("Cache-Control", "public, max-age=" + 300).build()
+                request.newBuilder().header("Cache-Control", "public, max-age=" + 1800 + ", stale-while-revalidate=" + 300).build()
             else
                 request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
-            chain.proceed(request)
+
+            val response = chain.proceed(request)
+
+            // Log whether the response is coming from the cache or network
+            if (response.cacheResponse != null) {
+                Log.d("RemoteTest","Serving from Cache")
+            } else {
+                Log.d("RemoteTest","Requesting from Network")
+            }
+
+            return@addInterceptor response
         }
         .build()
 
