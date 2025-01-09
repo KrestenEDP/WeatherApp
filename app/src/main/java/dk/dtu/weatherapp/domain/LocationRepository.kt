@@ -4,7 +4,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.models.Location
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -32,10 +31,10 @@ class LocationRepository(private val userId: String) {
         return inputStream.bufferedReader().use { reader ->
             reader.lineSequence()
                 .drop(1) // Skip the first line
-                .filter { it.split(",")[1].contains(query, ignoreCase = true) } // Filter based on name (index 1)
-                .take(30) // Limit to 30 results
-                .map { Location(name = it.split(",")[1], 15.5, R.drawable.i01n) } // Map to Location
-                .toList() // Convert to list
+                .filter { it.split(",")[1].contains(query, ignoreCase = true) }
+                .take(30)
+                .map { Location(name = it.split(",")[1], 15.5, R.drawable.i01n) }
+                .toList()
         }
     }
 

@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dk.dtu.weatherapp.domain.LocationRepository
 import dk.dtu.weatherapp.models.Location
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LocationsViewModel(userId: String) : ViewModel() {
     private val locationRepository = LocationRepository(userId)
@@ -18,12 +21,18 @@ class LocationsViewModel(userId: String) : ViewModel() {
     private val favoriteLocationMutable = MutableStateFlow<LocationsUIModel>(LocationsUIModel.Loading)
     val favoriteLocationsUIState: StateFlow<LocationsUIModel> = favoriteLocationMutable
 
+    private var currentJob: Job? = null
+
     init {
         viewModelScope.launch {
             locationRepository.locationFlow
                 .collect { data ->
                     locationMutable.update {
-                        LocationsUIModel.Data(data)
+                        if (data.isEmpty()) {
+                            LocationsUIModel.Empty
+                        } else {
+                            LocationsUIModel.Data(data)
+                        }
                     }
                 }
         }
@@ -35,16 +44,22 @@ class LocationsViewModel(userId: String) : ViewModel() {
                     }
                 }
         }
-        getLocations()
         getFavoriteLocations()
+        getLocations()
     }
 
     fun search(input: String) {
         getLocations(input)
     }
 
-    private fun getLocations(input: String = "Lyng") = viewModelScope.launch {
-        locationRepository.getLocations(input)
+    private fun getLocations(input: String = "") = viewModelScope.launch {
+        currentJob?.cancel()
+        locationMutable.value = LocationsUIModel.Loading
+        currentJob = viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                locationRepository.getLocations(input)
+            }
+        }
     }
     private fun getFavoriteLocations() = viewModelScope.launch {
         locationRepository.getFavoriteLocations()

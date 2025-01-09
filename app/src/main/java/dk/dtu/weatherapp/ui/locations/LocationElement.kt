@@ -65,7 +65,7 @@ fun LocationElement(
                         userId = userId,
                         cityName = location.name,
                         onSuccess = {
-                            locationViewModel.addFavorite(location) // Use the passed ViewModel to add favorite
+                            //locationViewModel.addFavorite(location) // Use the passed ViewModel to add favorite
                         },
                         onFailure = { exception ->
                             println("Error saving city: ${exception.message}")
@@ -76,7 +76,7 @@ fun LocationElement(
                         userId = userId,
                         cityName = location.name,
                         onSuccess = {
-                            locationViewModel.removeFavorite(location) // Use the passed ViewModel to remove favorite
+                            //locationViewModel.removeFavorite(location) // Use the passed ViewModel to remove favorite
                         },
                         onFailure = { exception ->
                             println("Error removing city: ${exception.message}")
