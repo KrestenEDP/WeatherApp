@@ -11,8 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dk.dtu.weatherapp.domain.dataStore
+import dk.dtu.weatherapp.models.Location
 import dk.dtu.weatherapp.navigation.Settings
 import dk.dtu.weatherapp.navigation.Weather
 import dk.dtu.weatherapp.navigation.WeatherNavHost
@@ -22,14 +28,14 @@ import dk.dtu.weatherapp.navigation.navigateSingleTopTo
 import dk.dtu.weatherapp.ui.components.MyTopAppBar
 import dk.dtu.weatherapp.ui.components.NavBar
 import dk.dtu.weatherapp.ui.theme.WeatherAppTheme
-import androidx.datastore.preferences.core.intPreferencesKey
-import dk.dtu.weatherapp.domain.dataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+val Context.cityDataStore: DataStore<Preferences> by preferencesDataStore(name = "city_index_data_store")
+val cityIndex = mutableMapOf<String, Location>()
 
 class WeatherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +45,6 @@ class WeatherActivity : ComponentActivity() {
         setContent {
             WeatherApp()
         }
-
-
     }
 }
 
@@ -52,7 +56,6 @@ fun getAppContext(): Context {
 object GlobalUnits {
     var temp: String = ""
     var wind: String = ""
-
 }
 
 private fun initializeGlobalUnits(context: Context) {
@@ -90,10 +93,10 @@ object GlobalUnitUtils {
     }
 }
 
-
 @Composable
 fun WeatherApp() {
     appContext = LocalContext.current.applicationContext
+
     WeatherAppTheme {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()

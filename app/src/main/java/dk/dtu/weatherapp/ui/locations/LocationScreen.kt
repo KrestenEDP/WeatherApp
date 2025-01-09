@@ -31,13 +31,13 @@ fun LocationPage() {
                 LocationList(locations = locationsUIModel.locations, type = AllLocations)
             }
         }
-        when (val favoriteLocationsUIModel = locationsViewModel.favoriteLocationsUIState.collectAsState().value) {
+        /*when (val favoriteLocationsUIModel = locationsViewModel.favoriteLocationsUIState.collectAsState().value) {
             LocationsUIModel.Empty -> Text("No data")
             LocationsUIModel.Loading -> LoadingScreen()
             is LocationsUIModel.Data -> {
                 LocationList(locations = favoriteLocationsUIModel.locations, type = FavouriteLocations)
             }
-        }
+        }*/
     }
 }
 
