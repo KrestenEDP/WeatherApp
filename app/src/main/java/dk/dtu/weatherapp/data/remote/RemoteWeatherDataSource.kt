@@ -98,7 +98,7 @@ class RemoteWeatherDataSource {
             else -> "standard"
         })
 
-    suspend fun getUnitSetting(context: Context): Int {
+    private suspend fun getUnitSetting(context: Context): Int {
         val dataStore = context.dataStore.data
         val preferredUnitKey = intPreferencesKey("preferred_unit")
 

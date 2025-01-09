@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
@@ -39,7 +40,7 @@ fun Hour(
             contentDescription = null, // @TODO use dynamic icon and description
             modifier = Modifier.size(50.dp)
         )
-        Text(text = "$temp \u2103") // @TODO use either C \u2103 or F \u2109 depending on settings
+        Text(text = "$temp " + GlobalUnits.temp) // @TODO use either C \u2103 or F \u2109 depending on settings
         Text(text = "$rain mm")// @TODO use unit from settings
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -49,7 +50,7 @@ fun Hour(
                     .rotate(windDegree.toFloat()+90)
                     .size(16.dp)
             )
-            Text(text = "$wind m/s") // @TODO use unit from settings
+            Text(text = "$wind " + GlobalUnits.wind) // @TODO use unit from settings
         }
     }
 }

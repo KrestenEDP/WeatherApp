@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.data.mock.MockHourlyFourDayForecast
 import dk.dtu.weatherapp.models.Hour
 import dk.dtu.weatherapp.navigation.SingleDayForecast
@@ -190,7 +191,7 @@ fun ForecastElement(hour: Hour) {
                 .weight(1f)
         )
         Text(
-            text = "${hour.temp}" + " °C", // Todo make temperature type to string resource
+            text = "${hour.temp}" + GlobalUnits.temp, // Todo make temperature type to string resource
             style = Typography.bodyLarge,
             textAlign = TextAlign.End,
             modifier = Modifier
@@ -221,7 +222,7 @@ fun ForecastElement(hour: Hour) {
                     .rotate(hour.windDegree.toFloat()+90)
             )
             Text(
-                text = "${hour.wind}" + " m/s", // Todo change to string resource
+                text = "${hour.wind}" + GlobalUnits.wind, // Todo change to string resource
                 style = Typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

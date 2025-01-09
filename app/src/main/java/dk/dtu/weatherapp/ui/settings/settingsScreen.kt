@@ -30,7 +30,10 @@ import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import dk.dtu.weatherapp.GlobalUnitUtils
+import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.domain.dataStore
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -38,7 +41,7 @@ private val unitNames= listOf(
     "Celsius (°C) | meters/sec", "Fahrenheit (°F) | miles/hour", "Kelvin (°K) | meters/sec"
 )
 
-private val temperatureUnits = listOf(
+private val Units = listOf(
     "Metric", "Imperial", "Scientific"
 )
 
@@ -54,6 +57,7 @@ fun WeatherSettingsPage(context: Context) {
         PushNotificationsSetting(context)
     }
 }
+
 
 @Composable
 fun DarkModeSetting(context: Context) {
@@ -169,7 +173,7 @@ fun UnitSetting(context: Context) {
 
         Box {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = temperatureUnits[selectedUnit], fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(text = Units[selectedUnit], fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 IconButton(onClick = { expanded = true }) {
                     Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Dropdown Menu")
                 }
@@ -184,6 +188,7 @@ fun UnitSetting(context: Context) {
                             onClick = {
                                 selectedUnit = index
                                 expanded = false
+                                GlobalUnitUtils.updateGlobalUnits(index)
                                 coroutineScope.launch {
                                     dataStore.edit { preferences ->
                                         preferences[preferredUnitKey] = index
@@ -198,65 +203,6 @@ fun UnitSetting(context: Context) {
     }
 }
 
-
-//@Composable
-//fun WindSpeedUnitSetting(context: Context) {
-//    val dataStore = context.dataStore
-//    val coroutineScope = rememberCoroutineScope()
-//    val windUnitKey = intPreferencesKey("wind_unit")
-//
-//    var selectedWindUnit by remember { mutableStateOf(0) }
-//    var expanded by remember { mutableStateOf(false) }
-//
-//    // Read value from DataStore
-//    LaunchedEffect(dataStore) {
-//        dataStore.data.map { preferences ->
-//            preferences[windUnitKey] ?: 0
-//        }.collect { value ->
-//            selectedWindUnit = value
-//        }
-//    }
-//
-//    // UI
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(16.dp),
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        Text(text = "Wind Speed Unit", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-//
-//        Box {
-//            Row(verticalAlignment = Alignment.CenterVertically) {
-//                Text(text = windUnits[selectedWindUnit], fontSize = 18.sp, fontWeight = FontWeight.Bold)
-//                IconButton(onClick = { expanded = true }) {
-//                    Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Dropdown Menu")
-//                }
-//
-//                DropdownMenu(
-//                    expanded = expanded,
-//                    onDismissRequest = { expanded = false }
-//                ) {
-//                    windUnits.forEachIndexed { index, unit ->
-//                        DropdownMenuItem(
-//                            text = { Text(unit) },
-//                            onClick = {
-//                                selectedWindUnit = index
-//                                expanded = false
-//                                coroutineScope.launch {
-//                                    dataStore.edit { preferences ->
-//                                        preferences[windUnitKey] = index
-//                                    }
-//                                }
-//                            }
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
 
 
 @Composable

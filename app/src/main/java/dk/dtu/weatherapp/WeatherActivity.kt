@@ -22,13 +22,19 @@ import dk.dtu.weatherapp.navigation.navigateSingleTopTo
 import dk.dtu.weatherapp.ui.components.MyTopAppBar
 import dk.dtu.weatherapp.ui.components.NavBar
 import dk.dtu.weatherapp.ui.theme.WeatherAppTheme
-import androidx.compose.ui.platform.LocalContext
-
+import androidx.datastore.preferences.core.intPreferencesKey
+import dk.dtu.weatherapp.domain.dataStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 
 class WeatherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initializeGlobalUnits(this)
         enableEdgeToEdge()
         setContent {
             WeatherApp()
@@ -42,6 +48,48 @@ private var appContext: Context? = null
 fun getAppContext(): Context {
     return appContext!!
 }
+
+object GlobalUnits {
+    var temp: String = ""
+    var wind: String = ""
+
+}
+
+private fun initializeGlobalUnits(context: Context) {
+    CoroutineScope(Dispatchers.Default).launch {
+        val unitSetting = getUnitSetting(context)
+        GlobalUnitUtils.updateGlobalUnits(unitSetting)
+    }
+}
+
+suspend fun getUnitSetting(context: Context): Int {
+    val dataStore = context.dataStore.data
+    val preferredUnitKey = intPreferencesKey("preferred_unit")
+
+    return dataStore.map { preferences ->
+        preferences[preferredUnitKey] ?: 0
+    }.first()
+}
+
+object GlobalUnitUtils {
+    fun updateGlobalUnits(unitSetting: Int) {
+        when (unitSetting) {
+            0 -> { // Metric
+                GlobalUnits.temp = "°C"
+                GlobalUnits.wind = "m/s"
+            }
+            1 -> { // Imperial
+                GlobalUnits.temp = "°F"
+                GlobalUnits.wind = "mi/ph"
+            }
+            else -> { // Klevin
+                GlobalUnits.temp = "°K"
+                GlobalUnits.wind = "m/s"
+            }
+        }
+    }
+}
+
 
 @Composable
 fun WeatherApp() {

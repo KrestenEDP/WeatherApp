@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
@@ -41,7 +42,7 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
             Column {
                 Text(date)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "$dayTemp / $nightTemp \u2103",Modifier.padding(end = 32.dp)) // @TODO use settings for unit
+                    Text(text = "$dayTemp / $nightTemp " + GlobalUnits.temp,Modifier.padding(end = 32.dp)) // @TODO use settings for unit
                     Text(text = "$rain mm") // @TODO use settings for unit
                 }
             }
