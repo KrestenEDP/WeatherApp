@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.models.Location
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
@@ -36,25 +37,26 @@ class LocationRepository(private val userId: String) {
         }
     }
 
-    fun fetchFavorites(): List<Location> {
-        try {
-            val favoritesCollection = firestore.collection("users")
-                .document(userId)
-                .collection("favorites")
+    suspend fun fetchFavorites(): List<Location> {
+        val deferred = CompletableDeferred<List<Location>>()
 
-            var favorites: List<Location> = emptyList()
+        val favoritesCollection = firestore.collection("users")
+            .document(userId)
+            .collection("favorites")
 
-            favoritesCollection.get().addOnSuccessListener { result ->
+        favoritesCollection.get()
+            .addOnSuccessListener { result ->
                 val favoriteCities = mutableListOf<Location>()
                 for (document in result) {
                     val cityName = document.id
                     favoriteCities.add(Location(name = cityName, 15.5, R.drawable.i01n))
                 }
-                favorites = favoriteCities
+                deferred.complete(favoriteCities)
             }
-            return favorites
-        } catch (e: Exception) {
-            return emptyList()
-        }
+            .addOnFailureListener { e ->
+                deferred.complete(emptyList())
+            }
+
+        return deferred.await()
     }
 }
