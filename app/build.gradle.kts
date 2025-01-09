@@ -75,7 +75,12 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.google.firebase.analytics)
+    implementation(libs.firebase.auth)
     implementation(libs.play.services.location)
+    implementation(libs.firebase.firestore)  // For Firestore
+    implementation(libs.play.services.auth)  // For Google Sign-In and Auth
+
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
