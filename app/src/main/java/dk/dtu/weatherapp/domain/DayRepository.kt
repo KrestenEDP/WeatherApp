@@ -27,15 +27,31 @@ suspend fun DailyWeatherDao.mapToDays(): List<Day> {
             date = getDateFromUnixTimestamp(it.dt),
             dayTemp = convertTempUnit(it.temp.day),
             nightTemp = convertTempUnit(it.temp.night),
-            precipitation = convertPrecipitationUnit((it.rain ?: 0.0) + (it.snow ?: 0.0))
+            precipitation = convertPrecipitationUnit((it.rain ?: 0.0) + (it.snow ?: 0.0)),
+            windSpeed = convertSpeedUnit(it.speed),
+            windGusts = convertSpeedUnit(it.gust),
+            windDirection = it.deg,
+            cloudiness = it.clouds,
+            pressure = it.pressure,
+            humidity = it.humidity,
+            sunrise = getTimeFromUnixTimestamp(it.sunrise),
+            sunset = getTimeFromUnixTimestamp(it.sunset)
         )
     }
 }
 
 fun getDateFromUnixTimestamp(unixTimestamp: Long): String {
+    return formatTime(unixTimestamp, "EEEE d. MMMM")
+}
+
+fun getTimeFromUnixTimestamp(unixTimestamp: Long): String {
+    return formatTime(unixTimestamp, "HH:mm")
+}
+
+private fun formatTime(unixTimestamp: Long, format: String): String {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = unixTimestamp * 1000
-    val formatter = SimpleDateFormat("EEEE d. MMMM", Locale.ENGLISH)
-    val formattedDate = formatter.format(calendar.time)
-    return formattedDate
+    val formatter = SimpleDateFormat(format, Locale.ENGLISH)
+    val formattedTime = formatter.format(calendar.time)
+    return formattedTime
 }

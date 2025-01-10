@@ -55,6 +55,14 @@ data class WeatherDayDao(
     val temp: TempDao,
     val rain: Double? = 0.0,
     val snow: Double? = 0.0,
+    val speed: Double,
+    val gust: Double,
+    val deg: Int,
+    val clouds: Int,
+    val pressure: Int,
+    val humidity: Int,
+    val sunrise: Long,
+    val sunset: Long,
     val dt: Long
 )
 
