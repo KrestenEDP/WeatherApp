@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.data.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,4 +18,16 @@ data class StatsDao(
 @Serializable
 data class StatsListDao(
     val stats: List<StatsDao>
+)
+
+@Serializable
+data class StatsDataDao(
+    @SerialName("result")
+    val stats: StatsDao
+)
+
+@Serializable
+data class StatsYearDao(
+    @SerialName("result")
+    val stats: StatsListDao
 )
