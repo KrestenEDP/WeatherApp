@@ -20,14 +20,14 @@ class DayRepository {
     )
 }
 
-fun DailyWeatherDao.mapToDays(): List<Day> {
+suspend fun DailyWeatherDao.mapToDays(): List<Day> {
     return days.map {
         Day(
             iconURL = "i" + it.weather[0].icon,
             date = getDateFromUnixTimestamp(it.dt),
-            dayTemp = String.format(Locale.ROOT, "%.1f", it.temp.day).toDouble().toDouble(),
-            nightTemp = String.format(Locale.ROOT, "%.1f", it.temp.night).toDouble().toDouble(),
-            rain = it.rain ?: 0.0
+            dayTemp = convertTempUnit(it.temp.day),
+            nightTemp = convertTempUnit(it.temp.night),
+            rain = convertPrecipitationUnit(it.rain ?: 0.0)
         )
     }
 }

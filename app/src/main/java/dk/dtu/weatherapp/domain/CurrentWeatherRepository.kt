@@ -5,7 +5,6 @@ import dk.dtu.weatherapp.data.remote.RemoteWeatherDataSource
 import dk.dtu.weatherapp.models.Current
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import java.util.Locale
 
 class CurrentWeatherRepository {
     private val currentDataSource = RemoteWeatherDataSource()
@@ -18,10 +17,10 @@ class CurrentWeatherRepository {
     )
 }
 
-fun WeatherHourDao.mapToCurrent() = Current(
-    temp = String.format(Locale.ROOT, "%.1f", main.temp).toDouble(),
-    chill = String.format(Locale.ROOT, "%.1f", main.chill).toDouble(),
-    wind = String.format(Locale.ROOT, "%.1f", wind.speed).toDouble(),
-    rain = rain.amount,
+suspend fun WeatherHourDao.mapToCurrent() = Current(
+    temp = convertTempUnit(main.temp),
+    chill = convertTempUnit(main.chill),
+    wind = convertSpeedUnit(wind.speed),
+    rain = convertPrecipitationUnit(rain.amount),
     icon = "i" + weather[0].icon, //icon
 )

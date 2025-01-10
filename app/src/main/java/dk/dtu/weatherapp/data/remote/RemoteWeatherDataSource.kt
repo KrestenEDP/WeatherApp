@@ -2,12 +2,8 @@ package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
 import android.util.Log
-import androidx.datastore.preferences.core.intPreferencesKey
-import dk.dtu.weatherapp.domain.dataStore
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.ui.util.hasNetwork
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
@@ -62,39 +58,8 @@ class RemoteWeatherDataSource {
 
     private val weatherApi: WeatherApiService = retrofit.create(WeatherApiService::class.java)
 
-    suspend fun getCurrentWeather() = weatherApi.getCurrentWeather(
-        units = when (getUnitSetting(context)) {
-            0 -> "metric"
-            1 -> "imperial"
-            else -> "standard"
-        })
-    suspend fun getHourlyWeatherToday(count: Int) = weatherApi.getHourlyWeather(
-        count = count,
-        units = when (getUnitSetting(context)) {
-            0 -> "metric"
-            1 -> "imperial"
-            else -> "standard"
-        })
-    suspend fun getHourlyWeather() = weatherApi.getHourlyWeather(
-        units = when (getUnitSetting(context)) {
-            0 -> "metric"
-            1 -> "imperial"
-            else -> "standard"
-        })
-    suspend fun getDailyWeather() = weatherApi.getDailyWeather(
-        units = when (getUnitSetting(context)) {
-            0 -> "metric"
-            1 -> "imperial"
-            else -> "standard"
-        })
-
-    private suspend fun getUnitSetting(context: Context): Int {
-        val dataStore = context.dataStore.data
-        val preferredUnitKey = intPreferencesKey("preferred_unit")
-
-
-        return dataStore.map { preferences ->
-            preferences[preferredUnitKey] ?: 0
-        }.first()
-    }
+    suspend fun getCurrentWeather() = weatherApi.getCurrentWeather()
+    suspend fun getHourlyWeatherToday(count: Int) = weatherApi.getHourlyWeather(count = count)
+    suspend fun getHourlyWeather() = weatherApi.getHourlyWeather()
+    suspend fun getDailyWeather() = weatherApi.getDailyWeather()
 }

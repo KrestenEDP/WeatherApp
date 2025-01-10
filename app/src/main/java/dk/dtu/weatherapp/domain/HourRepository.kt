@@ -5,7 +5,6 @@ import dk.dtu.weatherapp.data.remote.RemoteWeatherDataSource
 import dk.dtu.weatherapp.models.Hour
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import java.util.Locale
 
 class HourRepository {
     private val hourDataSource = RemoteWeatherDataSource()
@@ -18,14 +17,14 @@ class HourRepository {
     )
 }
 
-fun HourlyWeatherDao.mapToHours(): List<Hour> {
+suspend fun HourlyWeatherDao.mapToHours(): List<Hour> {
     return hours.map {
         Hour(
             time = it.dt_txt?.split(" ")[1]?.substring(0,5) ?: "",
             iconURL = "i" + it.weather[0].icon,
-            temp = String.format(Locale.ROOT, "%.1f", it.main.temp).toDouble(),
-            rain = it.rain.amount,
-            wind = String.format(Locale.ROOT, "%.1f", it.wind.speed).toDouble(),
+            temp = convertTempUnit(it.main.temp),
+            rain = convertPrecipitationUnit(it.rain.amount),
+            wind = convertSpeedUnit(it.wind.speed),
             windDegree = it.wind.deg,
             date = it.dt_txt?.split(" ")[0] ?: ""
         )
