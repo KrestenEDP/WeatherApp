@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchField(locationsViewModel: LocationsViewModel) {
+fun SearchField(onValueChange: (String) -> Unit) {
     var text by remember { mutableStateOf("") }
     OutlinedTextField(
         leadingIcon = {
@@ -32,7 +32,7 @@ fun SearchField(locationsViewModel: LocationsViewModel) {
         value = text,
         onValueChange = {
             text = it
-            locationsViewModel.search(it)
+            onValueChange(it)
         },
         label = { Text("Search for cities") },
         modifier = Modifier

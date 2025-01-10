@@ -2,17 +2,16 @@ package dk.dtu.weatherapp.ui.locations
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.Firebase.GetMacAddress
 import dk.dtu.weatherapp.Firebase.LocationsViewModelFactory
-import dk.dtu.weatherapp.ui.components.LoadingScreen
-
 
 
 @Composable
@@ -24,25 +23,39 @@ fun LocationPage() {
     val locationsViewModel: LocationsViewModel = viewModel(
         factory = LocationsViewModelFactory(userId))
 
+    var showFavoriteRecent = remember { mutableStateOf(true) }
+
     Column(Modifier.fillMaxHeight()) {
-        SearchField(locationsViewModel)
-        when (val locationsUIModel = locationsViewModel.locationsUIState.collectAsState().value) {
-            LocationsUIModel.Empty -> Text("No data")
-            LocationsUIModel.Loading -> LoadingScreen()
-            is LocationsUIModel.Data -> {
-                LocationList(locations = locationsUIModel.locations, type = AllLocations)
-            }
-        }
-        when (val favoriteLocationsUIModel = locationsViewModel.favoriteLocationsUIState.collectAsState().value) {
-            LocationsUIModel.Empty -> Text("No data")
-            LocationsUIModel.Loading -> LoadingScreen()
-            is LocationsUIModel.Data -> {
-                LocationList(locations = favoriteLocationsUIModel.locations, type = FavouriteLocations)
-            }
+        SearchField( {
+            locationsViewModel.search(it)
+            showFavoriteRecent.value = it.isEmpty()
+        })
+        if (showFavoriteRecent.value) {
+            LocationList(
+                locationsUIModel = locationsViewModel.favoriteLocationsUIState.collectAsState().value,
+                type = FavoriteLocations,
+                onToggleFavorite = { location ->
+                    locationsViewModel.toggleFavorite(location)
+                }
+            )
+            LocationList(
+                locationsUIModel = locationsViewModel.recentLocationsUIState.collectAsState().value,
+                type = RecentLocations,
+                onToggleFavorite = { location ->
+                    locationsViewModel.toggleFavorite(location)
+                }
+            )
+        } else {
+            LocationList(
+                locationsUIModel = locationsViewModel.locationsUIState.collectAsState().value,
+                type = SearchLocations,
+                onToggleFavorite = { location ->
+                    locationsViewModel.toggleFavorite(location)
+                }
+            )
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

@@ -5,8 +5,8 @@ import dk.dtu.weatherapp.models.Location
 
 class MockLocationDataSource {
     private val data = listOf (
-        Location("Copenhagen", 22.5, R.drawable.i01n),
-        Location("Ballerup", 15.5, R.drawable.i01n)
+        Location("Copenhagen", 22.5, R.drawable.i01n, false),
+        Location("Ballerup", 15.5, R.drawable.i01n, false)
     )
 
     fun getLocations(): List<Location> {

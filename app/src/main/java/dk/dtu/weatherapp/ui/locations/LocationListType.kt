@@ -1,21 +1,27 @@
 package dk.dtu.weatherapp.ui.locations
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.ui.graphics.vector.ImageVector
+import dk.dtu.weatherapp.R
 
 interface LocationListType {
-    val icon: ImageVector
+    val icon: Int
     val title: String
+    val noElementsText: String
 }
 
-object AllLocations : LocationListType {
-    override val icon: ImageVector = Icons.Default.LocationOn
+object SearchLocations : LocationListType {
+    override val icon: Int = R.drawable.location
+    override val title: String = "Search"
+    override val noElementsText: String = "No locations found"
+}
+
+object RecentLocations : LocationListType {
+    override val icon: Int = R.drawable.recent
     override val title: String = "Recent"
+    override val noElementsText: String = "No recent locations"
 }
 
-object FavouriteLocations : LocationListType {
-    override val icon: ImageVector = Icons.Default.Favorite
+object FavoriteLocations : LocationListType {
+    override val icon: Int = R.drawable.favorite
     override val title: String = "Favorites"
+    override val noElementsText: String = "No favorite locations"
 }

@@ -1,31 +1,32 @@
 
 package dk.dtu.weatherapp.ui.locations
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Location
+import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.theme.Typography
-import dk.dtu.weatherapp.ui.locations.LocationsViewModel
 
 
 @Composable
 fun LocationList(
-    locations: List<Location>,
+    locationsUIModel: LocationsUIModel,
     type: LocationListType,
+    onToggleFavorite: (Location) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-
-    val locationViewModel: LocationsViewModel = viewModel()
-
     LazyColumn(modifier = modifier.padding(16.dp)) {
         item {
             Row(
@@ -34,7 +35,7 @@ fun LocationList(
                 modifier = modifier.padding(bottom = 8.dp)
             ) {
                 Icon(
-                    imageVector = type.icon,
+                    imageVector = ImageVector.vectorResource(type.icon),
                     contentDescription = "Weather icon",
                     Modifier.size(36.dp)
                 )
@@ -46,8 +47,14 @@ fun LocationList(
                 )
             }
 
-            locations.forEach { location ->
-                LocationElement(location = location, locationViewModel = locationViewModel)
+            when (locationsUIModel) {
+                LocationsUIModel.Empty -> Text(type.noElementsText)
+                LocationsUIModel.Loading -> LoadingScreen()
+                is LocationsUIModel.Data -> {
+                    locationsUIModel.locations.forEach { location ->
+                        LocationElement(location = location, onToggleFavorite = onToggleFavorite)
+                    }
+                }
             }
         }
     }
