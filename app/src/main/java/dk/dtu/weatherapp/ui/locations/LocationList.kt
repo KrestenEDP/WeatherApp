@@ -1,9 +1,7 @@
+
 package dk.dtu.weatherapp.ui.locations
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -16,12 +14,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Location
 import dk.dtu.weatherapp.ui.theme.Typography
+import dk.dtu.weatherapp.ui.locations.LocationsViewModel
+
 
 @Composable
 fun LocationList(
     locations: List<Location>,
     type: LocationListType,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
 
     val locationViewModel: LocationsViewModel = viewModel()

@@ -26,6 +26,25 @@ class LocationRepository(private val userId: String) {
         fetchFavorites()
     )
 
+    suspend fun updateFavorites() {
+        val favoriteLocations = fetchFavorites()
+        mutableFavoriteLocationFlow.emit(favoriteLocations)
+    }
+    suspend fun addFavorite(location: Location) {
+        val favoritesCollection = firestore.collection("users")
+            .document(userId)
+            .collection("favorites")
+
+        favoritesCollection.document(location.name).set(mapOf("name" to location.name))
+    }
+
+    suspend fun removeFavorite(location: Location) {
+        val favoritesCollection = firestore.collection("users")
+            .document(userId)
+            .collection("favorites")
+
+        favoritesCollection.document(location.name).delete()
+    }
     fun searchForCities(query: String): List<Location> {
         val inputStream = getAppContext().resources.openRawResource(R.raw.cities_all)
         return inputStream.bufferedReader().use { reader ->

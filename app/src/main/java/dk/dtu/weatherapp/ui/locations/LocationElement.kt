@@ -40,7 +40,6 @@ fun LocationElement(
     var isFavorite by remember { mutableStateOf(false) }
     val userId = GetMacAddress(LocalContext.current) ?: "unknownUserId"
 
-    // Check if the location is already a favorite from Firebase (simulating with isFavorite flag)
     FirebaseHelper.isFavoriteInFirestore(
         userId = userId,
         cityName = location.name,
@@ -65,7 +64,11 @@ fun LocationElement(
                         userId = userId,
                         cityName = location.name,
                         onSuccess = {
+<<<<<<< Updated upstream
                             //locationViewModel.addFavorite(location) // Use the passed ViewModel to add favorite
+=======
+                            locationViewModel.addFavorite(location)
+>>>>>>> Stashed changes
                         },
                         onFailure = { exception ->
                             println("Error saving city: ${exception.message}")
@@ -76,7 +79,11 @@ fun LocationElement(
                         userId = userId,
                         cityName = location.name,
                         onSuccess = {
+<<<<<<< Updated upstream
                             //locationViewModel.removeFavorite(location) // Use the passed ViewModel to remove favorite
+=======
+                            locationViewModel.removeFavorite(location)
+>>>>>>> Stashed changes
                         },
                         onFailure = { exception ->
                             println("Error removing city: ${exception.message}")
@@ -91,7 +98,6 @@ fun LocationElement(
             )
         }
 
-        // The rest of your UI for displaying location
         Text(
             style = Typography.bodyLarge,
             textAlign = TextAlign.Right,
