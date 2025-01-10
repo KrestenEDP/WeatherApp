@@ -7,10 +7,10 @@ import dk.dtu.weatherapp.ui.components.LoadingScreen
 @Composable
 fun DayStats() {
     val viewModel = StatsViewModel()
-    var stats = viewModel.getStats()
+    var stats = viewModel.getDayStats()
 
-    when (stats.isEmpty()) {
+    when (stats == null) {
         true -> LoadingScreen()
-        false -> Text("Temperature: ${stats[0].temp}")
+        false -> Text("Temperature: ${stats.temp}")
     }
 }
