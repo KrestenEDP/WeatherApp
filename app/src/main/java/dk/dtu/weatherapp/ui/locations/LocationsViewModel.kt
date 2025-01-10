@@ -75,7 +75,15 @@ class LocationsViewModel(userId: String) : ViewModel() {
 
     private fun getFavoriteLocations() = viewModelScope.launch {
         locationRepository.getFavoriteLocations()
+        favoriteLocationMutable.update { currentState ->
+            if (currentState is LocationsUIModel.Data && currentState.locations.isEmpty()) {
+                LocationsUIModel.Empty
+            } else {
+                currentState
+            }
+        }
     }
+
 
     private fun getRecentLocations() = viewModelScope.launch {
         locationRepository.getRecentLocations()
@@ -84,15 +92,24 @@ class LocationsViewModel(userId: String) : ViewModel() {
     fun toggleFavorite(location: Location) {
         viewModelScope.launch {
             locationRepository.toggleFavorite(location)
-            getFavoriteLocations()
-            /*locationRepository.favoriteLocationFlow
-                .collect { data ->
-                    favoriteLocationMutable.update {
-                        LocationsUIModel.Data(data)
+            locationMutable.update { currentState ->
+                if (currentState is LocationsUIModel.Data) {
+                    val updatedLocations = currentState.locations.map {
+                        if (it.name == location.name) {
+                            it.copy(isFavorite = location.isFavorite)
+                        } else {
+                            it
+                        }
                     }
-                }*/
+                    LocationsUIModel.Data(updatedLocations)
+                } else {
+                    currentState
+                }
+            }
+            getFavoriteLocations()
         }
     }
+
 }
 
 sealed class LocationsUIModel {

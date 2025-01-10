@@ -31,61 +31,18 @@ fun LocationElement(
     onToggleFavorite: (Location) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    var isFavorite by remember { mutableStateOf(location.isFavorite) }
-    //val userId = GetMacAddress(LocalContext.current) ?: "unknownUserId"
-
-    /*FirebaseHelper.isFavoriteInFirestore(
-        userId = userId,
-        cityName = location.name,
-        onSuccess = { favorite ->
-            isFavorite = favorite
-        },
-        onFailure = { exception ->
-            println("Error checking favorite status: ${exception.message}")
-        }
-    )*/
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
         IconButton(
             onClick = {
-                location.isFavorite = !location.isFavorite
-                isFavorite = location.isFavorite
                 onToggleFavorite(location)
-                //isFavorite = !isFavorite
-
-                /*if (isFavorite) {
-                    FirebaseHelper.saveFavoriteToFirestore(
-                        userId = userId,
-                        cityName = location.name,
-                        onSuccess = {
-                            onToggleFavorite(location)
-                            //locationViewModel.addFavorite(location)
-                        },
-                        onFailure = { exception ->
-                            println("Error saving city: ${exception.message}")
-                        }
-                    )
-                } else {
-                    FirebaseHelper.removeFavoriteFromFirestore(
-                        userId = userId,
-                        cityName = location.name,
-                        onSuccess = {
-                            onToggleFavorite(location)
-                            //locationViewModel.removeFavorite(location)
-                        },
-                        onFailure = { exception ->
-                            println("Error removing city: ${exception.message}")
-                        }
-                    )
-                }*/
             }
         ) {
             Icon(
-                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Favorite $isFavorite"
+                imageVector = if (location.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite ${location.isFavorite}"
             )
         }
 
@@ -115,11 +72,6 @@ fun LocationElement(
         )
     }
 }
-
-
-
-
-
 
 @Preview(showBackground = true)
 @Composable

@@ -17,19 +17,16 @@ import dk.dtu.weatherapp.Firebase.LocationsViewModelFactory
 
 @Composable
 fun LocationPage() {
-    // Get the MAC address from the context
     val userId = GetMacAddress(LocalContext.current) ?: return
-
-    // Now pass the `userId` to the ViewModel
-    val locationsViewModel: LocationsViewModel = viewModel(
-        factory = LocationsViewModelFactory(userId))
-
+    val locationsViewModel: LocationsViewModel = viewModel(factory = LocationsViewModelFactory(userId))
+    
     var showFavoriteRecent = remember { mutableStateOf(true) }
     Column {
         SearchField(onValueChange = {
             locationsViewModel.search(it)
             showFavoriteRecent.value = it.isEmpty()
         })
+
         LazyColumn(Modifier.fillMaxHeight()) {
             item {
                 if (showFavoriteRecent.value) {
@@ -60,6 +57,7 @@ fun LocationPage() {
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

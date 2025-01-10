@@ -6,6 +6,8 @@ import dk.dtu.weatherapp.Firebase.FirebaseHelper
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.models.Location
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -35,17 +37,22 @@ class LocationRepository(private val userId: String) {
         fetchFavorites() // TODO: Change to recent
     )
 
+
     fun toggleFavorite(location: Location) {
         FirebaseHelper.isFavoriteInFirestore(
             userId = userId,
             cityName = location.name,
             onSuccess = { favorite ->
                 if (favorite) {
+                    // Remove the favorite
                     FirebaseHelper.removeFavoriteFromFirestore(
                         userId = userId,
                         cityName = location.name,
                         onSuccess = {
                             Log.d("LocationRepository", "Removed favorite for ${location.name}")
+                            GlobalScope.launch(Dispatchers.Main) {
+                                getFavoriteLocations()
+                            }
                         },
                         onFailure = { exception ->
                             println("Error removing favorite: ${exception.message}")
@@ -57,6 +64,9 @@ class LocationRepository(private val userId: String) {
                         cityName = location.name,
                         onSuccess = {
                             Log.d("LocationRepository", "Added favorite for ${location.name}")
+                            GlobalScope.launch(Dispatchers.Main) {
+                                getFavoriteLocations()
+                            }
                         },
                         onFailure = { exception ->
                             println("Error saving favorite: ${exception.message}")
@@ -68,27 +78,15 @@ class LocationRepository(private val userId: String) {
                 println("Error checking favorite status: ${exception.message}")
             }
         )
-
-
-        /*val favoritesCollection = firestore.collection("users")
-            .document(userId)
-            .collection("favorites")
-
-        Log.d("LocationRepository", "Toggling favorite for ${location.name}")
-        // Toggle a city
-
-        favoritesCollection.document(location.name).get().addOnFailureListener { document ->
-                favoritesCollection.document(location.name).set(mapOf("name" to location.name))
-        }.addOnSuccessListener { document ->
-            favoritesCollection.document(location.name).delete()
-        }*/
     }
+
+
 
     fun searchForCities(query: String): List<Location> {
         val inputStream = getAppContext().resources.openRawResource(R.raw.cities_all)
         return inputStream.bufferedReader().use { reader ->
             reader.lineSequence()
-                .drop(1) // Skip the first line
+                .drop(1)
                 .filter { it.split(",")[1].contains(query, ignoreCase = true) }
                 .take(30)
                 .map {
@@ -117,16 +115,14 @@ class LocationRepository(private val userId: String) {
             .collection("favorites")
 
         val initialFavorites = favoritesCollection.get()
-            .await() // Requires `kotlinx-coroutines-play-services` for `Task.await()`
+            .await()
             .documents.map { document ->
                 val cityName = document.id
                 Location(name = cityName, 15.5, R.drawable.i01n, true)
             }
 
-        // Set up the real-time listener
         favoritesCollection.addSnapshotListener { snapshot, error ->
             if (error != null) {
-                // Handle error (e.g., log it or show a message)
                 return@addSnapshotListener
             }
 
@@ -135,7 +131,7 @@ class LocationRepository(private val userId: String) {
                     val cityName = document.id
                     Location(name = cityName, 15.5, R.drawable.i01n, true)
                 }
-                kotlinx.coroutines.GlobalScope.launch {
+                GlobalScope.launch {
                     mutableFavoriteLocationFlow.emit(favoriteCities)
                 }
             }
