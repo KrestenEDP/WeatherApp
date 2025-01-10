@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.ui.locations
 
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +10,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,9 +31,7 @@ fun LocationElement(
     onToggleFavorite: (Location) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    //var isFavorite by remember { mutableStateOf(location.isFavorite) }
-    Log.d("LocationElement", "isFavorite: ${location.isFavorite}")
-    Log.d("LocationElement", "isFavorite: ${location.name}")
+    var isFavorite by remember { mutableStateOf(location.isFavorite) }
     //val userId = GetMacAddress(LocalContext.current) ?: "unknownUserId"
 
     /*FirebaseHelper.isFavoriteInFirestore(
@@ -51,7 +52,7 @@ fun LocationElement(
         IconButton(
             onClick = {
                 location.isFavorite = !location.isFavorite
-                //isFavorite = location.isFavorite
+                isFavorite = location.isFavorite
                 onToggleFavorite(location)
                 //isFavorite = !isFavorite
 
@@ -83,8 +84,8 @@ fun LocationElement(
             }
         ) {
             Icon(
-                imageVector = if (location.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Favorite $location.isFavorite"
+                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite $isFavorite"
             )
         }
 
