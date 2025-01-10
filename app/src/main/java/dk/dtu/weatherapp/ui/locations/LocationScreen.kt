@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.locations
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -24,38 +25,39 @@ fun LocationPage() {
         factory = LocationsViewModelFactory(userId))
 
     var showFavoriteRecent = remember { mutableStateOf(true) }
-    SearchField(onValueChange = {
-        locationsViewModel.search(it)
-        showFavoriteRecent.value = it.isEmpty()
-    })
-    LazyColumn(Modifier.fillMaxHeight()) {
-        item {
-            if (showFavoriteRecent.value) {
-                LocationList(
-                    locationsUIModel = locationsViewModel.favoriteLocationsUIState.collectAsState().value,
-                    type = FavoriteLocations,
-                    onToggleFavorite = { location ->
-                        locationsViewModel.toggleFavorite(location)
-                    }
-                )
-                LocationList(
-                    locationsUIModel = locationsViewModel.recentLocationsUIState.collectAsState().value,
-                    type = RecentLocations,
-                    onToggleFavorite = { location ->
-                        locationsViewModel.toggleFavorite(location)
-                    }
-                )
-            } else {
-                LocationList(
-                    locationsUIModel = locationsViewModel.locationsUIState.collectAsState().value,
-                    type = SearchLocations,
-                    onToggleFavorite = { location ->
-                        locationsViewModel.toggleFavorite(location)
-                    }
-                )
+    Column {
+        SearchField(onValueChange = {
+            locationsViewModel.search(it)
+            showFavoriteRecent.value = it.isEmpty()
+        })
+        LazyColumn(Modifier.fillMaxHeight()) {
+            item {
+                if (showFavoriteRecent.value) {
+                    LocationList(
+                        locationsUIModel = locationsViewModel.favoriteLocationsUIState.collectAsState().value,
+                        type = FavoriteLocations,
+                        onToggleFavorite = { location ->
+                            locationsViewModel.toggleFavorite(location)
+                        }
+                    )
+                    LocationList(
+                        locationsUIModel = locationsViewModel.recentLocationsUIState.collectAsState().value,
+                        type = RecentLocations,
+                        onToggleFavorite = { location ->
+                            locationsViewModel.toggleFavorite(location)
+                        }
+                    )
+                } else {
+                    LocationList(
+                        locationsUIModel = locationsViewModel.locationsUIState.collectAsState().value,
+                        type = SearchLocations,
+                        onToggleFavorite = { location ->
+                            locationsViewModel.toggleFavorite(location)
+                        }
+                    )
+                }
             }
         }
-
     }
 }
 
