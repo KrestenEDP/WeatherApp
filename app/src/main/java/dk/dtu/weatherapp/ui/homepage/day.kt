@@ -42,8 +42,8 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
             Column {
                 Text(date)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "$dayTemp / $nightTemp " + GlobalUnits.temp,Modifier.padding(end = 32.dp)) // @TODO use settings for unit
-                    Text(text = "$rain mm") // @TODO use settings for unit
+                    Text(text = "$dayTemp / $nightTemp " + GlobalUnits.temp, Modifier.padding(end = 32.dp))
+                    Text(text = "$rain "  + GlobalUnits.precipitation)
                 }
             }
         }

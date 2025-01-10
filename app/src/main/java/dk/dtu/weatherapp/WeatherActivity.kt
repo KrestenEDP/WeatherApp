@@ -56,6 +56,7 @@ fun getAppContext(): Context {
 object GlobalUnits {
     var temp: String = ""
     var wind: String = ""
+    var precipitation: String = ""
 }
 
 private fun initializeGlobalUnits(context: Context) {
@@ -80,14 +81,17 @@ object GlobalUnitUtils {
             0 -> { // Metric
                 GlobalUnits.temp = "°C"
                 GlobalUnits.wind = "m/s"
+                GlobalUnits.precipitation = "mm"
             }
             1 -> { // Imperial
                 GlobalUnits.temp = "°F"
-                GlobalUnits.wind = "mi/ph"
+                GlobalUnits.wind = "mph"
+                GlobalUnits.precipitation = "in"
             }
-            else -> { // Klevin
+            else -> { // Kelvin
                 GlobalUnits.temp = "°K"
                 GlobalUnits.wind = "m/s"
+                GlobalUnits.precipitation = "mm"
             }
         }
     }

@@ -40,8 +40,8 @@ fun Hour(
             contentDescription = null, // @TODO use dynamic icon and description
             modifier = Modifier.size(50.dp)
         )
-        Text(text = "$temp " + GlobalUnits.temp) // @TODO use either C \u2103 or F \u2109 depending on settings
-        Text(text = "$rain mm")// @TODO use unit from settings
+        Text(text = "$temp " + GlobalUnits.temp)
+        Text(text = "$rain " + GlobalUnits.precipitation)
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
@@ -50,7 +50,7 @@ fun Hour(
                     .rotate(windDegree.toFloat()+90)
                     .size(16.dp)
             )
-            Text(text = "$wind " + GlobalUnits.wind) // @TODO use unit from settings
+            Text(text = "$wind " + GlobalUnits.wind)
         }
     }
 }

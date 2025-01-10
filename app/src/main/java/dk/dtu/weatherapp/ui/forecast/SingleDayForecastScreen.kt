@@ -191,7 +191,7 @@ fun ForecastElement(hour: Hour) {
                 .weight(1f)
         )
         Text(
-            text = "${hour.temp}" + GlobalUnits.temp, // Todo make temperature type to string resource
+            text = "${hour.temp} " + GlobalUnits.temp,
             style = Typography.bodyLarge,
             textAlign = TextAlign.End,
             modifier = Modifier
@@ -199,7 +199,7 @@ fun ForecastElement(hour: Hour) {
                 .weight(1.5f)
         )
         Text(
-            text = "${hour.rain}" + " mm", // Todo change to string resource
+            text = "${hour.rain}  " + GlobalUnits.precipitation,
             style = Typography.bodyLarge,
             textAlign = TextAlign.End,
             modifier = Modifier
@@ -222,7 +222,7 @@ fun ForecastElement(hour: Hour) {
                     .rotate(hour.windDegree.toFloat()+90)
             )
             Text(
-                text = "${hour.wind}" + GlobalUnits.wind, // Todo change to string resource
+                text = "${hour.wind} " + GlobalUnits.wind,
                 style = Typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
