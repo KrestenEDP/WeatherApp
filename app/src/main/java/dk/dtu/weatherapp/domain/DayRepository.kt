@@ -27,7 +27,7 @@ suspend fun DailyWeatherDao.mapToDays(): List<Day> {
             date = getDateFromUnixTimestamp(it.dt),
             dayTemp = convertTempUnit(it.temp.day),
             nightTemp = convertTempUnit(it.temp.night),
-            rain = convertPrecipitationUnit(it.rain ?: 0.0)
+            precipitation = convertPrecipitationUnit((it.rain ?: 0.0) + (it.snow ?: 0.0))
         )
     }
 }

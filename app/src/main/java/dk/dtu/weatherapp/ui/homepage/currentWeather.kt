@@ -55,7 +55,7 @@ fun CurrentWeather(data: Current) {
                     contentDescription = "Current rain fall",
                     modifier = Modifier.size(24.dp)
                 )
-                Text("${data.rain} " + GlobalUnits.precipitation, style = Typography.titleMedium)
+                Text("${data.precipitation} " + GlobalUnits.precipitation, style = Typography.titleMedium)
             }
         }
     }

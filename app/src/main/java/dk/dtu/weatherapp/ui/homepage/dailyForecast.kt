@@ -23,7 +23,7 @@ fun DailyForecast(onDayClicked: (Int) -> Unit, days: List<Day>, modifier: Modifi
                     day.date,
                     day.dayTemp,
                     day.nightTemp,
-                    day.rain,
+                    day.precipitation,
                     day.iconURL,
                     modifier = Modifier
                         .padding(vertical = 4.dp, horizontal = 8.dp)
@@ -34,7 +34,7 @@ fun DailyForecast(onDayClicked: (Int) -> Unit, days: List<Day>, modifier: Modifi
                     day.date,
                     day.dayTemp,
                     day.nightTemp,
-                    day.rain,
+                    day.precipitation,
                     day.iconURL,
                     clickable = false,
                     modifier = Modifier

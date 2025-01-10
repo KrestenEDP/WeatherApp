@@ -22,7 +22,7 @@ fun HourlyForecast(forecast: List<Hour>, modifier: Modifier = Modifier) {
             Hour(
                 time = hour.time,
                 temp = hour.temp,
-                rain = hour.rain,
+                rain = hour.precipitation,
                 wind = hour.wind,
                 windDegree = hour.windDegree,
                 icon = hour.iconURL,

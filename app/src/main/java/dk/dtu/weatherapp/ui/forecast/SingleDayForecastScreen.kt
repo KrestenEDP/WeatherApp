@@ -199,7 +199,7 @@ fun ForecastElement(hour: Hour) {
                 .weight(1.5f)
         )
         Text(
-            text = "${hour.rain}  " + GlobalUnits.precipitation,
+            text = "${hour.precipitation}  " + GlobalUnits.precipitation,
             style = Typography.bodyLarge,
             textAlign = TextAlign.End,
             modifier = Modifier
