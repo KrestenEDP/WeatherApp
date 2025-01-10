@@ -80,23 +80,20 @@ class LocationRepository(private val userId: String) {
         )
     }
 
-
-
     fun searchForCities(query: String): List<Location> {
-        val inputStream = getAppContext().resources.openRawResource(R.raw.cities_all)
+        val inputStream = getAppContext().resources.openRawResource(R.raw.cities)
         return inputStream.bufferedReader().use { reader ->
             reader.lineSequence()
                 .drop(1)
-                .filter { it.split(",")[1].contains(query, ignoreCase = true) }
+                .filter { it.split(",")[0].contains(query, ignoreCase = true) }
                 .take(30)
                 .map {
-                    Location(name = it.split(",")[1], 15.5, R.drawable.i01n, isFavorite = false).apply {
+                    Location(name = it.split(",")[0], 15.5, R.drawable.i01n, isFavorite = false).apply {
                         FirebaseHelper.isFavoriteInFirestore(
                             userId = userId,
-                            cityName = it.split(",")[1],
+                            cityName = it.split(",")[0],
                             onSuccess = { favorite ->
                                 isFavorite = favorite
-                                Log.d("LocationRepository", "Favorite status for ${it.split(",")[1]}: $favorite")
                             },
                             onFailure = { exception ->
                                 println("Error checking favorite status: ${exception.message}")
@@ -107,7 +104,6 @@ class LocationRepository(private val userId: String) {
                 .toList()
         }
     }
-
 
     suspend fun fetchFavorites(): List<Location> {
         val favoritesCollection = firestore.collection("users")
