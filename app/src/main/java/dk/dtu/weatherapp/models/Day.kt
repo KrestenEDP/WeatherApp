@@ -5,5 +5,5 @@ data class Day(
     val date: String,
     val dayTemp: Double,
     val nightTemp: Double,
-    val rain: Double
+    val precipitation: Double
 )

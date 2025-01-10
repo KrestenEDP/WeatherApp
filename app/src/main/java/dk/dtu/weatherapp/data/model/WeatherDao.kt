@@ -23,6 +23,12 @@ data class RainDao(
 )
 
 @Serializable
+data class SnowDao(
+    @SerialName("1h")
+    val amount: Double
+)
+
+@Serializable
 data class WeatherDao(
     val icon: String
 )
@@ -39,6 +45,7 @@ data class WeatherHourDao(
     val main: MainDataDao,
     val wind: WindDao = WindDao(0.0),
     val rain: RainDao = RainDao(0.0),
+    val snow: SnowDao = SnowDao(0.0),
     val dt_txt: String? = null
 )
 
@@ -47,6 +54,7 @@ data class WeatherDayDao(
     val weather: List<WeatherDao>,
     val temp: TempDao,
     val rain: Double? = 0.0,
+    val snow: Double? = 0.0,
     val dt: Long
 )
 

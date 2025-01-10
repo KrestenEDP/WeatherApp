@@ -21,6 +21,6 @@ suspend fun WeatherHourDao.mapToCurrent() = Current(
     temp = convertTempUnit(main.temp),
     chill = convertTempUnit(main.chill),
     wind = convertSpeedUnit(wind.speed),
-    rain = convertPrecipitationUnit(rain.amount),
+    precipitation = convertPrecipitationUnit(rain.amount + snow.amount),
     icon = "i" + weather[0].icon, //icon
 )
