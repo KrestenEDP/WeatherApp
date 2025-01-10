@@ -1,6 +1,6 @@
 package dk.dtu.weatherapp.domain
 
-import dk.dtu.weatherapp.data.model.StatsDao
+import dk.dtu.weatherapp.data.model.StatsDataDao
 import dk.dtu.weatherapp.data.model.StatsListDao
 import dk.dtu.weatherapp.data.remote.RemoteStatisticsDataSource
 import dk.dtu.weatherapp.models.StatsDay
@@ -8,15 +8,32 @@ import dk.dtu.weatherapp.models.StatsDay
 class StatsRepository {
     private val dataSource = RemoteStatisticsDataSource()
 
-    suspend fun getDayStats(lat: Double, lon: Double, month: Int, day: Int): List<StatsDay> {
-        val data = dataSource.getDayStatistics(lat = lat, lon = lon, month = month, day = day)
-        val list: List<StatsDao> = arrayListOf(data.stats)
-        return StatsListDao(list).mapToStatsList()
+    suspend fun getDayStats(lat: Double, lon: Double, month: Int, day: Int): StatsDay {
+        val data: StatsDataDao = dataSource.getDayStatistics(lat = lat, lon = lon, month = month, day = day)
+        return StatsDay(
+            month = data.stats.month,
+            day = data.stats.day,
+            temp = data.stats.temp,
+            pressure = data.stats.pressure,
+            humidity = data.stats.humidity,
+            wind = data.stats.wind,
+            precipitation = data.stats.precipitation,
+            clouds = data.stats.clouds
+        )
     }
 
-    suspend fun getMonthStats(lat: Double, lon: Double, month: Int): List<StatsDay> {
+    suspend fun getMonthStats(lat: Double, lon: Double, month: Int): StatsDay {
         val data = dataSource.getMonthStatistics(lat = lat, lon = lon, month = month)
-        return StatsListDao(arrayListOf(data.stats)).mapToStatsList()
+        return StatsDay(
+            month = data.stats.month,
+            day = data.stats.day,
+            temp = data.stats.temp,
+            pressure = data.stats.pressure,
+            humidity = data.stats.humidity,
+            wind = data.stats.wind,
+            precipitation = data.stats.precipitation,
+            clouds = data.stats.clouds
+        )
     }
 
     suspend fun getYearStats(lat: Double, lon: Double): List<StatsDay> {
