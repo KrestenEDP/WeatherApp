@@ -7,12 +7,42 @@ import kotlinx.serialization.Serializable
 data class StatsDao(
     val month: Int,
     val day: Int,
-    val temp: List<Double>,
-    val pressure: List<Double>,
-    val humidity: List<Double>,
-    val wind: List<Double>,
-    val precipitation: List<Double>,
-    val clouds: List<Double>
+    val temp: StatsTempDao,
+    val pressure: StatsPressureDao,
+    val humidity: StatsHumidityDao,
+    val wind: StatsWindDao,
+    val precipitation: StatsPrecipitationDao,
+    val clouds: StatsCloudsDao
+)
+
+@Serializable
+data class StatsTempDao(
+    val mean: Double,
+)
+
+@Serializable
+data class StatsPressureDao(
+    val mean: Double,
+)
+
+@Serializable
+data class StatsHumidityDao(
+    val mean: Double,
+)
+
+@Serializable
+data class StatsWindDao(
+    val mean: Double,
+)
+
+@Serializable
+data class StatsPrecipitationDao(
+    val mean: Double,
+)
+
+@Serializable
+data class StatsCloudsDao(
+    val mean: Double,
 )
 
 @Serializable

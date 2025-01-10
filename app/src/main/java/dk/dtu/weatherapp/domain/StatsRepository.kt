@@ -1,58 +1,43 @@
 package dk.dtu.weatherapp.domain
 
-import dk.dtu.weatherapp.data.model.StatsDataDao
-import dk.dtu.weatherapp.data.model.StatsListDao
+import dk.dtu.weatherapp.data.model.StatsDao
 import dk.dtu.weatherapp.data.remote.RemoteStatisticsDataSource
 import dk.dtu.weatherapp.models.StatsDay
+import dk.dtu.weatherapp.models.StatsDayClouds
+import dk.dtu.weatherapp.models.StatsDayHumidity
+import dk.dtu.weatherapp.models.StatsDayPrecipitation
+import dk.dtu.weatherapp.models.StatsDayPressure
+import dk.dtu.weatherapp.models.StatsDayTemp
+import dk.dtu.weatherapp.models.StatsDayWind
 
 class StatsRepository {
     private val dataSource = RemoteStatisticsDataSource()
 
     suspend fun getDayStats(lat: Double, lon: Double, month: Int, day: Int): StatsDay {
-        val data: StatsDataDao = dataSource.getDayStatistics(lat = lat, lon = lon, month = month, day = day)
-        return StatsDay(
-            month = data.stats.month,
-            day = data.stats.day,
-            temp = data.stats.temp,
-            pressure = data.stats.pressure,
-            humidity = data.stats.humidity,
-            wind = data.stats.wind,
-            precipitation = data.stats.precipitation,
-            clouds = data.stats.clouds
-        )
+        val data = dataSource.getDayStatistics(lat = lat, lon = lon, month = month, day = day)
+        return data.stats.mapToStatsList()
     }
 
     suspend fun getMonthStats(lat: Double, lon: Double, month: Int): StatsDay {
         val data = dataSource.getMonthStatistics(lat = lat, lon = lon, month = month)
-        return StatsDay(
-            month = data.stats.month,
-            day = data.stats.day,
-            temp = data.stats.temp,
-            pressure = data.stats.pressure,
-            humidity = data.stats.humidity,
-            wind = data.stats.wind,
-            precipitation = data.stats.precipitation,
-            clouds = data.stats.clouds
-        )
+        return data.stats.mapToStatsList()
     }
 
     suspend fun getYearStats(lat: Double, lon: Double): List<StatsDay> {
         return dataSource.getYearStatistics(lat = lat, lon = lon)
-            .stats.mapToStatsList()
+            .stats.stats.map { it.mapToStatsList() }
     }
 }
 
-fun StatsListDao.mapToStatsList(): List<StatsDay> {
-    return stats.map {
-        StatsDay(
-            month = it.month,
-            day = it.day,
-            temp = it.temp,
-            pressure = it.pressure,
-            humidity = it.humidity,
-            wind = it.wind,
-            precipitation = it.precipitation,
-            clouds = it.clouds
-        )
-    }
+fun StatsDao.mapToStatsList(): StatsDay {
+    return StatsDay(
+        month = month,
+        day = day,
+        temp = StatsDayTemp(mean = temp.mean),
+        pressure = StatsDayPressure(mean = pressure.mean),
+        humidity = StatsDayHumidity(mean = humidity.mean),
+        wind = StatsDayWind(mean = wind.mean),
+        precipitation = StatsDayPrecipitation(mean = precipitation.mean),
+        clouds = StatsDayClouds(mean = clouds.mean)
+    )
 }
