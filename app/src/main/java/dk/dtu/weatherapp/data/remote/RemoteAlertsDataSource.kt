@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
+import dk.dtu.weatherapp.currentLocation
 import dk.dtu.weatherapp.getAppContext
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
@@ -68,5 +69,5 @@ class RemoteAlertsDataSource {
 
     private val alertsApi: AlertsApiService = retrofit.create(AlertsApiService::class.java)
 
-    suspend fun getAlerts() = alertsApi.getAlerts()
+    suspend fun getAlerts() = alertsApi.getAlerts(q = "${currentLocation.lat},${currentLocation.lon}")
 }

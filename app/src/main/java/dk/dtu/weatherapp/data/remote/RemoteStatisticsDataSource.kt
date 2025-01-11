@@ -1,6 +1,7 @@
 package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
+import dk.dtu.weatherapp.currentLocation
 import dk.dtu.weatherapp.data.model.StatsDataDao
 import dk.dtu.weatherapp.data.model.StatsYearDao
 import dk.dtu.weatherapp.getAppContext
@@ -48,7 +49,7 @@ class RemoteStatisticsDataSource {
 
     private val statisticsApi: WeatherStatisticsApiService = retrofit.create(WeatherStatisticsApiService::class.java)
 
-    suspend fun getDayStatistics(lat: Double, lon: Double, month: Int, day: Int): StatsDataDao = statisticsApi.getDayStatistics(lat, lon, month, day)
-    suspend fun getMonthStatistics(lat: Double, lon: Double, month: Int): StatsDataDao = statisticsApi.getMonthStatistics(lat, lon, month)
-    suspend fun getYearStatistics(lat: Double, lon: Double): StatsYearDao = statisticsApi.getYearStatistics(lat, lon)
+    suspend fun getDayStatistics(month: Int, day: Int): StatsDataDao = statisticsApi.getDayStatistics(currentLocation.lat, currentLocation.lon, month, day)
+    suspend fun getMonthStatistics(month: Int): StatsDataDao = statisticsApi.getMonthStatistics(currentLocation.lat, currentLocation.lon, month)
+    suspend fun getYearStatistics(): StatsYearDao = statisticsApi.getYearStatistics(currentLocation.lat, currentLocation.lon)
 }

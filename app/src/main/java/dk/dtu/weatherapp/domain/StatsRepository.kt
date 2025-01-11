@@ -13,18 +13,18 @@ import dk.dtu.weatherapp.models.StatsDayWind
 class StatsRepository {
     private val dataSource = RemoteStatisticsDataSource()
 
-    suspend fun getDayStats(lat: Double, lon: Double, month: Int, day: Int): StatsDay {
-        val data = dataSource.getDayStatistics(lat = lat, lon = lon, month = month, day = day)
+    suspend fun getDayStats(month: Int, day: Int): StatsDay {
+        val data = dataSource.getDayStatistics(month = month, day = day)
         return data.stats.mapToStatsList()
     }
 
-    suspend fun getMonthStats(lat: Double, lon: Double, month: Int): StatsDay {
-        val data = dataSource.getMonthStatistics(lat = lat, lon = lon, month = month)
+    suspend fun getMonthStats(month: Int): StatsDay {
+        val data = dataSource.getMonthStatistics(month = month)
         return data.stats.mapToStatsList()
     }
 
-    suspend fun getYearStats(lat: Double, lon: Double): List<StatsDay> {
-        return dataSource.getYearStatistics(lat = lat, lon = lon)
+    suspend fun getYearStats(): List<StatsDay> {
+        return dataSource.getYearStatistics()
             .stats.stats.map { it.mapToStatsList() }
     }
 }

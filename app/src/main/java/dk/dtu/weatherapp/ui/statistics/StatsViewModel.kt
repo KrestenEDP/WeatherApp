@@ -13,7 +13,7 @@ class StatsViewModel : ViewModel() {
         // Initialize with the stats for current day
         viewModelScope.launch {
             // TODO Use current day and location
-            dayStats = statsRepo.getDayStats(1.1, 1.2, 2, 2)
+            dayStats = statsRepo.getDayStats(2, 2)
         }
     }
 
