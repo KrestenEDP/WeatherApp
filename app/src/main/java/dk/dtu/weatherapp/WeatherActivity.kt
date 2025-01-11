@@ -36,6 +36,8 @@ import kotlinx.coroutines.launch
 
 val Context.cityDataStore: DataStore<Preferences> by preferencesDataStore(name = "city_index_data_store")
 val cityIndex = mutableMapOf<String, Location>()
+//var location: Location by remember { mutableStateOf(Location("Kongens Lyngby", "55.77044", "12.50378", false)) }
+var currentLocation = Location("Kongens Lyngby", "55.77044", "12.50378", false)
 
 class WeatherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.models.Location
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 
 
@@ -22,7 +23,8 @@ import dk.dtu.weatherapp.ui.components.LoadingScreen
 fun Preview() {
     Homepage(
         onDayClicked = {},
-        onSearchClicked = {}
+        onSearchClicked = {},
+        location = Location("Kongens Lyngby", "55.77044", "12.50378", false)
     )
 }
 
@@ -30,6 +32,7 @@ fun Preview() {
 fun Homepage(
     onDayClicked: (Int) -> Unit,
     onSearchClicked: () -> Unit,
+    location: Location,
     modifier: Modifier = Modifier
 ) {
     val homepageViewModel: HomepageViewModel = viewModel()
@@ -38,7 +41,7 @@ fun Homepage(
         WeatherUIModel.Empty -> Text("No data")
         WeatherUIModel.Loading -> LoadingScreen()
         is WeatherUIModel.Data ->{
-            HomePageContent(weatherUIModel, onDayClicked, onSearchClicked, modifier)
+            HomePageContent(weatherUIModel, onDayClicked, onSearchClicked, location, modifier)
         }
     }
 }
@@ -48,6 +51,7 @@ fun HomePageContent(
     weatherUIModel: WeatherUIModel.Data,
     onDayClicked: (Int) -> Unit,
     onSearchClicked: () -> Unit,
+    location: Location,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -57,7 +61,7 @@ fun HomePageContent(
     ) {
         Location(
             onSearchClicked = onSearchClicked,
-            location = "Dalby" // @TODO Don't hardcode location
+            location = location.name
         )
         Spacer(Modifier.height(20.dp))
         CurrentWeather(weatherUIModel.currentWeather)

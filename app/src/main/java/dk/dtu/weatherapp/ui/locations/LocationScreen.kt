@@ -13,10 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.Firebase.GetMacAddress
 import dk.dtu.weatherapp.Firebase.LocationsViewModelFactory
+import dk.dtu.weatherapp.models.Location
 
 
 @Composable
-fun LocationPage() {
+fun LocationPage(onLocationClicked: (Location) -> Unit) {
     val userId = GetMacAddress(LocalContext.current) ?: return
     val locationsViewModel: LocationsViewModel = viewModel(factory = LocationsViewModelFactory(userId))
     
@@ -35,14 +36,16 @@ fun LocationPage() {
                         type = FavoriteLocations,
                         onToggleFavorite = { location ->
                             locationsViewModel.toggleFavorite(location)
-                        }
+                        },
+                        onLocationClicked = onLocationClicked
                     )
                     LocationList(
                         locationsUIModel = locationsViewModel.recentLocationsUIState.collectAsState().value,
                         type = RecentLocations,
                         onToggleFavorite = { location ->
                             locationsViewModel.toggleFavorite(location)
-                        }
+                        },
+                        onLocationClicked = onLocationClicked
                     )
                 } else {
                     LocationList(
@@ -50,7 +53,8 @@ fun LocationPage() {
                         type = SearchLocations,
                         onToggleFavorite = { location ->
                             locationsViewModel.toggleFavorite(location)
-                        }
+                        },
+                        onLocationClicked = onLocationClicked
                     )
                 }
             }
@@ -62,5 +66,5 @@ fun LocationPage() {
 @Preview(showBackground = true)
 @Composable
 fun LocationPagePrev() {
-    LocationPage()
+    LocationPage(onLocationClicked = {})
 }

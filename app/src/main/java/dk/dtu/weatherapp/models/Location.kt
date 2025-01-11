@@ -2,7 +2,9 @@ package dk.dtu.weatherapp.models
 
 data class Location(
     val name: String,
-    val temperature: Double,
-    val iconURL: Int,
+    val lat: String,
+    val lon: String,
     var isFavorite: Boolean
+    //val temperature: Double,
+    //val iconURL: Int,
 )

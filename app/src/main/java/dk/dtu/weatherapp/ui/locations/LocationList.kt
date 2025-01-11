@@ -1,6 +1,7 @@
 
 package dk.dtu.weatherapp.ui.locations
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ fun LocationList(
     locationsUIModel: LocationsUIModel,
     type: LocationListType,
     onToggleFavorite: (Location) -> Unit = {},
+    onLocationClicked: (Location) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(16.dp)) {
@@ -51,7 +53,11 @@ fun LocationList(
             LocationsUIModel.Loading -> LoadingScreen()
             is LocationsUIModel.Data -> {
                 locationsUIModel.locations.forEach { location ->
-                    LocationElement(location = location, onToggleFavorite = onToggleFavorite)
+                    LocationElement(
+                        location = location,
+                        onToggleFavorite = onToggleFavorite,
+                        modifier = Modifier.clickable(onClick = { onLocationClicked(location) })
+                    )
                 }
             }
         }

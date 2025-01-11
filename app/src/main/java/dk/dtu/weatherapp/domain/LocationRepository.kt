@@ -88,7 +88,7 @@ class LocationRepository(private val userId: String) {
                 .filter { it.split(",")[0].contains(query, ignoreCase = true) }
                 .take(30)
                 .map {
-                    Location(name = it.split(",")[0], 15.5, R.drawable.i01n, isFavorite = false).apply {
+                    Location(name = it.split(",")[0], it.split(",")[1], it.split(",")[2], isFavorite = false).apply {
                         FirebaseHelper.isFavoriteInFirestore(
                             userId = userId,
                             cityName = it.split(",")[0],
@@ -114,7 +114,7 @@ class LocationRepository(private val userId: String) {
             .await()
             .documents.map { document ->
                 val cityName = document.id
-                Location(name = cityName, 15.5, R.drawable.i01n, true)
+                Location(name = cityName, "15.5", "15.5", true)
             }
 
         favoritesCollection.addSnapshotListener { snapshot, error ->
@@ -125,7 +125,7 @@ class LocationRepository(private val userId: String) {
             if (snapshot != null && !snapshot.isEmpty) {
                 val favoriteCities = snapshot.documents.map { document ->
                     val cityName = document.id
-                    Location(name = cityName, 15.5, R.drawable.i01n, true)
+                    Location(name = cityName, "15.5", "15.5", true)
                 }
                 GlobalScope.launch {
                     mutableFavoriteLocationFlow.emit(favoriteCities)

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import dk.dtu.weatherapp.currentLocation
 import dk.dtu.weatherapp.ui.alerts.AlertsScreen
 import dk.dtu.weatherapp.ui.forecast.SingleDayForecastScreen
 import dk.dtu.weatherapp.ui.homepage.Homepage
@@ -24,6 +25,7 @@ fun WeatherNavHost(
     modifier: Modifier = Modifier,
     context: Context
 ) {
+
     NavHost(
         navController = navController,
         startDestination = Weather.route,
@@ -50,7 +52,8 @@ fun WeatherNavHost(
                 },
                 onSearchClicked = {
                     navController.navigateSingleTopTo(Locations.route)
-                }
+                },
+                location = currentLocation
             )
         }
         composable(route = Stats.route) {
@@ -63,7 +66,10 @@ fun WeatherNavHost(
             WeatherSettingsPage(context)
         }
         composable(route = Locations.route) {
-            LocationPage()
+            LocationPage(onLocationClicked = {
+                currentLocation = it
+                navController.navigateSingleTopTo(Weather.route)
+            })
         }
         composable(
             route = SingleDayForecast.routeWithArgs,
