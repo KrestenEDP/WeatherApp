@@ -18,29 +18,16 @@ fun DailyForecast(onDayClicked: (Int) -> Unit, days: List<Day>, modifier: Modifi
         verticalArrangement = Arrangement.Center,
     ) {
         days.forEachIndexed { index, day ->
-            if (index < 5) {
-                Day(
-                    day.date,
-                    day.dayTemp,
-                    day.nightTemp,
-                    day.precipitation,
-                    day.iconURL,
-                    modifier = Modifier
-                        .padding(vertical = 4.dp, horizontal = 8.dp)
-                        .clickable { onDayClicked(index) }
-                )
-            } else {
-                Day(
-                    day.date,
-                    day.dayTemp,
-                    day.nightTemp,
-                    day.precipitation,
-                    day.iconURL,
-                    clickable = false,
-                    modifier = Modifier
-                        .padding(vertical = 4.dp, horizontal = 8.dp)
-                )
-            }
+            Day(
+                day.date,
+                day.dayTemp,
+                day.nightTemp,
+                day.precipitation,
+                day.iconURL,
+                modifier = Modifier
+                    .padding(vertical = 4.dp, horizontal = 8.dp)
+                    .clickable { onDayClicked(index) }
+            )
         }
     }
 }

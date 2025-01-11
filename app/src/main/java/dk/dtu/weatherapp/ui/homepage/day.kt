@@ -21,7 +21,7 @@ import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
-fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: String, clickable: Boolean = true, modifier: Modifier = Modifier) {
+fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: String, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -47,13 +47,11 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
                 }
             }
         }
-        if (clickable) {
-            Icon(
-                Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Arrow right",
-                modifier = Modifier.size(36.dp)
-            )
-        }
+        Icon(
+            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = "Arrow right",
+            modifier = Modifier.size(36.dp)
+        )
     }
 }
 

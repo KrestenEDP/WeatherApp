@@ -56,24 +56,31 @@ import kotlin.math.absoluteValue
 fun SingleDayForecastScreen(
     singleDayIndex: Int? = 0,
 ) {
-    val singleDayViewModel: SingleDayViewModel = viewModel()
-    when (val singleDayUIModel = singleDayViewModel.singleDayUIState.collectAsState().value) {
-        FourDayHourlyUIModel.Empty -> Text("No data")
-        FourDayHourlyUIModel.Loading -> LoadingScreen()
-        is FourDayHourlyUIModel.Data -> {
-            SingleDayForecastContent(singleDayUIModel, singleDayIndex)
+    val weeklyForecastViewModel: WeeklyForecastViewModel = viewModel()
+
+
+    when (val dayUIModel = weeklyForecastViewModel.dayUIState.collectAsState().value) {
+        DayUIModel.Empty -> Text("No data")
+        DayUIModel.Loading -> LoadingScreen()
+        is DayUIModel.Data -> {
+            SingleDayForecastContent(
+                weeklyForecastViewModel.hourlyUIState.collectAsState().value,
+                dayUIModel,
+                singleDayIndex
+            )
         }
     }
 }
 
 @Composable
 fun SingleDayForecastContent(
-    forecastUiModel: FourDayHourlyUIModel.Data,
+    forecastHourlyUiModel: HourlyUIModel,
+    forecastDailyUiState: DayUIModel.Data,
     singleDayIndex: Int? = 0
 ) {
     Box {
         val pagerState = rememberPagerState(
-            pageCount = { forecastUiModel.fourDayHourly.size },
+            pageCount = { forecastDailyUiState.days.size },
             initialPage = singleDayIndex ?: 0
         )
 
@@ -91,7 +98,15 @@ fun SingleDayForecastContent(
                     style = Typography.titleLarge,
                     modifier = Modifier.padding(8.dp),
                 )*/
-                HourlyForecast(forecastUiModel.fourDayHourly[it])
+                when (forecastHourlyUiModel) {
+                    HourlyUIModel.Empty -> Text("No data")
+                    HourlyUIModel.Loading -> LoadingScreen()
+                    is HourlyUIModel.Data -> {
+                        if (it < forecastHourlyUiModel.hours.size) {
+                            HourlyForecast(forecastHourlyUiModel.hours[it])
+                        }
+                    }
+                }
             }
         }
 
@@ -150,7 +165,7 @@ fun SingleDayForecastContent(
                 )
             }.collect { (page, offset) ->
                 indicatorState.scrollToPage(page, offset)
-                SingleDayForecast.appBarTitle = formatDate(forecastUiModel.fourDayHourly[page][0].date)
+                SingleDayForecast.appBarTitle = formatDate(forecastDailyUiState.days[page].date)
             }
         }
     }
@@ -215,7 +230,7 @@ fun ForecastElement(hour: Hour) {
                 .padding(PaddingValues(8.dp))
         ) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward, // TODO Use arrow icons indicating wind direction hour.windDegree
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null, // TODO: Add more options as content description
                 modifier = Modifier
                     .padding(start=8.dp, end=0.dp)
@@ -239,11 +254,11 @@ fun ForecastElement(hour: Hour) {
 )
 @Composable
 fun SingleDayForecastScreenPreview() {
-    val data = FourDayHourlyUIModel.Data(MockHourlyFourDayForecast().getHourlyWeather().chunked(24))
-    SingleDayForecastContent(data, 0)
+    val data = HourlyUIModel.Data(MockHourlyFourDayForecast().getHourlyWeather().chunked(24))
+    //SingleDayForecastContent(data, 0)
 }
-fun formatDate(dateString: String): String {
-    val inputFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+private fun formatDate(dateString: String): String {
+    val inputFormatter = SimpleDateFormat("EEEE d. MMMM", Locale.getDefault())
     val date = inputFormatter.parse(dateString) ?: ""
     val outputFormatter = SimpleDateFormat("MMMM d", Locale.getDefault())
     return outputFormatter.format(date)

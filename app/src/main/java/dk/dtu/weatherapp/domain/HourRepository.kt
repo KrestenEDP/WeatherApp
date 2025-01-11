@@ -25,8 +25,7 @@ suspend fun HourlyWeatherDao.mapToHours(): List<Hour> {
             temp = convertTempUnit(it.main.temp),
             precipitation = convertPrecipitationUnit(it.rain.amount + it.snow.amount),
             wind = convertSpeedUnit(it.wind.speed),
-            windDegree = it.wind.deg,
-            date = it.dt_txt?.split(" ")[0] ?: ""
+            windDegree = it.wind.deg
         )
     }
 }

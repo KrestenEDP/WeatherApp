@@ -69,7 +69,7 @@ object SingleDayForecast : WeatherDestination {
     override val iconUnselected: ImageVector = Icons.Outlined.Home
     override val iconSelected: ImageVector = Icons.Filled.Home
     override val route: String = "single_day_forecast"
-    override var appBarTitle by mutableStateOf("") // TODO: make dynamic
+    override var appBarTitle by mutableStateOf("")
     override val showBackButton: Boolean = true
 
     const val INDEX = "index"

@@ -7,5 +7,4 @@ data class Hour(
     val precipitation: Double,
     val wind: Double,
     val windDegree: Int,
-    val date: String = "2025-01-01"
 )
