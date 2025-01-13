@@ -24,12 +24,14 @@ private var currentLocation: Location? = null
 suspend fun fetchCurrentLocation() {
     currentLocation = currentLocationDataStore.data
         .map { preferences ->
-            Location(
+            val location = Location(
                 name = preferences[currentLocationNameKey] ?: "Kongens Lyngby",
                 lat = preferences[currentLocationLatKey] ?: "55.77044",
                 lon = preferences[currentLocationLonKey] ?: "12.50378",
                 isFavorite = false
             )
+            // TODO: Add to firebase if not already there, remove oldest element if more than max limit (15?)
+            location
         }.first()
 }
 
