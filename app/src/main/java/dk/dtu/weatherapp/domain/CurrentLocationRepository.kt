@@ -43,7 +43,6 @@ fun getCurrentLocation(): Location {
 }
 
 fun setCurrentLocation(location: Location) {
-    currentLocation = location
     customScope.launch {
         currentLocationDataStore.edit { preferences ->
             preferences[currentLocationNameKey] = location.name
