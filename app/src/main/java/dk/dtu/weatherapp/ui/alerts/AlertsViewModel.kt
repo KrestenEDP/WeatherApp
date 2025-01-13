@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.alerts
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dk.dtu.weatherapp.domain.AlertRepository
@@ -8,8 +9,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import android.content.Context
+import dk.dtu.weatherapp.getAppContext
 
+@SuppressLint("StaticFieldLeak")
 class AlertsViewModel : ViewModel() {
+
+    val context: Context = getAppContext()
     private val alertRepository = AlertRepository()
     private val mutableCurrent = MutableStateFlow<AlertsUIModel>(AlertsUIModel.Loading)
     val alertsUIState: StateFlow<AlertsUIModel> = mutableCurrent
@@ -24,6 +30,10 @@ class AlertsViewModel : ViewModel() {
                         } else {
                             AlertsUIModel.Data(data)
                         }
+                    }
+
+                    data.forEach { alert ->
+                        showNotification(context, alert)
                     }
                 }
         }

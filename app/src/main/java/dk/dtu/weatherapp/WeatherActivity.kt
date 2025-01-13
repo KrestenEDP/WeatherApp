@@ -1,6 +1,9 @@
 package dk.dtu.weatherapp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +24,8 @@ import dk.dtu.weatherapp.navigation.WeatherNavHost
 import dk.dtu.weatherapp.navigation.allScreens
 import dk.dtu.weatherapp.navigation.navBarScreens
 import dk.dtu.weatherapp.navigation.navigateSingleTopTo
+import dk.dtu.weatherapp.ui.alerts.createNotificationChannel
+import dk.dtu.weatherapp.ui.alerts.showNotification
 import dk.dtu.weatherapp.ui.components.MyTopAppBar
 import dk.dtu.weatherapp.ui.components.NavBar
 import dk.dtu.weatherapp.ui.theme.WeatherAppTheme
@@ -90,6 +95,7 @@ object GlobalUnitUtils {
     }
 }
 
+
 @Composable
 fun WeatherApp() {
     appContext = LocalContext.current.applicationContext
@@ -99,6 +105,7 @@ fun WeatherApp() {
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
         val context = LocalContext.current
+        createNotificationChannel(context)
 
         val currentScreen =
             allScreens.find {
