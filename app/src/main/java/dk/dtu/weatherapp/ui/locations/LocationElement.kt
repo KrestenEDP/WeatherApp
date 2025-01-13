@@ -8,6 +8,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,18 +26,25 @@ fun LocationElement(
     onToggleFavorite: (Location) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    var isFavorite by remember { mutableStateOf(location.isFavorite) }
+
+    LaunchedEffect(location) {
+        isFavorite = location.isFavorite
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
         IconButton(
             onClick = {
+                isFavorite = !isFavorite
                 onToggleFavorite(location)
             }
         ) {
             Icon(
-                imageVector = if (location.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Favorite ${location.isFavorite}"
+                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite $isFavorite"
             )
         }
 

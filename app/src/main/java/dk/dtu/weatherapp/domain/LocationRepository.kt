@@ -16,6 +16,8 @@ import kotlinx.coroutines.tasks.await
 class LocationRepository(private val userId: String) {
     private val firestore = FirebaseFirestore.getInstance()
 
+    private var favorites: List<String> = emptyList() // Purely to see if search results are in favorites or not
+
     private val mutableLocationFlow = MutableSharedFlow<List<Location>>()
     val locationFlow = mutableLocationFlow.asSharedFlow()
 
@@ -82,30 +84,22 @@ class LocationRepository(private val userId: String) {
 
     fun searchForCities(query: String): List<Location> {
         val inputStream = getAppContext().resources.openRawResource(R.raw.cities)
+
         return inputStream.bufferedReader().use { reader ->
             reader.lineSequence()
                 .drop(1)
                 .filter { it.split(",")[0].contains(query, ignoreCase = true) }
                 .take(30)
                 .map {
-                    Location(name = it.split(",")[0], it.split(",")[1], it.split(",")[2], isFavorite = false).apply {
-                        FirebaseHelper.isFavoriteInFirestore(
-                            userId = userId,
-                            cityName = it.split(",")[0],
-                            onSuccess = { favorite ->
-                                isFavorite = favorite
-                            },
-                            onFailure = { exception ->
-                                println("Error checking favorite status: ${exception.message}")
-                            }
-                        )
-                    }
+                    val parameters = it.split(",")
+                    Location(name = parameters[0], parameters[1], parameters[2], isFavorite = favorites.contains(parameters[0]))
                 }
                 .toList()
         }
     }
 
     suspend fun fetchFavorites(): List<Location> {
+        favorites = emptyList()
         val favoritesCollection = firestore.collection("users")
             .document(userId)
             .collection("favorites")
@@ -114,6 +108,7 @@ class LocationRepository(private val userId: String) {
             .await()
             .documents.map { document ->
                 val cityName = document.id
+                favorites += cityName
                 Location(name = cityName, "15.5", "15.5", true)
             }
 
@@ -125,6 +120,7 @@ class LocationRepository(private val userId: String) {
             if (snapshot != null && !snapshot.isEmpty) {
                 val favoriteCities = snapshot.documents.map { document ->
                     val cityName = document.id
+                    favorites += cityName
                     Location(name = cityName, "15.5", "15.5", true)
                 }
                 GlobalScope.launch {
@@ -135,6 +131,4 @@ class LocationRepository(private val userId: String) {
 
         return initialFavorites
     }
-
-
 }
