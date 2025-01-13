@@ -1,55 +1,90 @@
 package dk.dtu.weatherapp.ui.statistics
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.TooltipState
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
-import dk.dtu.weatherapp.navigation.Stats
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DayStats() {
+    val tooltipState = rememberTooltipState(isPersistent = true)
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .then(if(tooltipState.isVisible) Modifier.blur(2.dp) else Modifier)
     ){
-        Row{
-            Text("Someway to choose a day")
-            IconButton(
-                onClick = { }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Information about what to see on this page",
-                    modifier = Modifier.size(24.dp)
+        TooltipBox(
+            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+            tooltip = {
+                RichTooltip(
+                    title = { Text("What is this?") },
+                    text = { Text("Choose a date to see statistics for the weather on that" +
+                            " day. This does not reflect the actual weather on that day but a" +
+                            " calculated value of the average weather for that day.") },
+                    action = {
+                        TextButton(
+                            onClick = { tooltipState.dismiss() }
+                        ) {
+                            Text("Dismiss")
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
                 )
+            },
+            state = tooltipState,
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            ){
+                Text("Someway to choose a day")
+                IconButton(
+                    onClick = { CoroutineScope(Dispatchers.Main).launch { tooltipState.show() } }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Information about what to see on this page",
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
             }
         }
         LazyVerticalGrid (
@@ -58,24 +93,12 @@ fun DayStats() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            item {
-                StatsCard(title = "Temperature", value = 20.0, R.drawable.i01d, GlobalUnits.temp) // TODO use imported values
-            }
-            item {
-                StatsCard(title = "Wind", value = 4.0, R.drawable.wind, GlobalUnits.wind) // TODO use imported values
-            }
-            item {
-                StatsCard(title = "Precipitation", value = 0.0, R.drawable.i09d, GlobalUnits.precipitation) // TODO use imported values
-            }
-            item {
-                StatsCard(title = "Humidity", value = 80.51, R.drawable.humidity, "%") // TODO use imported values
-            }
-            item {
-                StatsCard(title = "Pressure", value = 1027.0, R.drawable.compress, "hPa") // TODO use imported values
-            }
-            item {
-                StatsCard(title = "Clouds", value = 90.2, R.drawable.i03d, "%") // TODO use imported values
-            }
+            item {StatsCard(title = "Temperature", value = 20.0, R.drawable.i01d, GlobalUnits.temp)} // TODO use imported values
+            item {StatsCard(title = "Wind", value = 4.0, R.drawable.wind, GlobalUnits.wind)} // TODO use imported values
+            item {StatsCard(title = "Precipitation", value = 0.0, R.drawable.i09d, GlobalUnits.precipitation)} // TODO use imported values
+            item {StatsCard(title = "Humidity", value = 80.51, R.drawable.humidity, "%")} // TODO use imported values
+            item {StatsCard(title = "Pressure", value = 1027.0, R.drawable.compress, "hPa")} // TODO use imported values
+            item {StatsCard(title = "Clouds", value = 90.2, R.drawable.i03d, "%")} // TODO use imported values
         }
     }
 }
