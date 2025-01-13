@@ -11,14 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dk.dtu.weatherapp.domain.dataStore
-import dk.dtu.weatherapp.models.Location
 import dk.dtu.weatherapp.navigation.Settings
 import dk.dtu.weatherapp.navigation.Weather
 import dk.dtu.weatherapp.navigation.WeatherNavHost
@@ -33,11 +29,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-
-val Context.cityDataStore: DataStore<Preferences> by preferencesDataStore(name = "city_index_data_store")
-val cityIndex = mutableMapOf<String, Location>()
-//var location: Location by remember { mutableStateOf(Location("Kongens Lyngby", "55.77044", "12.50378", false)) }
-var currentLocation = Location("Kongens Lyngby", "55.77044", "12.50378", false)
 
 class WeatherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -47,7 +47,9 @@ class HomepageViewModel : ViewModel() {
                     update()
                 }
         }
+    }
 
+    fun setup() {
         getCurrentWeather()
         getHourlyWeather()
         getDailyWeather()

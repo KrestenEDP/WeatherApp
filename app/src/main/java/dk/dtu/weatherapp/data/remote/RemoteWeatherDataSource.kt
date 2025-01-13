@@ -2,7 +2,7 @@ package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
 import android.util.Log
-import dk.dtu.weatherapp.currentLocation
+import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.ui.util.hasNetwork
 import kotlinx.serialization.json.Json
@@ -59,8 +59,8 @@ class RemoteWeatherDataSource {
 
     private val weatherApi: WeatherApiService = retrofit.create(WeatherApiService::class.java)
 
-    suspend fun getCurrentWeather() = weatherApi.getCurrentWeather(lat = currentLocation.lat, lon = currentLocation.lon)
-    suspend fun getHourlyWeatherToday(count: Int) = weatherApi.getHourlyWeather(count = count, lat = currentLocation.lat, lon = currentLocation.lon)
-    suspend fun getHourlyWeather() = weatherApi.getHourlyWeather(lat = currentLocation.lat, lon = currentLocation.lon)
-    suspend fun getDailyWeather() = weatherApi.getDailyWeather(lat = currentLocation.lat, lon = currentLocation.lon)
+    suspend fun getCurrentWeather() = weatherApi.getCurrentWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+    suspend fun getHourlyWeatherToday(count: Int) = weatherApi.getHourlyWeather(count = count, lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+    suspend fun getHourlyWeather() = weatherApi.getHourlyWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+    suspend fun getDailyWeather() = weatherApi.getDailyWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
 }

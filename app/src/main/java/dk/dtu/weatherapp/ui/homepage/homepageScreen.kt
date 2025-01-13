@@ -9,11 +9,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.domain.fetchCurrentLocation
+import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.models.Location
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 
@@ -23,8 +26,7 @@ import dk.dtu.weatherapp.ui.components.LoadingScreen
 fun Preview() {
     Homepage(
         onDayClicked = {},
-        onSearchClicked = {},
-        location = Location("Kongens Lyngby", "55.77044", "12.50378", false)
+        onSearchClicked = {}
     )
 }
 
@@ -32,16 +34,20 @@ fun Preview() {
 fun Homepage(
     onDayClicked: (Int) -> Unit,
     onSearchClicked: () -> Unit,
-    location: Location,
     modifier: Modifier = Modifier
 ) {
     val homepageViewModel: HomepageViewModel = viewModel()
+    LaunchedEffect(Unit) {
+        fetchCurrentLocation()
+        homepageViewModel.setup()
+    }
 
     when (val weatherUIModel = homepageViewModel.weatherUIState.collectAsState().value) {
         WeatherUIModel.Empty -> Text("No data")
         WeatherUIModel.Loading -> LoadingScreen()
         is WeatherUIModel.Data ->{
-            HomePageContent(weatherUIModel, onDayClicked, onSearchClicked, location, modifier)
+            HomePageContent(weatherUIModel, onDayClicked, onSearchClicked,
+                getCurrentLocation(), modifier)
         }
     }
 }
