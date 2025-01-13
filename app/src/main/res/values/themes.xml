@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Default Light/Dark Mode Theme -->
+    <style name="Theme.WeatherApp" parent="Theme.AppCompat.DayNight">
+        <!-- Customize colors based on light/dark mode -->
 
-    <style name="Theme.WeatherApp" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- Primary Text Color (applies to textColorPrimary) -->
+        <item name="android:textColorPrimary">?android:attr/textColorPrimary</item>
+
+        <!-- Control Normal Color (used for buttons, etc.) -->
+        <item name="android:colorControlNormal">?android:attr/colorControlNormal</item>
+
+    </style>
 </resources>
