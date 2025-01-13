@@ -13,8 +13,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dk.dtu.weatherapp.GlobalUnits.edgymode
+import dk.dtu.weatherapp.GlobalUnits.noticeme
 import dk.dtu.weatherapp.domain.dataStore
 import dk.dtu.weatherapp.navigation.Settings
 import dk.dtu.weatherapp.navigation.Weather
@@ -35,7 +38,6 @@ import kotlinx.coroutines.launch
 class WeatherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         initializeGlobalUnits(this)
         enableEdgeToEdge()
         setContent {
@@ -53,12 +55,18 @@ object GlobalUnits {
     var temp: String = ""
     var wind: String = ""
     var precipitation: String = ""
+    var edgymode: Boolean = true
+    var noticeme: Boolean = true
 }
 
 private fun initializeGlobalUnits(context: Context) {
     CoroutineScope(Dispatchers.Default).launch {
         val unitSetting = getUnitSetting(context)
+        val darkSetting = getDarkSetting(context)
+        val pushSetting = getPushSetting(context)
         GlobalUnitUtils.updateGlobalUnits(unitSetting)
+        edgymode = darkSetting
+        noticeme = pushSetting
     }
 }
 
@@ -68,6 +76,24 @@ suspend fun getUnitSetting(context: Context): Int {
 
     return dataStore.map { preferences ->
         preferences[preferredUnitKey] ?: 0
+    }.first()
+}
+
+suspend fun getDarkSetting(context: Context): Boolean {
+    val dataStore = context.dataStore.data
+    val preferredBooleanKey = booleanPreferencesKey("dark_mode")
+
+    return dataStore.map { preferences ->
+        preferences[preferredBooleanKey] ?: true
+    }.first()
+}
+
+suspend fun getPushSetting(context: Context): Boolean {
+    val dataStore = context.dataStore.data
+    val preferredPushKey = booleanPreferencesKey("push_notifications")
+
+    return dataStore.map { preferences ->
+        preferences[preferredPushKey] ?: true
     }.first()
 }
 
@@ -98,7 +124,7 @@ object GlobalUnitUtils {
 fun WeatherApp() {
     appContext = LocalContext.current.applicationContext
 
-    WeatherAppTheme(darkTheme = true) {
+    WeatherAppTheme(edgymode) {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination

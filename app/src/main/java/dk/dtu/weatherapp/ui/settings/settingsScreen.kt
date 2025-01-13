@@ -1,6 +1,10 @@
 package dk.dtu.weatherapp.ui.settings
 
+import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,13 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat.recreate
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import dk.dtu.weatherapp.GlobalUnitUtils
-import dk.dtu.weatherapp.GlobalUnits
+import dk.dtu.weatherapp.GlobalUnits.edgymode
 import dk.dtu.weatherapp.domain.dataStore
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -45,8 +49,6 @@ private val Units = listOf(
     "Metric", "Imperial", "Scientific"
 )
 
-
-private const val rowHeight = 60
 
 @Composable
 fun WeatherSettingsPage(context: Context) {
@@ -94,6 +96,16 @@ fun DarkModeSetting(context: Context) {
                     dataStore.edit { preferences ->
                         preferences[darkModeKey] = newValue
                     }
+                }
+
+
+                edgymode = newValue
+
+                // Delay or chaos
+                if (context is Activity) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        context.recreate()
+                    }, 50)
                 }
             }
         )
