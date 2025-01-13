@@ -16,8 +16,8 @@ const val CHANNEL_ID = "weather_alert_channel"
 // Function to create the notification channel
 fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val name = "test"
-        val descriptionText = "alerts test"
+        val name = "ALERTS"
+        val descriptionText = "Weather alerts channel"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
             description = descriptionText
@@ -33,7 +33,7 @@ fun createNotificationChannel(context: Context) {
 @SuppressLint("MissingPermission")
 fun showNotification(context: Context, alert: Alert) {
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.drawable.ic_androidwarning_orange_24dp)
+        .setSmallIcon(R.drawable.warning)
         .setContentTitle(alert.headline)
         .setContentText(alert.event)
         .setStyle(NotificationCompat.BigTextStyle().bigText(alert.description))
