@@ -8,13 +8,13 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.domain.setCurrentLocation
 import dk.dtu.weatherapp.ui.alerts.AlertsScreen
-import dk.dtu.weatherapp.ui.forecast.SingleDayForecastScreen
+import dk.dtu.weatherapp.ui.forecast.WeeklyForecastScreen
 import dk.dtu.weatherapp.ui.homepage.Homepage
 import dk.dtu.weatherapp.ui.locations.LocationPage
 import dk.dtu.weatherapp.ui.settings.WeatherSettingsPage
@@ -49,7 +49,7 @@ fun WeatherNavHost(
         composable(route = Weather.route) {
             Homepage(
                 onDayClicked = { singleDayIndex ->
-                    navController.navigateToSingleDayForecast(singleDayIndex)
+                    navController.navigateToWeeklyForecast(singleDayIndex)
                 },
                 onSearchClicked = {
                     navController.navigateSingleTopTo(Locations.route)
@@ -78,21 +78,21 @@ fun WeatherNavHost(
         ) { navBackStackEntry ->
             val singleDayIndex =
                 navBackStackEntry.arguments?.getInt(SingleDayForecast.INDEX)
-            SingleDayForecastScreen(singleDayIndex)
+            WeeklyForecastScreen(singleDayIndex)
         }
     }
 }
 
-fun NavHostController.navigateSingleTopTo(route: String) {
+fun NavHostController.navigateSingleTopTo(route: String, restore: Boolean = true) {
     this.navigate(route) {
-        /*popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
+        popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
             saveState = true
-        }*/
+        }
         launchSingleTop = true
-        //restoreState = true
+        restoreState = restore
     }
 }
 
-private fun NavHostController.navigateToSingleDayForecast(index: Int) {
-    this.navigateSingleTopTo("${SingleDayForecast.route}/$index")
+private fun NavHostController.navigateToWeeklyForecast(index: Int) {
+    this.navigateSingleTopTo("${SingleDayForecast.route}/$index", restore = false)
 }

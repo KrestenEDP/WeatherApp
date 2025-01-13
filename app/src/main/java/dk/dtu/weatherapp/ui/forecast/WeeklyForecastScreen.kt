@@ -38,17 +38,16 @@ import java.util.Locale
 import kotlin.math.absoluteValue
 
 @Composable
-fun SingleDayForecastScreen(
+fun WeeklyForecastScreen(
     singleDayIndex: Int? = 0,
 ) {
     val weeklyForecastViewModel: WeeklyForecastViewModel = viewModel()
-
 
     when (val dayUIModel = weeklyForecastViewModel.dayUIState.collectAsState().value) {
         DayUIModel.Empty -> Text("No data")
         DayUIModel.Loading -> LoadingScreen()
         is DayUIModel.Data -> {
-            SingleDayForecastContent(
+            WeeklyForecastContent(
                 weeklyForecastViewModel.hourlyUIState.collectAsState().value,
                 dayUIModel,
                 singleDayIndex
@@ -58,7 +57,7 @@ fun SingleDayForecastScreen(
 }
 
 @Composable
-fun SingleDayForecastContent(
+fun WeeklyForecastContent(
     forecastHourlyUiModel: HourlyUIModel,
     forecastDailyUiState: DayUIModel.Data,
     singleDayIndex: Int? = 0
