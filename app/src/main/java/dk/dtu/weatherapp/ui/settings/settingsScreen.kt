@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenu
@@ -27,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,7 +54,12 @@ private val Units = listOf(
 
 @Composable
 fun WeatherSettingsPage(context: Context) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
         DarkModeSetting(context)
         DynamicBackgroundSetting(context)
         UnitSetting(context)
@@ -80,8 +88,7 @@ fun DarkModeSetting(context: Context) {
     // UI
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp, bottom = 8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -132,8 +139,7 @@ fun DynamicBackgroundSetting(context: Context) {
     // UI
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical  = 8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -175,20 +181,26 @@ fun UnitSetting(context: Context) {
     // UI
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "Unit", style = Typography.titleSmall)
 
-        Box {
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(30.dp))
+                .clickable { expanded = true }
+                .padding(start = 16.dp)
+        ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = Units[selectedUnit], fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                IconButton(onClick = { expanded = true }) {
+                IconButton(
+                    onClick = { },
+                    enabled = false,
+                ) {
                     Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Dropdown Menu")
                 }
-
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
@@ -236,8 +248,7 @@ fun PushNotificationsSetting(context: Context) {
     // UI
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
