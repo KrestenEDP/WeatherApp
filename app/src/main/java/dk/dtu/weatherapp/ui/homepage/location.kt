@@ -24,7 +24,7 @@ fun Location(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(start = 34.dp)
+            .padding(horizontal = 34.dp)
     ) {
         Icon(
             Icons.Default.Search,
