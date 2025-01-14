@@ -5,14 +5,15 @@ import dk.dtu.weatherapp.Firebase.FirebaseHelper
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.models.Location
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class LocationRepository(private val userId: String) {
+    private val customScope = CoroutineScope(Dispatchers.IO)
     private val firestore = FirebaseFirestore.getInstance()
 
     private var favorites: List<String> = emptyList()
@@ -51,7 +52,7 @@ class LocationRepository(private val userId: String) {
                         tableId = "favorites",
                         cityName = location.name,
                         onSuccess = {
-                            GlobalScope.launch(Dispatchers.Main) {
+                            customScope.launch(Dispatchers.Main) {
                                 getFavoriteLocations()
                             }
                         },
@@ -67,7 +68,7 @@ class LocationRepository(private val userId: String) {
                         latitude = location.lat,
                         longitude = location.lon,
                         onSuccess = {
-                            GlobalScope.launch(Dispatchers.Main) {
+                            customScope.launch(Dispatchers.Main) {
                                 getFavoriteLocations()
                             }
                         },
@@ -128,7 +129,7 @@ class LocationRepository(private val userId: String) {
                     if (tableId == "favorites") favorites += cityName
                     Location(name = cityName, lat, lon, if (tableId == "favorites") true else favorites.contains(cityName))
                 }
-                GlobalScope.launch {
+                customScope.launch {
                     if (tableId == "favorites") mutableFavoriteLocationFlow.emit(cities)
                     else mutableRecentLocationFlow.emit(cities)
                 }
