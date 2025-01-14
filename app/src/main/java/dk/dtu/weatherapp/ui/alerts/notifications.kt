@@ -33,7 +33,7 @@ fun createNotificationChannel(context: Context) {
 @SuppressLint("MissingPermission")
 fun showNotification(context: Context, alert: Alert) {
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.drawable.warning)
+        .setSmallIcon(R.drawable.warning2)
         .setContentTitle(alert.headline)
         .setContentText(alert.event)
         .setStyle(NotificationCompat.BigTextStyle().bigText(alert.description))
