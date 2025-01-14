@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 import java.util.Locale
 
 suspend fun convertTempUnit(temp: Double): Double {
-    return String.format(Locale.ROOT, "%.1f",
+    return String.format(Locale.ENGLISH, "%.1f",
         when (getUnitSetting(getAppContext())) {
         0 -> kelvinToCelsius(temp)
         1 -> kelvinToFahrenheit(temp)
@@ -19,7 +19,7 @@ suspend fun convertTempUnit(temp: Double): Double {
 }
 
 suspend fun convertPrecipitationUnit(precipitation: Double): Double {
-    return String.format(Locale.ROOT, "%.1f",
+    return String.format(Locale.ENGLISH, "%.1f",
         when (getUnitSetting(getAppContext())) {
         0 -> precipitation
         1 -> mmToInches(precipitation)
@@ -29,7 +29,7 @@ suspend fun convertPrecipitationUnit(precipitation: Double): Double {
 }
 
 suspend fun convertSpeedUnit(speed: Double): Double {
-    return String.format(Locale.ROOT, "%.1f",
+    return String.format(Locale.ENGLISH, "%.1f",
         when (getUnitSetting(getAppContext())) {
         0 -> speed
         1 -> meterPerSecondsToMilesPerHour(speed)

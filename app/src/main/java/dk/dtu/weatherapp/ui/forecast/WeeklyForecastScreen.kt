@@ -167,8 +167,8 @@ fun SingleDayForecastScreenPreview() {
     //SingleDayForecastContent(data, 0)
 }
 private fun formatDate(dateString: String): String {
-    val inputFormatter = SimpleDateFormat("EEEE d. MMMM", Locale.getDefault())
+    val inputFormatter = SimpleDateFormat("EEEE d. MMMM", Locale.ENGLISH)
     val date = inputFormatter.parse(dateString) ?: ""
-    val outputFormatter = SimpleDateFormat("MMMM d", Locale.getDefault())
+    val outputFormatter = SimpleDateFormat("MMMM d", Locale.ENGLISH)
     return outputFormatter.format(date)
 }
