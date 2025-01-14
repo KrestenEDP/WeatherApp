@@ -28,7 +28,7 @@ import java.util.Locale
                     Icon(
                         imageVector = if (screen == currentScreen) screen.iconSelected else screen.iconUnselected,
                         contentDescription = null,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(28.dp)
                     )
                 },
                 label = { Text(screen.route.replaceFirstChar { it.titlecase(Locale.ENGLISH) }) },

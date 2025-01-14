@@ -19,6 +19,7 @@ fun HourlyForecast(forecast: List<Hour>, modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier.height(170.dp)) {
         items(forecast.size) { index ->
             val hour = forecast[index]
+            Spacer(modifier = Modifier.padding(end = 20.dp))
             Hour(
                 time = hour.time,
                 temp = hour.temp,
@@ -35,7 +36,6 @@ fun HourlyForecast(forecast: List<Hour>, modifier: Modifier = Modifier) {
                 .fillMaxHeight()
                 .background(Color.Gray)
             )
-            Spacer(modifier = Modifier.padding(end = 20.dp))
         }
     }
 }

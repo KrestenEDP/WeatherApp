@@ -63,7 +63,7 @@ fun HomePageContent(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(16.dp, top=0.dp)
+            .padding(8.dp, top=0.dp)
     ) {
         Location(
             onSearchClicked = onSearchClicked,

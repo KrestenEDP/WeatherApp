@@ -5,15 +5,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dk.dtu.weatherapp.GlobalUnits.edgymode
@@ -26,8 +26,8 @@ import dk.dtu.weatherapp.navigation.allScreens
 import dk.dtu.weatherapp.navigation.navBarScreens
 import dk.dtu.weatherapp.navigation.navigateSingleTopTo
 import dk.dtu.weatherapp.ui.alerts.createNotificationChannel
-import dk.dtu.weatherapp.ui.components.MyTopAppBar
 import dk.dtu.weatherapp.ui.components.NavBar
+import dk.dtu.weatherapp.ui.components.WeatherTopAppBar
 import dk.dtu.weatherapp.ui.theme.WeatherAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -141,7 +141,7 @@ fun WeatherApp() {
 
         Scaffold(
             topBar = {
-                MyTopAppBar(currentScreen, navController)
+                WeatherTopAppBar(currentScreen, navController)
             },
             bottomBar = {
                 NavBar(
@@ -155,7 +155,9 @@ fun WeatherApp() {
         ) { innerPadding ->
             WeatherNavHost(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(top = 0.dp),
                 context = context
             )
         }

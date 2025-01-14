@@ -48,7 +48,7 @@ fun ForecastElement(hour: Hour) {
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.End,
             modifier = Modifier
-                .padding(PaddingValues(8.dp))
+                .padding(PaddingValues(start = 8.dp))
                 .weight(1.5f)
         )
 
@@ -56,7 +56,7 @@ fun ForecastElement(hour: Hour) {
             imageVector = ImageVector.vectorResource(getPainterResource(hour.iconURL, LocalContext.current)),
             contentDescription = null, // TODO: Add weather type as content description
             modifier = Modifier
-                .padding(PaddingValues(start = 16.dp, end = 8.dp))
+                .padding(PaddingValues(start = 8.dp, end = 8.dp))
                 .weight(1f)
         )
         Text(
@@ -65,10 +65,10 @@ fun ForecastElement(hour: Hour) {
             textAlign = TextAlign.End,
             modifier = Modifier
                 .padding(PaddingValues(8.dp))
-                .weight(1.5f)
+                .weight(1.8f)
         )
         Text(
-            text = "${hour.precipitation}  " + GlobalUnits.precipitation,
+            text = "${hour.precipitation} " + GlobalUnits.precipitation,
             style = Typography.bodyLarge,
             textAlign = TextAlign.End,
             modifier = Modifier
@@ -80,7 +80,7 @@ fun ForecastElement(hour: Hour) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxHeight()
-                .weight(2.5f)
+                .weight(2.8f)
                 .padding(PaddingValues(8.dp))
         ) {
             Icon(

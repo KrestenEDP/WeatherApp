@@ -3,8 +3,8 @@ package dk.dtu.weatherapp.ui.homepage
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -31,14 +31,13 @@ fun Location(
             contentDescription = "Search button",
             Modifier
                 .padding(0.dp)
-                .width(50.dp)
-                .height(50.dp)
+                .size(36.dp)
                 .clickable { onSearchClicked() }
         )
         Spacer(Modifier.width(8.dp))
         Text(
             text = location,
-            style = Typography.displayMedium, // @TODO use larger font
+            style = Typography.displaySmall,
             modifier = Modifier.clickable { onSearchClicked() }
         )
     }

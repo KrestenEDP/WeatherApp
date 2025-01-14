@@ -36,6 +36,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import dk.dtu.weatherapp.GlobalUnitUtils
 import dk.dtu.weatherapp.GlobalUnits.edgymode
 import dk.dtu.weatherapp.domain.dataStore
+import dk.dtu.weatherapp.ui.theme.Typography
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -80,11 +81,11 @@ fun DarkModeSetting(context: Context) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp, bottom = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Dark Mode", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Dark Mode", style = Typography.titleSmall)
 
         Switch(
             checked = isDarkModeEnabled,
@@ -132,11 +133,11 @@ fun DynamicBackgroundSetting(context: Context) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical  = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Dynamic Background", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Dynamic Background", style = Typography.titleSmall)
 
         Switch(
             checked = isDynamicBackgroundEnabled,
@@ -175,11 +176,11 @@ fun UnitSetting(context: Context) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Unit", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Unit", style = Typography.titleSmall)
 
         Box {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -236,11 +237,11 @@ fun PushNotificationsSetting(context: Context) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Push Notifications", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Push Notifications", style = Typography.titleSmall)
 
         Switch(
             checked = arePushNotificationsEnabled,

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.GlobalUnits
+import dk.dtu.weatherapp.ui.theme.Typography
 import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
@@ -34,14 +35,14 @@ fun Hour(
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier
     ) {
-        Text(text = time)
+        Text(text = time, style = Typography.bodyLarge)
         Icon(
             painterResource(getPainterResource(icon, LocalContext.current)),
             contentDescription = null, // @TODO use dynamic icon and description
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(48.dp)
         )
-        Text(text = "$temp " + GlobalUnits.temp)
-        Text(text = "$rain " + GlobalUnits.precipitation)
+        Text(text = "$temp " + GlobalUnits.temp, style = Typography.bodyLarge)
+        Text(text = "$rain " + GlobalUnits.precipitation, style = Typography.bodyLarge)
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
@@ -50,7 +51,7 @@ fun Hour(
                     .rotate(windDegree.toFloat()+90)
                     .size(16.dp)
             )
-            Text(text = "$wind " + GlobalUnits.wind)
+            Text(text = "$wind " + GlobalUnits.wind, style = Typography.bodyLarge)
         }
     }
 }
