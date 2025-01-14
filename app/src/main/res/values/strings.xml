@@ -2,4 +2,7 @@
     <string name="app_name">WeatherApp</string>
     <string name="channel_name">alertChannel\n</string>
     <string name="channel_description">alertChannelDescription</string>
+    <string name="statsTooltipText">Choose a date to see statistics for the weather on that day. This does not reflect the actual weather on that day but a calculated value of the average weather for that day.</string>
+    <string name="statsTooltipTitle">What is this?</string>
+    <string name="statsTooltipButton">Dismiss</string>
 </resources>
