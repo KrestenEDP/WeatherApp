@@ -11,6 +11,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.WeatherActivity
 import dk.dtu.weatherapp.models.Alert
@@ -35,20 +36,22 @@ fun createNotificationChannel(activity: Activity) {
 
 @SuppressLint("MissingPermission")
 fun showNotification(context: Context, alert: Alert) {
-    val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.drawable.warning2)
-        .setContentTitle(alert.headline)
-        .setContentText(alert.event)
-        .setStyle(NotificationCompat.BigTextStyle().bigText(alert.description))
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
-        .setDefaults(NotificationCompat.DEFAULT_ALL)
-        .setAutoCancel(true)
+    if (GlobalUnits.noticeme) {
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.warning2)
+            .setContentTitle(alert.headline)
+            .setContentText(alert.event)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(alert.description))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setAutoCancel(true)
 
-    val notification = builder.build()
-    notification.flags = notification.flags or Notification.FLAG_ONLY_ALERT_ONCE
+        val notification = builder.build()
+        notification.flags = notification.flags or Notification.FLAG_ONLY_ALERT_ONCE
 
-    val notificationManager = NotificationManagerCompat.from(context)
-    notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+        val notificationManager = NotificationManagerCompat.from(context)
+        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
 }
 
 
