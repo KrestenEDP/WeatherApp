@@ -39,6 +39,7 @@ class WeatherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializeGlobalUnits(this)
+        createNotificationChannel(this)
         enableEdgeToEdge()
         setContent {
             WeatherApp()
@@ -129,7 +130,7 @@ fun WeatherApp() {
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
         val context = LocalContext.current
-        createNotificationChannel(context)
+
 
         val currentScreen =
             allScreens.find {
