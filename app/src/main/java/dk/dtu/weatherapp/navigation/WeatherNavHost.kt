@@ -72,12 +72,12 @@ fun WeatherNavHost(
             })
         }
         composable(
-            route = SingleDayForecast.routeWithArgs,
-            arguments = SingleDayForecast.arguments,
-            deepLinks = SingleDayForecast.deepLinks
+            route = WeeklyForecast.routeWithArgs,
+            arguments = WeeklyForecast.arguments,
+            deepLinks = WeeklyForecast.deepLinks
         ) { navBackStackEntry ->
             val singleDayIndex =
-                navBackStackEntry.arguments?.getInt(SingleDayForecast.INDEX)
+                navBackStackEntry.arguments?.getInt(WeeklyForecast.INDEX)
             WeeklyForecastScreen(singleDayIndex)
         }
     }
@@ -94,5 +94,5 @@ fun NavHostController.navigateSingleTopTo(route: String, restore: Boolean = true
 }
 
 private fun NavHostController.navigateToWeeklyForecast(index: Int) {
-    this.navigateSingleTopTo("${SingleDayForecast.route}/$index", restore = false)
+    this.navigateSingleTopTo("${WeeklyForecast.route}/$index", restore = false)
 }

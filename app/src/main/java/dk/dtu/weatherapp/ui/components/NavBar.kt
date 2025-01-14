@@ -8,6 +8,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.navigation.WeatherDestination
 import java.util.Locale
@@ -26,9 +28,9 @@ import java.util.Locale
             NavigationBarItem(
                 icon = {
                     Icon(
-                        imageVector = if (screen == currentScreen) screen.iconSelected else screen.iconUnselected,
+                        imageVector = ImageVector.vectorResource(screen.icon),
                         contentDescription = null,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(30.dp)
                     )
                 },
                 label = { Text(screen.route.replaceFirstChar { it.titlecase(Locale.ENGLISH) }) },

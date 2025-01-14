@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.data.mock.MockHourlyFourDayForecast
-import dk.dtu.weatherapp.navigation.SingleDayForecast
+import dk.dtu.weatherapp.navigation.WeeklyForecast
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -151,7 +151,7 @@ fun WeeklyForecastContent(
                 )
             }.collect { (page, offset) ->
                 indicatorState.scrollToPage(page, offset)
-                SingleDayForecast.appBarTitle = formatDate(forecastDailyUiState.days[page].date)
+                WeeklyForecast.appBarTitle = formatDate(forecastDailyUiState.days[page].date)
             }
         }
     }
