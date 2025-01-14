@@ -1,23 +1,26 @@
 package dk.dtu.weatherapp.ui.statistics
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dk.dtu.weatherapp.domain.StatsRepository
 import dk.dtu.weatherapp.models.StatsDay
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class StatsViewModel : ViewModel() {
     private val statsRepo = StatsRepository()
-    private var dayStats: StatsDay? = null
-    init {
-        // Initialize with the stats for current day
-        viewModelScope.launch {
-            // TODO Use current day and location
-            dayStats = statsRepo.getDayStats(2, 2)
-        }
-    }
+    private var currentJob: Job? = null
 
-    fun getDayStats(): StatsDay? {
-        return dayStats
+    suspend fun getDayStats(day: Int, month: Int): StatsDay {
+        lateinit var data: StatsDay
+        currentJob?.cancel()
+        currentJob = viewModelScope.launch {
+            delay(200)
+            data = statsRepo.getDayStats(day = day, month = month)
+        }
+        currentJob?.join()
+        return data
     }
 }

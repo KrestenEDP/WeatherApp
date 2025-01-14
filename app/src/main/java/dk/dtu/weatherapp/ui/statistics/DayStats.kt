@@ -24,6 +24,7 @@ import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TooltipState
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
+import dk.dtu.weatherapp.models.StatsDay
 import dk.dtu.weatherapp.ui.components.CircularList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,40 +49,48 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DayStats() {
+fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
     val tooltipState = rememberTooltipState(isPersistent = true)
+    var day by remember { mutableIntStateOf(1) }
+    var month by remember { mutableIntStateOf(1) }
+    var statsDay by remember { mutableStateOf<StatsDay?>(null) }
+
+    LaunchedEffect(day, month) {
+        statsDay = statsViewModel.getDayStats(day, month)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .then(if (tooltipState.isVisible) Modifier.blur(2.dp) else Modifier)
-    ){
-        TooltipBox(
-            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-            tooltip = {
-                RichTooltip(
-                    title = { Text(stringResource(R.string.statsTooltipTitle)) },
-                    text = { Text(stringResource(R.string.statsTooltipText)) },
-                    action = {
-                        TextButton(
-                            onClick = { tooltipState.dismiss() }
-                        ) {
-                            Text(stringResource(R.string.statsTooltipButton))
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                )
-            },
-            state = tooltipState,
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ){
-                DayPicker()
+            DayPicker(day, month, onDayChange = { day = it }, onMonthChange = { month = it })
+            TooltipBox(
+                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                tooltip = {
+                    RichTooltip(
+                        title = { Text(stringResource(R.string.statsTooltipTitle)) },
+                        text = { Text(stringResource(R.string.statsTooltipText)) },
+                        action = {
+                            TextButton(
+                                onClick = { tooltipState.dismiss() }
+                            ) {
+                                Text(stringResource(R.string.statsTooltipButton))
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                    )
+                },
+                state = tooltipState,
+            ) {
                 IconButton(
                     onClick = { CoroutineScope(Dispatchers.Main).launch { tooltipState.show() } }
                 ) {
@@ -92,31 +102,31 @@ fun DayStats() {
                 }
             }
         }
-        LazyVerticalGrid (
+        LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            item {StatsCard(title = "Temperature", value = 20.0, R.drawable.i01d, GlobalUnits.temp)} // TODO use imported values
-            item {StatsCard(title = "Wind", value = 4.0, R.drawable.wind, GlobalUnits.wind)} // TODO use imported values
-            item {StatsCard(title = "Rain", value = 0.0, R.drawable.i09d, GlobalUnits.precipitation)} // TODO use imported values
-            item {StatsCard(title = "Humidity", value = 80.51, R.drawable.humidity, "%")} // TODO use imported values
-            item {StatsCard(title = "Pressure", value = 1027.0, R.drawable.compress, "hPa")} // TODO use imported values
-            item {StatsCard(title = "Clouds", value = 90.2, R.drawable.i03d, "%")} // TODO use imported values
+            statsDay?.let {
+                item { StatsCard(title = "Temperature", value = it.temp.mean, R.drawable.i01d, GlobalUnits.temp) }
+                item { StatsCard(title = "Wind", value = it.wind.mean, R.drawable.wind, GlobalUnits.wind) }
+                item { StatsCard(title = "Rain", value = it.precipitation.mean, R.drawable.i09d, GlobalUnits.precipitation) }
+                item { StatsCard(title = "Humidity", value = it.humidity.mean, R.drawable.humidity, "%") }
+                item { StatsCard(title = "Pressure", value = it.pressure.mean, R.drawable.compress, "hPa") }
+                item { StatsCard(title = "Clouds", value = it.clouds.mean, R.drawable.i03d, "%") }
+            }
         }
     }
 }
 
 @Composable
-fun DayPicker() {
+fun DayPicker(day: Int, month: Int, onDayChange: (Int) -> Unit, onMonthChange: (Int) -> Unit) {
     var listOfDays: MutableList<String> by remember { mutableStateOf(MutableList(1) { "" }) }
     val listOfMonths = listOf(
         "January", "February", "March", "April", "May", "June", "July", "August", "September",
         "October", "November", "December"
     ).toMutableList()
-    var day by remember { mutableIntStateOf(1)}
-    var month by remember { mutableIntStateOf(1)}
     listOfDays = when (month) {
         4, 6, 9, 11 -> listOf(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
@@ -140,27 +150,29 @@ fun DayPicker() {
             itemHeight = 40,
             itemDisplayCount = 3,
             width = 60,
-        ) { day = it.toInt() }
+        ) { onDayChange(it.toInt()) }
         CircularList(
             items = listOfMonths,
             itemHeight = 40,
             itemDisplayCount = 3,
             width = 140,
-        ) { month = when(it) {
-            "January" -> 1
-            "February" -> 2
-            "March" -> 3
-            "April" -> 4
-            "May" -> 5
-            "June" -> 6
-            "July" -> 7
-            "August" -> 8
-            "September" -> 9
-            "October" -> 10
-            "November" -> 11
-            "December" -> 12
-            else -> -1
-        } }
+        ) { onMonthChange(
+            when (it) {
+                "January" -> 1
+                "February" -> 2
+                "March" -> 3
+                "April" -> 4
+                "May" -> 5
+                "June" -> 6
+                "July" -> 7
+                "August" -> 8
+                "September" -> 9
+                "October" -> 10
+                "November" -> 11
+                "December" -> 12
+                else -> 1
+            }
+        ) }
     }
 }
 
