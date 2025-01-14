@@ -1,11 +1,7 @@
 package dk.dtu.weatherapp.domain
 
-import android.content.Context
-import androidx.datastore.preferences.core.intPreferencesKey
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.getUnitSetting
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import java.util.Locale
 
 suspend fun convertTempUnit(temp: Double): Double {
@@ -52,14 +48,4 @@ private fun mmToInches(mm: Double): Double {
 
 private fun meterPerSecondsToMilesPerHour(ms: Double): Double {
     return ms * 2.236936
-}
-
-private suspend fun getUnitSetting(context: Context): Int {
-    val dataStore = context.dataStore.data
-    val preferredUnitKey = intPreferencesKey("preferred_unit")
-
-
-    return dataStore.map { preferences ->
-        preferences[preferredUnitKey] ?: 0
-    }.first()
 }

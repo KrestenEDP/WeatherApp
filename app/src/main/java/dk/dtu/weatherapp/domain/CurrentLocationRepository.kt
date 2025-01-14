@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-val Context.currentLocationDataStore by preferencesDataStore(name = "current_location")
+private val Context.currentLocationDataStore by preferencesDataStore(name = "current_location")
 
 private val currentLocationDataStore = getAppContext().currentLocationDataStore
 private val currentLocationNameKey = stringPreferencesKey("current_location_name")
