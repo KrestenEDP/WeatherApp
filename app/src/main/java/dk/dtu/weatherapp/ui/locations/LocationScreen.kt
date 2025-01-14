@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dk.dtu.weatherapp.Firebase.GetMacAddress
 import dk.dtu.weatherapp.Firebase.LocationsViewModelFactory
+import dk.dtu.weatherapp.Firebase.getUserId
 import dk.dtu.weatherapp.models.Location
 
 
 @Composable
 fun LocationPage(onLocationClicked: (Location) -> Unit) {
-    val userId = GetMacAddress(LocalContext.current) ?: return
+    val userId = getUserId(LocalContext.current)
     val locationsViewModel: LocationsViewModel = viewModel(factory = LocationsViewModelFactory(userId))
     
     var showFavoriteRecent = remember { mutableStateOf(true) }

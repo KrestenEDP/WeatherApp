@@ -4,6 +4,10 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import dk.dtu.weatherapp.Firebase.FirebaseHelper.isLocationInFirestore
+import dk.dtu.weatherapp.Firebase.FirebaseHelper.limitEntriesInFirestoreCollection
+import dk.dtu.weatherapp.Firebase.FirebaseHelper.saveLocationToFirestore
+import dk.dtu.weatherapp.Firebase.getUserId
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.models.Location
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +34,42 @@ suspend fun fetchCurrentLocation() {
                 lon = preferences[currentLocationLonKey] ?: "12.50378",
                 isFavorite = false
             )
-            // TODO: Add to firebase if not already there, remove oldest element if more than max limit (15?)
+
+            val userId = getUserId(getAppContext())
+            isLocationInFirestore(
+                userId = userId,
+                tableId = "recent",
+                cityName = location.name,
+                onSuccess = { exists ->
+                    if (!exists) {
+                        saveLocationToFirestore(
+                            userId = userId,
+                            tableId = "recent",
+                            cityName = location.name,
+                            latitude = location.lat,
+                            longitude = location.lon,
+                            saveTimeStamp = true,
+                            onSuccess = { },
+                            onFailure = { exception ->
+                                // Handle error
+                            }
+                        )
+
+                        customScope.launch {
+                            // Removes oldest entry if there are more than 15 entries
+                            limitEntriesInFirestoreCollection(
+                                userId = userId,
+                                tableId = "recent",
+                                amount = 8
+                            )
+                        }
+                    }
+                },
+                onFailure = { exception ->
+                    // Handle error
+                }
+            )
+
             location
         }.first()
 }

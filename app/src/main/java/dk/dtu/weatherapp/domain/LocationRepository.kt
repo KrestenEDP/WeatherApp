@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.domain
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import dk.dtu.weatherapp.Firebase.FirebaseHelper
 import dk.dtu.weatherapp.R
@@ -25,7 +24,7 @@ class LocationRepository(private val userId: String) {
     val favoriteLocationFlow = mutableFavoriteLocationFlow.asSharedFlow()
 
     private val mutableRecentLocationFlow = MutableSharedFlow<List<Location>>()
-    val recentLocationFlow = mutableFavoriteLocationFlow.asSharedFlow()
+    val recentLocationFlow = mutableRecentLocationFlow.asSharedFlow()
 
     suspend fun getLocations(input: String) = mutableLocationFlow.emit(
         searchForCities(input)
@@ -39,19 +38,19 @@ class LocationRepository(private val userId: String) {
         fetchCollection("recent")
     )
 
-
     fun toggleFavorite(location: Location) {
-        FirebaseHelper.isFavoriteInFirestore(
+        FirebaseHelper.isLocationInFirestore(
             userId = userId,
+            tableId = "favorites",
             cityName = location.name,
             onSuccess = { favorite ->
                 if (favorite) {
                     // Remove the favorite
-                    FirebaseHelper.removeFavoriteFromFirestore(
+                    FirebaseHelper.removeLocationFromFirestore(
                         userId = userId,
+                        tableId = "favorites",
                         cityName = location.name,
                         onSuccess = {
-                            Log.d("LocationRepository", "Removed favorite for ${location.name}")
                             GlobalScope.launch(Dispatchers.Main) {
                                 getFavoriteLocations()
                             }
@@ -61,17 +60,13 @@ class LocationRepository(private val userId: String) {
                         }
                     )
                 } else {
-                    val favoriteData = mapOf(
-                        "latitude" to location.lat,
-                        "longitude" to location.lon
-                    )
-                    FirebaseHelper.saveFavoriteToFirestore(
+                    FirebaseHelper.saveLocationToFirestore(
                         userId = userId,
+                        tableId = "favorites",
                         cityName = location.name,
                         latitude = location.lat,
                         longitude = location.lon,
                         onSuccess = {
-                            Log.d("LocationRepository", "Added favorite for ${location.name}")
                             GlobalScope.launch(Dispatchers.Main) {
                                 getFavoriteLocations()
                             }
@@ -95,7 +90,7 @@ class LocationRepository(private val userId: String) {
             reader.lineSequence()
                 .drop(1)
                 .filter { it.split(",")[0].contains(query, ignoreCase = true) }
-                .take(30)
+                .take(15)
                 .map {
                     val parameters = it.split(",")
                     Location(name = parameters[0], parameters[1], parameters[2], isFavorite = favorites.contains(parameters[0]))
@@ -105,21 +100,19 @@ class LocationRepository(private val userId: String) {
     }
 
     suspend fun fetchCollection(tableId: String): List<Location> {
-        if (tableId == "favorites") {
-            favorites = emptyList()
-        }
+        if (tableId == "favorites") favorites = emptyList()
         val collection = firestore.collection("users")
             .document(userId)
             .collection(tableId)
 
-        val initialFavorites = collection.get()
+        val initialCities = collection.get()
             .await()
             .documents.map { document ->
                 val cityName = document.id
                 val lat: String = document["latitude"] as String
                 val lon: String = document["longitude"] as String
-                favorites += cityName
-                Location(name = cityName, lat, lon, true)
+                if (tableId == "favorites") favorites += cityName
+                Location(name = cityName, lat, lon, if (tableId == "favorites") true else favorites.contains(cityName))
             }
 
         collection.addSnapshotListener { snapshot, error ->
@@ -128,19 +121,20 @@ class LocationRepository(private val userId: String) {
             }
 
             if (snapshot != null && !snapshot.isEmpty) {
-                val favoriteCities = snapshot.documents.map { document ->
+                val cities = snapshot.documents.map { document ->
                     val cityName = document.id
                     val lat: String = document["latitude"] as String
                     val lon: String = document["longitude"] as String
-                    favorites += cityName
-                    Location(name = cityName, lat, lon, true)
+                    if (tableId == "favorites") favorites += cityName
+                    Location(name = cityName, lat, lon, if (tableId == "favorites") true else favorites.contains(cityName))
                 }
                 GlobalScope.launch {
-                    mutableFavoriteLocationFlow.emit(favoriteCities)
+                    if (tableId == "favorites") mutableFavoriteLocationFlow.emit(cities)
+                    else mutableRecentLocationFlow.emit(cities)
                 }
             }
         }
 
-        return initialFavorites
+        return initialCities
     }
 }

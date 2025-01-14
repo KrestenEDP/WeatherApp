@@ -43,7 +43,11 @@ class LocationsViewModel(userId: String) : ViewModel() {
             locationRepository.favoriteLocationFlow
                 .collect { data ->
                     favoriteLocationMutable.update {
-                        LocationsUIModel.Data(data)
+                        if (data.isEmpty()) {
+                            LocationsUIModel.Empty
+                        } else {
+                            LocationsUIModel.Data(data)
+                        }
                     }
                 }
         }
@@ -51,11 +55,16 @@ class LocationsViewModel(userId: String) : ViewModel() {
             locationRepository.recentLocationFlow
                 .collect { data ->
                     recentLocationMutable.update {
-                        LocationsUIModel.Data(data)
+                        if (data.isEmpty()) {
+                            LocationsUIModel.Empty
+                        } else {
+                            LocationsUIModel.Data(data)
+                        }
                     }
                 }
         }
         getFavoriteLocations()
+        getRecentLocations()
         getLocations()
     }
 
@@ -75,15 +84,7 @@ class LocationsViewModel(userId: String) : ViewModel() {
 
     private fun getFavoriteLocations() = viewModelScope.launch {
         locationRepository.getFavoriteLocations()
-        favoriteLocationMutable.update { currentState ->
-            if (currentState is LocationsUIModel.Data && currentState.locations.isEmpty()) {
-                LocationsUIModel.Empty
-            } else {
-                currentState
-            }
-        }
     }
-
 
     private fun getRecentLocations() = viewModelScope.launch {
         locationRepository.getRecentLocations()
