@@ -26,6 +26,8 @@ object FirebaseHelper {
     fun saveFavoriteToFirestore(
         userId: String,
         cityName: String,
+        latitude: String,
+        longitude: String,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -34,7 +36,14 @@ object FirebaseHelper {
             .document(userId)
             .collection("favorites")
 
-        favoritesCollection.document(cityName).set(mapOf("name" to cityName))
+        // Save cityName, latitude, and longitude
+        val favoriteData = mapOf(
+            "name" to cityName,
+            "latitude" to latitude,
+            "longitude" to longitude
+        )
+
+        favoritesCollection.document(cityName).set(favoriteData)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
     }

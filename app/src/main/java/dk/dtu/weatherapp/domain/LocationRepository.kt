@@ -16,7 +16,7 @@ import kotlinx.coroutines.tasks.await
 class LocationRepository(private val userId: String) {
     private val firestore = FirebaseFirestore.getInstance()
 
-    private var favorites: List<String> = emptyList() // Purely to see if search results are in favorites or not
+    private var favorites: List<String> = emptyList()
 
     private val mutableLocationFlow = MutableSharedFlow<List<Location>>()
     val locationFlow = mutableLocationFlow.asSharedFlow()
@@ -32,11 +32,11 @@ class LocationRepository(private val userId: String) {
     )
 
     suspend fun getFavoriteLocations() = mutableFavoriteLocationFlow.emit(
-        fetchFavorites()
+        fetchCollection("favorites")
     )
 
     suspend fun getRecentLocations() = mutableRecentLocationFlow.emit(
-        fetchFavorites() // TODO: Change to recent
+        fetchCollection("recent")
     )
 
 
@@ -61,9 +61,15 @@ class LocationRepository(private val userId: String) {
                         }
                     )
                 } else {
+                    val favoriteData = mapOf(
+                        "latitude" to location.lat,
+                        "longitude" to location.lon
+                    )
                     FirebaseHelper.saveFavoriteToFirestore(
                         userId = userId,
                         cityName = location.name,
+                        latitude = location.lat,
+                        longitude = location.lon,
                         onSuccess = {
                             Log.d("LocationRepository", "Added favorite for ${location.name}")
                             GlobalScope.launch(Dispatchers.Main) {
@@ -98,21 +104,25 @@ class LocationRepository(private val userId: String) {
         }
     }
 
-    suspend fun fetchFavorites(): List<Location> {
-        favorites = emptyList()
-        val favoritesCollection = firestore.collection("users")
+    suspend fun fetchCollection(tableId: String): List<Location> {
+        if (tableId == "favorites") {
+            favorites = emptyList()
+        }
+        val collection = firestore.collection("users")
             .document(userId)
-            .collection("favorites")
+            .collection(tableId)
 
-        val initialFavorites = favoritesCollection.get()
+        val initialFavorites = collection.get()
             .await()
             .documents.map { document ->
                 val cityName = document.id
+                val lat: String = document["latitude"] as String
+                val lon: String = document["longitude"] as String
                 favorites += cityName
-                Location(name = cityName, "15.5", "15.5", true)
+                Location(name = cityName, lat, lon, true)
             }
 
-        favoritesCollection.addSnapshotListener { snapshot, error ->
+        collection.addSnapshotListener { snapshot, error ->
             if (error != null) {
                 return@addSnapshotListener
             }
@@ -120,8 +130,10 @@ class LocationRepository(private val userId: String) {
             if (snapshot != null && !snapshot.isEmpty) {
                 val favoriteCities = snapshot.documents.map { document ->
                     val cityName = document.id
+                    val lat: String = document["latitude"] as String
+                    val lon: String = document["longitude"] as String
                     favorites += cityName
-                    Location(name = cityName, "15.5", "15.5", true)
+                    Location(name = cityName, lat, lon, true)
                 }
                 GlobalScope.launch {
                     mutableFavoriteLocationFlow.emit(favoriteCities)
