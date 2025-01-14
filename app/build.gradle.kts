@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.play.services.auth)  // For Google Sign-In and Auth
 
     implementation(libs.gson)
+    implementation(libs.androidx.security.crypto)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
