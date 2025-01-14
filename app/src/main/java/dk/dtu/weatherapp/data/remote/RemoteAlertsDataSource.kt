@@ -1,11 +1,10 @@
 package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.util.Log
 import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.getAppContext
+import dk.dtu.weatherapp.ui.util.hasNetwork
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,10 +31,31 @@ class RemoteAlertsDataSource {
         .addInterceptor { chain ->
             var request = chain.request()
 
-            request = if (hasNetwork(context)!!)
-                request.newBuilder().header("Cache-Control", "public, max-age=" + 1800 + ", stale-while-revalidate=" + 300).build()
-            else
-                request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
+            val currentLocation = getCurrentLocation()
+            val lastKnownLocation = getLastKnownLocation(context)
+
+            val locationChanged = lastKnownLocation == null ||
+                    lastKnownLocation.first != currentLocation.lat ||
+                    lastKnownLocation.second != currentLocation.lon
+
+            if (locationChanged) {
+                request = request.newBuilder()
+                    .header("Cache-Control", "no-cache, no-store, must-revalidate")
+                    .build()
+
+                saveLastKnownLocation(context, currentLocation.lat, currentLocation.lon)
+            } else {
+                request = if (hasNetwork(context)!!)
+                    request.newBuilder().header(
+                        "Cache-Control",
+                        "public, max-age=" + 1800 + ", stale-while-revalidate=" + 300
+                    ).build()
+                else
+                    request.newBuilder().header(
+                        "Cache-Control",
+                        "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
+                    ).build()
+            }
 
             val response = chain.proceed(request)
 
@@ -57,15 +77,6 @@ class RemoteAlertsDataSource {
         .client(okHttpClient)
         .baseUrl(BASE_URL)
         .build()
-
-    fun hasNetwork(context: Context): Boolean? {
-        var isConnected: Boolean? = false // Initial Value
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        if (activeNetwork != null && activeNetwork.isConnected)
-            isConnected = true
-        return isConnected
-    }
 
     private val alertsApi: AlertsApiService = retrofit.create(AlertsApiService::class.java)
 

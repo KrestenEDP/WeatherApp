@@ -31,10 +31,33 @@ class RemoteStatisticsDataSource {
         .cache(cache)
         .addInterceptor { chain ->
             var request = chain.request()
-            request = if (hasNetwork(context)!!)
-                request.newBuilder().header("Cache-Control", "public, max-age=" + 300).build()
-            else
-                request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
+
+            val currentLocation = getCurrentLocation()
+            val lastKnownLocation = getLastKnownLocation(context)
+
+            val locationChanged = lastKnownLocation == null ||
+                    lastKnownLocation.first != currentLocation.lat ||
+                    lastKnownLocation.second != currentLocation.lon
+
+            if (locationChanged) {
+                request = request.newBuilder()
+                    .header("Cache-Control", "no-cache, no-store, must-revalidate")
+                    .build()
+
+                saveLastKnownLocation(context, currentLocation.lat, currentLocation.lon)
+            } else {
+                request = if (hasNetwork(context)!!)
+                    request.newBuilder().header(
+                        "Cache-Control",
+                        "public, max-age=" + 1800 + ", stale-while-revalidate=" + 300
+                    ).build()
+                else
+                    request.newBuilder().header(
+                        "Cache-Control",
+                        "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
+                    ).build()
+            }
+            
             chain.proceed(request)
         }
         .build()
