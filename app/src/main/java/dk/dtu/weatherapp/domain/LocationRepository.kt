@@ -112,9 +112,21 @@ class LocationRepository(private val userId: String) {
                 val cityName = document.id
                 val lat: String = document["latitude"] as String
                 val lon: String = document["longitude"] as String
+                val timestamp = document["timestamp"] as? com.google.firebase.Timestamp
                 if (tableId == "favorites") favorites += cityName
-                Location(name = cityName, lat, lon, if (tableId == "favorites") true else favorites.contains(cityName))
-            }
+                Location(
+                    name = cityName,
+                    lat = lat,
+                    lon = lon,
+                    isFavorite = if (tableId == "favorites") true else favorites.contains(cityName)
+                ) to timestamp?.seconds            }
+
+        val sortedInitialCities = if (tableId == "recent") {
+            initialCities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
+                .map { it.first } // Extract sorted Location objects (ignore timestamps)
+        } else {
+            initialCities.map { it.first } // Just map Location objects without sorting
+        }
 
         collection.addSnapshotListener { snapshot, error ->
             if (error != null) {
@@ -126,16 +138,30 @@ class LocationRepository(private val userId: String) {
                     val cityName = document.id
                     val lat: String = document["latitude"] as String
                     val lon: String = document["longitude"] as String
+                    val timestamp = document["timestamp"] as? com.google.firebase.Timestamp
                     if (tableId == "favorites") favorites += cityName
-                    Location(name = cityName, lat, lon, if (tableId == "favorites") true else favorites.contains(cityName))
+                    Location(
+                        name = cityName,
+                        lat = lat,
+                        lon = lon,
+                        isFavorite = if (tableId == "favorites") true else favorites.contains(cityName)
+                    ) to timestamp?.seconds
                 }
+
+                val sortedCities = if (tableId == "recent") {
+                    cities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
+                        .map { it.first } // Extract sorted Location objects (ignore timestamps)
+                } else {
+                    cities.map { it.first } // Just map Location objects without sorting
+                }
+
                 customScope.launch {
-                    if (tableId == "favorites") mutableFavoriteLocationFlow.emit(cities)
-                    else mutableRecentLocationFlow.emit(cities)
+                    if (tableId == "favorites") mutableFavoriteLocationFlow.emit(sortedCities)
+                    else mutableRecentLocationFlow.emit(sortedCities)
                 }
             }
         }
 
-        return initialCities
+        return sortedInitialCities
     }
 }
