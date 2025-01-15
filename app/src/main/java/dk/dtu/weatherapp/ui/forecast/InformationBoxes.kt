@@ -45,7 +45,7 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 InformationCard(
-                    title = "Temperature", text = "${forecast.dayTemp}/${forecast.nightTemp}",
+                    title = "Temperature", text = "${forecast.dayTemp} / ${forecast.nightTemp}",
                     getPainterResource(forecast.iconURL, LocalContext.current), GlobalUnits.temp,
                     modifier = Modifier.weight(0.5f)
                 )
