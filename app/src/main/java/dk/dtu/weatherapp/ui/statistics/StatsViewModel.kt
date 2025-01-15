@@ -17,7 +17,7 @@ class StatsViewModel : ViewModel() {
         lateinit var data: StatsDay
         currentJob?.cancel()
         currentJob = viewModelScope.launch {
-            delay(200)
+            delay(50)
             data = statsRepo.getDayStats(day = day, month = month)
         }
         currentJob?.join()
