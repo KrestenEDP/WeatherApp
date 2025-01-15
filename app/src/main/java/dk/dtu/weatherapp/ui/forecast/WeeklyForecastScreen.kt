@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -112,6 +113,9 @@ fun WeeklyForecastContent(
                     .width(100.dp)
                     .align(Alignment.CenterVertically)
                     .padding(bottom=8.dp)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(color = Color.Gray.copy(alpha = 0.2f))
+                    .padding(vertical = 4.dp)
 
             ) { page ->
                 Box(
