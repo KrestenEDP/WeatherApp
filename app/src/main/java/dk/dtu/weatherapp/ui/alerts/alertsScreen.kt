@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Alert
+import dk.dtu.weatherapp.ui.components.EmptyScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 
 
@@ -24,9 +25,7 @@ fun AlertsScreen(
 ) {
     val alertViewModel: AlertsViewModel = viewModel()
     when (val alertsUIModel = alertViewModel.alertsUIState.collectAsState().value) {
-        AlertsUIModel.Empty -> Column {
-            Text("No data")
-        }
+        AlertsUIModel.Empty -> EmptyScreen(text = "Currently no weather alerts at your location")
         AlertsUIModel.Loading -> Column {
             LoadingScreen()
         }
