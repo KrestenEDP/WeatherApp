@@ -17,7 +17,6 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,7 +32,9 @@ import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.data.mock.MockHourlyFourDayForecast
 import dk.dtu.weatherapp.navigation.WeeklyForecast
+import dk.dtu.weatherapp.ui.components.EmptyScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
+import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.absoluteValue
@@ -45,7 +46,8 @@ fun WeeklyForecastScreen(
     val weeklyForecastViewModel: WeeklyForecastViewModel = viewModel()
 
     when (val dayUIModel = weeklyForecastViewModel.dayUIState.collectAsState().value) {
-        DayUIModel.Empty -> Text("No data")
+        DayUIModel.RequestError -> RequestErrorScreen()
+        DayUIModel.Empty -> EmptyScreen("No available data")
         DayUIModel.Loading -> LoadingScreen()
         is DayUIModel.Data -> {
             WeeklyForecastContent(
@@ -78,14 +80,10 @@ fun WeeklyForecastContent(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                /*Text(
-                    text = forecastUiModel.fourDayHourly[it][0].time, // TODO Change to day instead of hour
-                    style = Typography.titleLarge,
-                    modifier = Modifier.padding(8.dp),
-                )*/
                 var showMoreInformationBoxes = false
                 when (forecastHourlyUiModel) {
-                    HourlyUIModel.Empty -> item { Text("No data") }
+                    HourlyUIModel.RequestError -> item { RequestErrorScreen() }
+                    HourlyUIModel.Empty -> item { EmptyScreen("No available data") }
                     HourlyUIModel.Loading -> item { LoadingScreen(modifier = Modifier.padding(vertical = 100.dp)) }
                     is HourlyUIModel.Data -> {
                         if (it < forecastHourlyUiModel.hours.size) {

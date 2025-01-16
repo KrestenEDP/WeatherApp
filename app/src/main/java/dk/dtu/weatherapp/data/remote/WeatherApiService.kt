@@ -11,14 +11,14 @@ interface WeatherApiService {
         @Query("lat") lat: String = "55.77",
         @Query("lon") lon: String = "12.50",
         //@Query("units") units: String = "metric"
-    ): WeatherHourDao
+    ): WeatherHourDao?
 
     @GET("/data/2.5/forecast/daily?cont=16&appid=$WeatherApiKey")
     suspend fun getDailyWeather(
         @Query("lat") lat: String = "55.77",
         @Query("lon") lon: String = "12.50",
         //@Query("units") units: String = "metric"
-        ): DailyWeatherDao
+        ): DailyWeatherDao?
 
     @GET("/data/2.5/forecast/hourly?appid=$WeatherApiKey")
     suspend fun getHourlyWeather(
@@ -26,5 +26,5 @@ interface WeatherApiService {
         @Query("lon") lon: String = "12.50",
         @Query("cnt") count: Int = 96,
         //@Query("units") units: String = "metric"
-    ): HourlyWeatherDao
+    ): HourlyWeatherDao?
 }

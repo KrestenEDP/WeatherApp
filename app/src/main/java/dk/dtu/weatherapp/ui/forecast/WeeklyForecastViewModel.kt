@@ -26,7 +26,9 @@ class WeeklyForecastViewModel : ViewModel() {
             hourlyRepository.fourDayForecastFlow
                 .collect { data ->
                     hourlyMutable.update {
-                        HourlyUIModel.Data(data)
+                        if (data == null) HourlyUIModel.RequestError
+                        else if (data.isEmpty()) HourlyUIModel.Empty
+                        else HourlyUIModel.Data(data)
                     }
                 }
         }
@@ -34,7 +36,9 @@ class WeeklyForecastViewModel : ViewModel() {
             dayRepository.dayFlow
                 .collect { data ->
                     dayMutable.update {
-                        DayUIModel.Data(data)
+                        if (data == null) DayUIModel.RequestError
+                        else if (data.isEmpty()) DayUIModel.Empty
+                        else DayUIModel.Data(data)
                     }
                 }
         }
@@ -51,12 +55,14 @@ class WeeklyForecastViewModel : ViewModel() {
 }
 
 sealed class HourlyUIModel {
+    data object RequestError: HourlyUIModel()
     data object Empty: HourlyUIModel()
     data object Loading: HourlyUIModel()
     data class Data(val hours: List<List<Hour>>) : HourlyUIModel()
 }
 
 sealed class DayUIModel {
+    data object RequestError: DayUIModel()
     data object Empty: DayUIModel()
     data object Loading: DayUIModel()
     data class Data(val days: List<Day>) : DayUIModel()

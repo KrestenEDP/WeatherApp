@@ -2,6 +2,9 @@ package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
 import android.util.Log
+import dk.dtu.weatherapp.data.model.DailyWeatherDao
+import dk.dtu.weatherapp.data.model.HourlyWeatherDao
+import dk.dtu.weatherapp.data.model.WeatherHourDao
 import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.ui.util.hasNetwork
@@ -59,13 +62,6 @@ class RemoteWeatherDataSource {
 
             val response = chain.proceed(request)
 
-            // Log whether the response is coming from the cache or network
-            if (response.cacheResponse != null) {
-                Log.d("RemoteTest","Serving from Cache")
-            } else {
-                Log.d("RemoteTest","Requesting from Network")
-            }
-
             return@addInterceptor response
         }
         .build()
@@ -80,8 +76,39 @@ class RemoteWeatherDataSource {
 
     private val weatherApi: WeatherApiService = retrofit.create(WeatherApiService::class.java)
 
-    suspend fun getCurrentWeather() = weatherApi.getCurrentWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
-    suspend fun getHourlyWeatherToday(count: Int) = weatherApi.getHourlyWeather(count = count, lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
-    suspend fun getHourlyWeather() = weatherApi.getHourlyWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
-    suspend fun getDailyWeather() = weatherApi.getDailyWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+    suspend fun getCurrentWeather(): WeatherHourDao? {
+        return try {
+            weatherApi.getCurrentWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+        } catch (e: Exception) {
+            Log.e("RemoteWeatherDataSource", "Failed to get current weather", e)
+            null
+        }
+    }
+
+    suspend fun getHourlyWeatherToday(count: Int): HourlyWeatherDao? {
+        return try {
+            weatherApi.getHourlyWeather(count = count, lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+        } catch (e: Exception) {
+            Log.e("RemoteWeatherDataSource", "Failed to get hourly weather for today", e)
+            null
+        }
+    }
+
+    suspend fun getHourlyWeather(): HourlyWeatherDao? {
+        return try {
+            weatherApi.getHourlyWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+        } catch (e: Exception) {
+            Log.e("RemoteWeatherDataSource", "Failed to get hourly weather", e)
+            null
+        }
+    }
+
+    suspend fun getDailyWeather(): DailyWeatherDao? {
+        return try {
+            weatherApi.getDailyWeather(lat = getCurrentLocation().lat, lon = getCurrentLocation().lon)
+        } catch (e: Exception) {
+            Log.e("RemoteWeatherDataSource", "Failed to get daily weather", e)
+            null
+        }
+    }
 }

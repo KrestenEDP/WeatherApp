@@ -15,25 +15,25 @@ import kotlinx.coroutines.flow.asSharedFlow
 class StatsRepository {
     private val dataSource = RemoteStatisticsDataSource()
 
-    private val mutableDayStatsFlow = MutableSharedFlow<StatsDay>()
+    private val mutableDayStatsFlow = MutableSharedFlow<StatsDay?>()
     val dayStatsFlow = mutableDayStatsFlow.asSharedFlow()
 
-    private val mutableMonthStatsFlow = MutableSharedFlow<StatsDay>()
+    private val mutableMonthStatsFlow = MutableSharedFlow<StatsDay?>()
     val monthStatsFlow = mutableMonthStatsFlow.asSharedFlow()
 
     private val mutableYearStatsFlow = MutableSharedFlow<List<StatsDay>>()
     val yearStatsFlow = mutableYearStatsFlow.asSharedFlow()
 
     suspend fun getDayStats(day: Int, month: Int) = mutableDayStatsFlow.emit(
-        dataSource.getDayStatistics(month = month, day = day).stats.mapToStatsList()
+        dataSource.getDayStatistics(month = month, day = day)?.stats?.mapToStatsList()
     )
 
     suspend fun getMonthStats(month: Int) = mutableMonthStatsFlow.emit(
-        dataSource.getMonthStatistics(month = month).stats.mapToStatsList()
+        dataSource.getMonthStatistics(month = month)?.stats?.mapToStatsList()
     )
 
     suspend fun getYearStats() = mutableYearStatsFlow.emit(
-        dataSource.getYearStatistics().stats.stats.map { it.mapToStatsList() }
+        dataSource.getYearStatistics()?.stats?.stats?.map { it.mapToStatsList() } ?: emptyList()
     )
 }
 

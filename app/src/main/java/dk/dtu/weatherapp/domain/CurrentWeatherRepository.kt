@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 class CurrentWeatherRepository {
     private val currentDataSource = RemoteWeatherDataSource()
 
-    private val mutableCurrentWeatherFlow = MutableSharedFlow<Current>()
+    private val mutableCurrentWeatherFlow = MutableSharedFlow<Current?>()
     val currentWeatherFlow = mutableCurrentWeatherFlow.asSharedFlow()
 
     suspend fun getCurrentWeather() = mutableCurrentWeatherFlow.emit(
-        currentDataSource.getCurrentWeather().mapToCurrent()
+        currentDataSource.getCurrentWeather()?.mapToCurrent()
     )
 }
 

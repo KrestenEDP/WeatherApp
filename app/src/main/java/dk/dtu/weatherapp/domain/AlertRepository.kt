@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 class AlertRepository {
     private val currentDataSource = RemoteAlertsDataSource()
 
-    private val mutableAlertFlow = MutableSharedFlow<List<Alert>>()
+    private val mutableAlertFlow = MutableSharedFlow<List<Alert>?>()
     val currentAlertFlow = mutableAlertFlow.asSharedFlow()
 
     suspend fun getAlerts() = mutableAlertFlow.emit(
-        currentDataSource.getAlerts().mapToAlerts().distinct()
+        currentDataSource.getAlerts()?.mapToAlerts()?.distinct()
     )
 }
 

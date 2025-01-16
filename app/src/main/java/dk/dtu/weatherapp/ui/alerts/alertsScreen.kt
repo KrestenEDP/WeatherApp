@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -17,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.models.Alert
 import dk.dtu.weatherapp.ui.components.EmptyScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
+import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
 
 @Composable
@@ -25,6 +25,7 @@ fun AlertsScreen(
 ) {
     val alertViewModel: AlertsViewModel = viewModel()
     when (val alertsUIModel = alertViewModel.alertsUIState.collectAsState().value) {
+        AlertsUIModel.RequestError -> RequestErrorScreen()
         AlertsUIModel.Empty -> EmptyScreen(text = "Currently no weather alerts at your location")
         AlertsUIModel.Loading -> Column {
             LoadingScreen()

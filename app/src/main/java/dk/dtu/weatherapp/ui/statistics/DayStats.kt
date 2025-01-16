@@ -1,5 +1,6 @@
 package dk.dtu.weatherapp.ui.statistics
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.GlobalUnits
@@ -24,6 +27,7 @@ import dk.dtu.weatherapp.models.StatsDay
 import dk.dtu.weatherapp.ui.components.CircularList
 import dk.dtu.weatherapp.ui.components.EmptyScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
+import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
 @Composable
 fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
@@ -47,6 +51,7 @@ fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
         }
 
         when (val statsDayUIModel = statsViewModel.dayUIState.collectAsState().value) {
+            StatsDayUIModel.RequestError -> RequestErrorScreen()
             StatsDayUIModel.Empty -> EmptyScreen("No available data for this day")
             StatsDayUIModel.Loading -> LoadingScreen()
             is StatsDayUIModel.Data -> {

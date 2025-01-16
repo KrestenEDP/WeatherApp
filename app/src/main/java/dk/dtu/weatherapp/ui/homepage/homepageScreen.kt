@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,7 +17,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.domain.fetchCurrentLocation
 import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.models.Location
+import dk.dtu.weatherapp.ui.components.EmptyScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
+import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
 
 @Preview(showBackground = true)
@@ -43,7 +44,8 @@ fun Homepage(
     }
 
     when (val weatherUIModel = homepageViewModel.weatherUIState.collectAsState().value) {
-        WeatherUIModel.Empty -> Text("No data")
+        WeatherUIModel.RequestError -> RequestErrorScreen()
+        WeatherUIModel.Empty -> EmptyScreen("No data")
         WeatherUIModel.Loading -> LoadingScreen()
         is WeatherUIModel.Data ->{
             HomePageContent(weatherUIModel, onDayClicked, onSearchClicked,

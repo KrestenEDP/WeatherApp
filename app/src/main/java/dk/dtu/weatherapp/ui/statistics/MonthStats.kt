@@ -22,6 +22,7 @@ import dk.dtu.weatherapp.models.StatsDay
 import dk.dtu.weatherapp.ui.components.CircularList
 import dk.dtu.weatherapp.ui.components.EmptyScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
+import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
 @Composable
 fun MonthStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
@@ -39,6 +40,7 @@ fun MonthStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
         MonthPicker(onMonthChange = { month = it })
 
         when (val statsMonthUIModel = statsViewModel.monthUIState.collectAsState().value) {
+            StatsMonthUIModel.RequestError -> RequestErrorScreen()
             StatsMonthUIModel.Empty -> EmptyScreen("No available data for this month")
             StatsMonthUIModel.Loading -> LoadingScreen()
             is StatsMonthUIModel.Data -> {

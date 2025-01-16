@@ -12,11 +12,11 @@ import java.util.Locale
 class DayRepository {
     private val dayDataSource = RemoteWeatherDataSource()
 
-    private val mutableDayFlow = MutableSharedFlow<List<Day>>()
+    private val mutableDayFlow = MutableSharedFlow<List<Day>?>()
     val dayFlow = mutableDayFlow.asSharedFlow()
 
     suspend fun getDailyForecast() = mutableDayFlow.emit(
-        dayDataSource.getDailyWeather().mapToDays()
+        dayDataSource.getDailyWeather()?.mapToDays()
     )
 }
 

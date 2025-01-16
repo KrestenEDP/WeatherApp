@@ -2,6 +2,7 @@ package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
 import android.util.Log
+import dk.dtu.weatherapp.data.model.AlertsParentDao
 import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.ui.util.hasNetwork
@@ -80,5 +81,12 @@ class RemoteAlertsDataSource {
 
     private val alertsApi: AlertsApiService = retrofit.create(AlertsApiService::class.java)
 
-    suspend fun getAlerts() = alertsApi.getAlerts(q = "${getCurrentLocation().lat},${getCurrentLocation().lon}")
+    suspend fun getAlerts(): AlertsParentDao? {
+        return try {
+            alertsApi.getAlerts(q = "${getCurrentLocation().lat},${getCurrentLocation().lon}")
+        } catch (e: Exception) {
+            Log.e("RemoteAlertsDataSource", "Failed to get alerts", e)
+            null
+        }
+    }
 }

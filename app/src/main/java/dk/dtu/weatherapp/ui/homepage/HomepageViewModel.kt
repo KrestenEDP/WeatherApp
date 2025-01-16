@@ -29,6 +29,12 @@ class HomepageViewModel : ViewModel() {
         viewModelScope.launch {
             currentWeatherRepository.currentWeatherFlow
                 .collect { data ->
+                    if (data == null) {
+                        weatherMutableCurrent.update {
+                            WeatherUIModel.RequestError
+                        }
+                        return@collect
+                    }
                     current = data
                     update()
                 }
@@ -36,6 +42,12 @@ class HomepageViewModel : ViewModel() {
         viewModelScope.launch {
             dayRepository.dayFlow
                 .collect { data ->
+                    if (data == null) {
+                        weatherMutableCurrent.update {
+                            WeatherUIModel.RequestError
+                        }
+                        return@collect
+                    }
                     daily = data
                     update()
                 }
@@ -43,6 +55,12 @@ class HomepageViewModel : ViewModel() {
         viewModelScope.launch {
             hourRepository.hourFlow
                 .collect { data ->
+                    if (data == null) {
+                        weatherMutableCurrent.update {
+                            WeatherUIModel.RequestError
+                        }
+                        return@collect
+                    }
                     hourly = data
                     update()
                 }
@@ -77,6 +95,7 @@ class HomepageViewModel : ViewModel() {
 }
 
 sealed class WeatherUIModel {
+    data object RequestError: WeatherUIModel()
     data object Empty: WeatherUIModel()
     data object Loading: WeatherUIModel()
     data class Data(val currentWeather: Current, val daily: List<Day>, val hourly: List<Hour>) : WeatherUIModel()

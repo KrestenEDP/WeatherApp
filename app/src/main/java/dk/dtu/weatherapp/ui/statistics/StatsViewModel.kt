@@ -24,25 +24,13 @@ class StatsViewModel : ViewModel() {
     private val yearMutable = MutableStateFlow<StatsYearUIModel>(StatsYearUIModel.Loading)
     val yearUIState: StateFlow<StatsYearUIModel> = yearMutable
 
-    /*
-
-    suspend fun getMonthStats(month: Int): StatsDay {
-        lateinit var data: StatsDay
-        currentJob?.cancel()
-        currentJob = viewModelScope.launch {
-            delay(50)
-            data = statsRepo.getMonthStats(month = month)
-        }
-        currentJob?.join()
-        return data
-    }*/
-
     init {
         viewModelScope.launch {
             statsRepo.dayStatsFlow
                 .collect { data ->
                     dayMutable.update {
-                        StatsDayUIModel.Data(data)
+                        if (data == null) StatsDayUIModel.RequestError
+                        else StatsDayUIModel.Data(data)
                     }
                 }
         }
@@ -50,7 +38,8 @@ class StatsViewModel : ViewModel() {
             statsRepo.monthStatsFlow
                 .collect { data ->
                     monthMutable.update {
-                        StatsMonthUIModel.Data(data)
+                        if (data == null) StatsMonthUIModel.RequestError
+                        else StatsMonthUIModel.Data(data)
                     }
                 }
         }
@@ -58,7 +47,7 @@ class StatsViewModel : ViewModel() {
             statsRepo.yearStatsFlow
                 .collect { data ->
                     yearMutable.update {
-                        if (data.isEmpty()) StatsYearUIModel.Empty
+                        if (data.isEmpty()) StatsYearUIModel.RequestError
                         else StatsYearUIModel.Data(data)
                     }
                 }
@@ -95,18 +84,21 @@ class StatsViewModel : ViewModel() {
 }
 
 sealed class StatsDayUIModel {
+    data object RequestError: StatsDayUIModel()
     data object Empty: StatsDayUIModel()
     data object Loading: StatsDayUIModel()
     data class Data(val day: StatsDay) : StatsDayUIModel()
 }
 
 sealed class StatsMonthUIModel {
+    data object RequestError: StatsMonthUIModel()
     data object Empty: StatsMonthUIModel()
     data object Loading: StatsMonthUIModel()
     data class Data(val month: StatsDay) : StatsMonthUIModel()
 }
 
 sealed class StatsYearUIModel {
+    data object RequestError: StatsYearUIModel()
     data object Empty: StatsYearUIModel()
     data object Loading: StatsYearUIModel()
     data class Data(val months: List<StatsDay>) : StatsYearUIModel()

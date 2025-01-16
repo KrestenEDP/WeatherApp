@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 class HourRepository {
     private val hourDataSource = RemoteWeatherDataSource()
 
-    private val mutableHourlyFlow = MutableSharedFlow<List<Hour>>()
+    private val mutableHourlyFlow = MutableSharedFlow<List<Hour>?>()
     val hourFlow = mutableHourlyFlow.asSharedFlow()
 
     suspend fun getHourlyForecast() = mutableHourlyFlow.emit(
-        hourDataSource.getHourlyWeatherToday(count = 12).mapToHours()
+        hourDataSource.getHourlyWeatherToday(count = 12)?.mapToHours()
     )
 }
 

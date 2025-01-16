@@ -1,6 +1,7 @@
 package dk.dtu.weatherapp.data.remote
 
 import android.content.Context
+import android.util.Log
 import dk.dtu.weatherapp.data.model.StatsDataDao
 import dk.dtu.weatherapp.data.model.StatsYearDao
 import dk.dtu.weatherapp.domain.getCurrentLocation
@@ -72,7 +73,30 @@ class RemoteStatisticsDataSource {
 
     private val statisticsApi: WeatherStatisticsApiService = retrofit.create(WeatherStatisticsApiService::class.java)
 
-    suspend fun getDayStatistics(month: Int, day: Int): StatsDataDao = statisticsApi.getDayStatistics(getCurrentLocation().lat, getCurrentLocation().lon, month, day)
-    suspend fun getMonthStatistics(month: Int): StatsDataDao = statisticsApi.getMonthStatistics(getCurrentLocation().lat, getCurrentLocation().lon, month)
-    suspend fun getYearStatistics(): StatsYearDao = statisticsApi.getYearStatistics(getCurrentLocation().lat, getCurrentLocation().lon)
+    suspend fun getDayStatistics(month: Int, day: Int): StatsDataDao? {
+        return try {
+            statisticsApi.getDayStatistics(getCurrentLocation().lat, getCurrentLocation().lon, month, day)
+        } catch (e: Exception) {
+            Log.e("RemoteWeatherDataSource", "Failed to get current weather", e)
+            null
+        }
+    }
+
+    suspend fun getMonthStatistics(month: Int): StatsDataDao? {
+        return try {
+            statisticsApi.getMonthStatistics(getCurrentLocation().lat, getCurrentLocation().lon, month)
+        } catch (e: Exception) {
+            Log.e("RemoteWeatherDataSource", "Failed to get hourly weather for today", e)
+            null
+        }
+    }
+
+    suspend fun getYearStatistics(): StatsYearDao? {
+        return try {
+            statisticsApi.getYearStatistics(getCurrentLocation().lat, getCurrentLocation().lon)
+        } catch (e: Exception) {
+            Log.e("RemoteWeatherDataSource", "Failed to get hourly weather", e)
+            null
+        }
+    }
 }

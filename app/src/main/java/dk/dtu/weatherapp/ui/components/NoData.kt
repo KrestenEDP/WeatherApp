@@ -17,3 +17,13 @@ fun EmptyScreen(text: String) {
         )
     }
 }
+
+@Composable
+fun RequestErrorScreen() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(
+            text = "Couldn't retrieve data from server and no data in cache, please check your internet connection",
+            style = Typography.bodyLarge
+        )
+    }
+}
