@@ -84,7 +84,12 @@ dependencies {
 
     implementation(libs.gson)
     implementation(libs.androidx.security.crypto)
-    
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.play.services.fido)
+
+    testImplementation(libs.mockk.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
