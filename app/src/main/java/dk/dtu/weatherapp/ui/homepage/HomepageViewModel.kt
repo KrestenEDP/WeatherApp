@@ -2,7 +2,7 @@ package dk.dtu.weatherapp.ui.homepage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dk.dtu.weatherapp.domain.CurrentWeatherRepositoryImpl
+import dk.dtu.weatherapp.domain.CurrentWeatherRepository
 import dk.dtu.weatherapp.domain.DayRepository
 import dk.dtu.weatherapp.domain.HourRepository
 import dk.dtu.weatherapp.models.Current
@@ -13,12 +13,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomepageViewModel(
-    private val currentWeatherRepository: CurrentWeatherRepositoryImpl,
-    private val dayRepository: DayRepository,
-    private val hourRepository: HourRepository
-) : ViewModel() {
-
+class HomepageViewModel : ViewModel() {
+    private val currentWeatherRepository = CurrentWeatherRepository()
+    private val dayRepository = DayRepository()
+    private val hourRepository = HourRepository()
 
     private val weatherMutableCurrent = MutableStateFlow<WeatherUIModel>(WeatherUIModel.Loading)
     val weatherUIState: StateFlow<WeatherUIModel> = weatherMutableCurrent

@@ -6,18 +6,13 @@ import dk.dtu.weatherapp.models.Current
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-
-interface CurrentWeatherRepository {
-    suspend fun getCurrentWeather()
-}
-
-class CurrentWeatherRepositoryImpl : CurrentWeatherRepository {
+class CurrentWeatherRepository {
     private val currentDataSource = RemoteWeatherDataSource()
 
     private val mutableCurrentWeatherFlow = MutableSharedFlow<Current?>()
     val currentWeatherFlow = mutableCurrentWeatherFlow.asSharedFlow()
 
-    override suspend fun getCurrentWeather() = mutableCurrentWeatherFlow.emit(
+    suspend fun getCurrentWeather() = mutableCurrentWeatherFlow.emit(
         currentDataSource.getCurrentWeather()?.mapToCurrent()
     )
 }
