@@ -106,16 +106,16 @@ fun WeeklyForecastContent(
         ) {
             HorizontalPager(
                 state = indicatorState,
-                pageSize = PageSize.Fixed(20.dp),
-                contentPadding = PaddingValues(horizontal = 40.dp),
+                pageSize = PageSize.Fixed(16.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp),
                 userScrollEnabled = false,
                 modifier = Modifier
-                    .width(100.dp)
+                    .width(56.dp)
                     .align(Alignment.CenterVertically)
-                    .padding(bottom=8.dp)
+                    .padding(bottom = 6.dp)
                     .clip(RoundedCornerShape(50.dp))
-                    .background(color = Color.Gray.copy(alpha = 0.2f))
-                    .padding(vertical = 4.dp)
+                    .background(color = Color.LightGray.copy(alpha = 0.4f))
+                    .padding(vertical = 2.dp)
 
             ) { page ->
                 Box(
@@ -141,7 +141,7 @@ fun WeeklyForecastContent(
                             .padding(2.dp)
                             .clip(CircleShape)
                             .background(color = Color.Black)
-                            .size(16.dp)
+                            .size(12.dp)
                     )
                 }
             }
