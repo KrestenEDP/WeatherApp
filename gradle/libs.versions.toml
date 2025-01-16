@@ -2,7 +2,8 @@
 agp = "8.7.3"
 appcompat = "1.7.0"
 appcompatV7 = "28.0.0"
-datastorePreferences = "1.1.1"
+composeCharts = "0.1.0"
+datastorePreferences = "1.1.2"
 firebaseAnalytics = "22.1.2"
 firebaseAuth = "23.1.0"
 firebaseBom = "33.7.0"
@@ -32,6 +33,7 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
+compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref = "composeCharts" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }

@@ -84,6 +84,8 @@ dependencies {
 
     implementation(libs.gson)
     implementation(libs.androidx.security.crypto)
+
+    implementation(libs.compose.charts)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
