@@ -16,13 +16,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dk.dtu.weatherapp.domain.StatsRepository
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticScreen() {
     var selectedIndex by remember { mutableIntStateOf(0) }
     val options = listOf("Day", "Month", "Year")
+
+    val statsViewModel: StatsViewModel = viewModel()
 
     Column(
         modifier = Modifier
@@ -45,9 +47,9 @@ fun StatisticScreen() {
             }
         }
         when (selectedIndex) {
-            0 -> DayStats()
-            1 -> MonthStats()
-            2 -> YearStats()
+            0 -> DayStats(statsViewModel)
+            1 -> MonthStats(statsViewModel)
+            2 -> YearStats(statsViewModel)
         }
 
     }

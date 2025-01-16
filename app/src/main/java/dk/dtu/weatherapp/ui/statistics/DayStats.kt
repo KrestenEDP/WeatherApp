@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -22,15 +23,16 @@ import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.StatsDay
 import dk.dtu.weatherapp.ui.components.CircularList
+import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.LoadingScreen
 
 @Composable
 fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
     var day by remember { mutableIntStateOf(1) }
     var month by remember { mutableIntStateOf(1) }
-    var statsDay by remember { mutableStateOf<StatsDay?>(null) }
 
     LaunchedEffect(day, month) {
-        statsDay = statsViewModel.getDayStats(day, month)
+        statsViewModel.getDayStats(day, month)
     }
 
     Column(
@@ -44,20 +46,34 @@ fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
         ) {
             DayPicker(day, month, onDayChange = { day = it }, onMonthChange = { month = it })
         }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            statsDay?.let {
-                item { StatsCard(title = "Temperature", value = it.temp.mean, R.drawable.i01d, GlobalUnits.temp) }
-                item { StatsCard(title = "Wind", value = it.wind.mean, R.drawable.wind, GlobalUnits.wind) }
-                item { StatsCard(title = "Rain", value = it.precipitation.mean, R.drawable.i09d, GlobalUnits.precipitation) }
-                item { StatsCard(title = "Humidity", value = it.humidity.mean, R.drawable.humidity, "%") }
-                item { StatsCard(title = "Pressure", value = it.pressure.mean, R.drawable.compress, "hPa") }
-                item { StatsCard(title = "Clouds", value = it.clouds.mean, R.drawable.i03d, "%") }
+
+        when (val statsDayUIModel = statsViewModel.dayUIState.collectAsState().value) {
+            StatsDayUIModel.Empty -> EmptyScreen("No available data for this day")
+            StatsDayUIModel.Loading -> LoadingScreen()
+            is StatsDayUIModel.Data -> {
+                StatsDayInformation(statsDayUIModel.day)
             }
+        }
+    }
+}
+
+@Composable
+fun StatsDayInformation(
+    statsDay: StatsDay?
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        statsDay?.let {
+            item { StatsCard(title = "Temperature", value = it.temp.mean, R.drawable.i01d, GlobalUnits.temp) }
+            item { StatsCard(title = "Wind", value = it.wind.mean, R.drawable.wind, GlobalUnits.wind) }
+            item { StatsCard(title = "Rain", value = it.precipitation.mean, R.drawable.i09d, GlobalUnits.precipitation) }
+            item { StatsCard(title = "Humidity", value = it.humidity.mean, R.drawable.humidity, "%") }
+            item { StatsCard(title = "Pressure", value = it.pressure.mean, R.drawable.compress, "hPa") }
+            item { StatsCard(title = "Clouds", value = it.clouds.mean, R.drawable.i03d, "%") }
         }
     }
 }

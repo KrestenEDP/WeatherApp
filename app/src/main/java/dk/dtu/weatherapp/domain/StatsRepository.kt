@@ -9,24 +9,32 @@ import dk.dtu.weatherapp.models.StatsDayPrecipitation
 import dk.dtu.weatherapp.models.StatsDayPressure
 import dk.dtu.weatherapp.models.StatsDayTemp
 import dk.dtu.weatherapp.models.StatsDayWind
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 class StatsRepository {
     private val dataSource = RemoteStatisticsDataSource()
 
-    suspend fun getDayStats(day: Int, month: Int): StatsDay {
-        val data = dataSource.getDayStatistics(month = month, day = day)
-        return data.stats.mapToStatsList()
-    }
+    private val mutableDayStatsFlow = MutableSharedFlow<StatsDay>()
+    val dayStatsFlow = mutableDayStatsFlow.asSharedFlow()
 
-    suspend fun getMonthStats(month: Int): StatsDay {
-        val data = dataSource.getMonthStatistics(month = month)
-        return data.stats.mapToStatsList()
-    }
+    private val mutableMonthStatsFlow = MutableSharedFlow<StatsDay>()
+    val monthStatsFlow = mutableMonthStatsFlow.asSharedFlow()
 
-    suspend fun getYearStats(): List<StatsDay> {
-        return dataSource.getYearStatistics()
-            .stats.stats.map { it.mapToStatsList() }
-    }
+    private val mutableYearStatsFlow = MutableSharedFlow<List<StatsDay>>()
+    val yearStatsFlow = mutableYearStatsFlow.asSharedFlow()
+
+    suspend fun getDayStats(day: Int, month: Int) = mutableDayStatsFlow.emit(
+        dataSource.getDayStatistics(month = month, day = day).stats.mapToStatsList()
+    )
+
+    suspend fun getMonthStats(month: Int) = mutableMonthStatsFlow.emit(
+        dataSource.getMonthStatistics(month = month).stats.mapToStatsList()
+    )
+
+    suspend fun getYearStats() = mutableYearStatsFlow.emit(
+        dataSource.getYearStatistics().stats.stats.map { it.mapToStatsList() }
+    )
 }
 
 suspend fun StatsDao.mapToStatsList(): StatsDay {
