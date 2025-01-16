@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.ui.statistics
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dk.dtu.weatherapp.domain.StatsRepository
@@ -19,6 +18,17 @@ class StatsViewModel : ViewModel() {
         currentJob = viewModelScope.launch {
             delay(50)
             data = statsRepo.getDayStats(day = day, month = month)
+        }
+        currentJob?.join()
+        return data
+    }
+
+    suspend fun getMonthStats(month: Int): StatsDay {
+        lateinit var data: StatsDay
+        currentJob?.cancel()
+        currentJob = viewModelScope.launch {
+            delay(50)
+            data = statsRepo.getMonthStats(month = month)
         }
         currentJob?.join()
         return data

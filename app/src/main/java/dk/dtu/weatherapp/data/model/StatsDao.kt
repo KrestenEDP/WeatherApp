@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StatsDao(
     val month: Int,
-    val day: Int,
     val temp: StatsTempDao,
     val pressure: StatsPressureDao,
     val humidity: StatsHumidityDao,

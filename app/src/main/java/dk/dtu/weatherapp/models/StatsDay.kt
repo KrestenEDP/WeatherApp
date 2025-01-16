@@ -2,7 +2,6 @@ package dk.dtu.weatherapp.models
 
 data class StatsDay (
     val month: Int,
-    val day: Int,
     val temp: StatsDayTemp,
     val pressure: StatsDayPressure,
     val humidity: StatsDayHumidity,

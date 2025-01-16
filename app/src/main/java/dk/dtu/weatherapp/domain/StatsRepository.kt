@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.domain
 
-import android.util.Log
 import dk.dtu.weatherapp.data.model.StatsDao
 import dk.dtu.weatherapp.data.remote.RemoteStatisticsDataSource
 import dk.dtu.weatherapp.models.StatsDay
@@ -33,7 +32,6 @@ class StatsRepository {
 suspend fun StatsDao.mapToStatsList(): StatsDay {
     return StatsDay(
         month = month,
-        day = day,
         temp = StatsDayTemp(mean = convertTempUnit(temp.mean)),
         pressure = StatsDayPressure(mean = pressure.mean),
         humidity = StatsDayHumidity(mean = humidity.mean),
