@@ -21,7 +21,7 @@ class StatsRepository {
     private val mutableMonthStatsFlow = MutableSharedFlow<StatsDay?>()
     val monthStatsFlow = mutableMonthStatsFlow.asSharedFlow()
 
-    private val mutableYearStatsFlow = MutableSharedFlow<List<StatsDay>>()
+    private val mutableYearStatsFlow = MutableSharedFlow<List<StatsDay>?>()
     val yearStatsFlow = mutableYearStatsFlow.asSharedFlow()
 
     suspend fun getDayStats(day: Int, month: Int) = mutableDayStatsFlow.emit(
@@ -33,7 +33,7 @@ class StatsRepository {
     )
 
     suspend fun getYearStats() = mutableYearStatsFlow.emit(
-        dataSource.getYearStatistics()?.stats?.stats?.map { it.mapToStatsList() } ?: emptyList()
+        dataSource.getYearStatistics()?.map { it.stats.mapToStatsList() }
     )
 }
 

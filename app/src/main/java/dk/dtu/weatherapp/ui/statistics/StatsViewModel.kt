@@ -47,7 +47,8 @@ class StatsViewModel : ViewModel() {
             statsRepo.yearStatsFlow
                 .collect { data ->
                     yearMutable.update {
-                        if (data.isEmpty()) StatsYearUIModel.RequestError
+                        if (data == null) StatsYearUIModel.RequestError
+                        else if (data.isEmpty()) StatsYearUIModel.Empty
                         else StatsYearUIModel.Data(data)
                     }
                 }
@@ -75,9 +76,7 @@ class StatsViewModel : ViewModel() {
     }
     private fun getYearStats() = viewModelScope.launch {
         yearMutable.value = StatsYearUIModel.Loading
-        currentJob?.cancel()
-        currentJob = viewModelScope.launch {
-            delay(50)
+        viewModelScope.launch {
             statsRepo.getYearStats()
         }
     }

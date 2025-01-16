@@ -1,7 +1,6 @@
 package dk.dtu.weatherapp.data.remote
 
 import dk.dtu.weatherapp.data.model.StatsDataDao
-import dk.dtu.weatherapp.data.model.StatsYearDao
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,10 +19,4 @@ interface WeatherStatisticsApiService {
         @Query("lon") lon: String = "12.50",
         @Query("month") month: Int = 2,
     ): StatsDataDao
-
-    @GET("/data/2.5/aggregated/year?&appid=$WeatherApiKey")
-    suspend fun getYearStatistics(
-        @Query("lat") lat: String = "55.77",
-        @Query("lon") lon: String = "12.50",
-    ): StatsYearDao
 }

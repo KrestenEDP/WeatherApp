@@ -45,18 +45,7 @@ data class StatsCloudsDao(
 )
 
 @Serializable
-data class StatsListDao(
-    val stats: List<StatsDao>
-)
-
-@Serializable
 data class StatsDataDao(
     @SerialName("result")
     val stats: StatsDao
-)
-
-@Serializable
-data class StatsYearDao(
-    @SerialName("result")
-    val stats: StatsListDao
 )

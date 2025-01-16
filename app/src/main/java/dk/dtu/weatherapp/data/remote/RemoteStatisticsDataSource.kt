@@ -3,10 +3,14 @@ package dk.dtu.weatherapp.data.remote
 import android.content.Context
 import android.util.Log
 import dk.dtu.weatherapp.data.model.StatsDataDao
-import dk.dtu.weatherapp.data.model.StatsYearDao
 import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.ui.util.hasNetwork
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
@@ -91,11 +95,24 @@ class RemoteStatisticsDataSource {
         }
     }
 
-    suspend fun getYearStatistics(): StatsYearDao? {
+    suspend fun getYearStatistics(): List<StatsDataDao>? {
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+
         return try {
-            statisticsApi.getYearStatistics(getCurrentLocation().lat, getCurrentLocation().lon)
+            val deferredList: List<Deferred<StatsDataDao?>> = (1..12).map { month ->
+                coroutineScope.async {
+                    getMonthStatistics(month)
+                }
+            }
+            val results: List<StatsDataDao?> = deferredList.awaitAll()
+
+            if (results.any { it == null }) {
+                null
+            } else {
+                results.filterNotNull()
+            }
         } catch (e: Exception) {
-            Log.e("RemoteWeatherDataSource", "Failed to get hourly weather", e)
+            Log.e("RemoteWeatherDataSource", "Failed to get yearly weather", e)
             null
         }
     }
