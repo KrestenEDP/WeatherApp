@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -17,7 +19,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -179,26 +180,24 @@ fun UnitSetting(context: Context) {
     // UI
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .height(48.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "Unit", style = Typography.titleSmall)
 
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .clickable { expanded = true }
-                .padding(start = 16.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        Box {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(30.dp))
+                    .fillMaxHeight()
+                    .clickable { expanded = true }
+                    .padding(start = 16.dp)
+            ) {
                 Text(text = Units[selectedUnit], style = Typography.titleSmall)
-                IconButton(
-                    onClick = { },
-                    enabled = false,
-                ) {
-                    Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Dropdown Menu")
-                }
+                Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Dropdown Menu")
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }

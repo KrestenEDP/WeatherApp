@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,8 +38,8 @@ fun CurrentWeather(data: Current) {
         Column {
             Text("${data.temp} " + GlobalUnits.temp, style = Typography.titleLarge)
             Text("Feels like ${data.chill} " + GlobalUnits.temp,
-                style = Typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary
+                style = Typography.bodyLarge,
+                color = Color.Gray
             )
             Spacer(modifier = Modifier.height(6.dp))
             Row {
