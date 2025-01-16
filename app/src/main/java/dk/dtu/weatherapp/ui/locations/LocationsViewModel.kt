@@ -116,5 +116,6 @@ class LocationsViewModel(userId: String) : ViewModel() {
 sealed class LocationsUIModel {
     object Empty : LocationsUIModel()
     object Loading : LocationsUIModel()
+    object RequestError : LocationsUIModel()
     data class Data(val locations: List<Location>) : LocationsUIModel()
 }
