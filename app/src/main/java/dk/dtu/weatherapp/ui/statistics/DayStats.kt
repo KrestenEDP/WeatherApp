@@ -1,6 +1,5 @@
 package dk.dtu.weatherapp.ui.statistics
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.GlobalUnits
@@ -120,7 +117,7 @@ fun DayPicker(day: Int, month: Int, onDayChange: (Int) -> Unit, onMonthChange: (
             items = listOfMonths,
             itemHeight = 40,
             itemDisplayCount = 3,
-            width = 140,
+            width = 150,
         ) { onMonthChange(
             when (it) {
                 "January" -> 1

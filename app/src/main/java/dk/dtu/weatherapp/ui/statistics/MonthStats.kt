@@ -84,7 +84,7 @@ fun MonthPicker(onMonthChange: (Int) -> Unit) {
         CircularList(
             items = months,
             itemDisplayCount = 3,
-            width = 140,
+            width = 150,
             onItemSelected = {
                 onMonthChange(
                     when (it) {
