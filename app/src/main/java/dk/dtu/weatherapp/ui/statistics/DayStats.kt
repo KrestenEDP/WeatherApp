@@ -97,7 +97,10 @@ fun DayPicker(day: Int, month: Int, onDayChange: (Int) -> Unit, onMonthChange: (
             "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"
         ).toMutableList()
     }
-    Row {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth()
+    ) {
         CircularList(
             items = listOfDays,
             itemHeight = 40,
