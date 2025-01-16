@@ -17,6 +17,10 @@ data class StatsDao(
 @Serializable
 data class StatsTempDao(
     val mean: Double,
+    @SerialName("average_min")
+    val averageMin: Double,
+    @SerialName("average_max")
+    val averageMax: Double,
 )
 
 @Serializable

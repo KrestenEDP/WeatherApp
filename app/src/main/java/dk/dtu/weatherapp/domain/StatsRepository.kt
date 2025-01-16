@@ -40,7 +40,11 @@ class StatsRepository {
 suspend fun StatsDao.mapToStatsList(): StatsDay {
     return StatsDay(
         month = month,
-        temp = StatsDayTemp(mean = convertTempUnit(temp.mean)),
+        temp = StatsDayTemp(
+            mean = convertTempUnit(temp.mean),
+            averageMax = convertTempUnit(temp.averageMax),
+            averageMin = convertTempUnit(temp.averageMin)
+        ),
         pressure = StatsDayPressure(mean = pressure.mean),
         humidity = StatsDayHumidity(mean = humidity.mean),
         wind = StatsDayWind(mean = convertSpeedUnit(wind.mean)),

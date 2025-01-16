@@ -24,15 +24,27 @@ fun YearStats(statsViewModel: StatsViewModel) {
                 data = remember {
                     listOf(
                         Line(
-                            label = "Test",
+                            label = "Average max",
+                            values = statsYearUIModel.months.map { it.temp.averageMax },
+                            color = SolidColor(Color.Red),
+                            curvedEdges = false,
+                        ),
+                        Line(
+                            label = "Average",
                             values = statsYearUIModel.months.map { it.temp.mean },
+                            color = SolidColor(Color.Magenta),
+                            curvedEdges = false,
+                        ),
+                        Line(
+                            label = "Average min",
+                            values = statsYearUIModel.months.map { it.temp.averageMin },
                             color = SolidColor(Color.Blue),
                             curvedEdges = false,
                             dotProperties = DotProperties(
                                 enabled = true,
                                 color = SolidColor(Color.White),
-                                strokeWidth = 4.dp,
-                                radius = 7.dp,
+                                strokeWidth = 2.dp,
+                                radius = 3.dp,
                                 strokeColor = SolidColor(Color.Blue),
                             )
                         )

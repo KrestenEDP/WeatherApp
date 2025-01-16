@@ -11,7 +11,9 @@ data class StatsDay (
 )
 
 data class StatsDayTemp (
-    val mean: Double
+    val mean: Double,
+    val averageMin: Double,
+    val averageMax: Double,
 )
 
 data class StatsDayPressure (
