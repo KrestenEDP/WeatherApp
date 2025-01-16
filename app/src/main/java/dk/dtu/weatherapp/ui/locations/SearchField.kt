@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
 fun SearchField(onValueChange: (String) -> Unit) {
@@ -34,7 +35,7 @@ fun SearchField(onValueChange: (String) -> Unit) {
             text = it
             onValueChange(it)
         },
-        label = { Text("Search for cities") },
+        label = { Text("Search for cities", style = Typography.bodyLarge) },
         modifier = Modifier
             .padding(vertical = 16.dp, horizontal = 16.dp)
             .fillMaxWidth()

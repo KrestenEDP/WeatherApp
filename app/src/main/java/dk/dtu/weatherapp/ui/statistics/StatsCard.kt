@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
 fun StatsCard(title: String, value: Double, icon: Int, unit: String) {
@@ -24,7 +24,7 @@ fun StatsCard(title: String, value: Double, icon: Int, unit: String) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -36,14 +36,16 @@ fun StatsCard(title: String, value: Double, icon: Int, unit: String) {
                         .size(16.dp)
                 )
                 Text(
-                    title,
-                    fontSize = 12.sp,
+                    text = title,
+                    style = Typography.bodyMedium,
                     modifier = Modifier.padding(start = 4.dp)
                 )
             }
             Text(
                 text = "$value $unit",
-                fontWeight = FontWeight.Bold
+                style = Typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
     }

@@ -13,7 +13,7 @@ fun EmptyScreen(text: String) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = text,
-            style = Typography.titleSmall
+            style = Typography.bodyLarge
         )
     }
 }

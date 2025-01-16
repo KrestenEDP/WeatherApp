@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.Current
@@ -39,9 +38,9 @@ fun CurrentWeather(data: Current) {
         Column {
             Text("${data.temp} " + GlobalUnits.temp, style = Typography.titleLarge)
             Text("Feels like ${data.chill} " + GlobalUnits.temp,
-                fontSize = 14.sp,
+                style = Typography.titleSmall,
                 color = MaterialTheme.colorScheme.secondary
-            ) // @TODO change font'
+            )
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 Icon(

@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.navigation.WeatherDestination
+import dk.dtu.weatherapp.ui.theme.Typography
 import java.util.Locale
 
 
@@ -33,7 +34,7 @@ import java.util.Locale
                         modifier = Modifier.size(30.dp)
                     )
                 },
-                label = { Text(screen.route.replaceFirstChar { it.titlecase(Locale.ENGLISH) }) },
+                label = { Text(style = Typography.bodyLarge, text = screen.route.replaceFirstChar { it.titlecase(Locale.ENGLISH) }) },
                 selected = currentScreen == screen,
                 onClick = {
                     onTabSelected(screen)

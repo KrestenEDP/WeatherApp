@@ -12,6 +12,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.Day
+import dk.dtu.weatherapp.ui.theme.Typography
 import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
@@ -92,17 +94,21 @@ fun InformationCard(title: String, text: String, icon: Int, unit: String, modifi
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = modifier.fillMaxWidth()
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(16.dp)
+        ) {
             Icon(
                 painter = painterResource(icon),
                 contentDescription = "null",
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(16.dp)
             )
-            Text(title, modifier = Modifier.padding(start = 4.dp))
+            Text(title, style = Typography.bodyMedium, modifier = Modifier.padding(start = 4.dp))
         }
         Text(
             text = "$text $unit",
+            style = Typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         )

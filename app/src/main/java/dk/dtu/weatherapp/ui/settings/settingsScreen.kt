@@ -30,9 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -194,7 +192,7 @@ fun UnitSetting(context: Context) {
                 .padding(start = 16.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = Units[selectedUnit], fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(text = Units[selectedUnit], style = Typography.titleSmall)
                 IconButton(
                     onClick = { },
                     enabled = false,
@@ -207,7 +205,7 @@ fun UnitSetting(context: Context) {
                 ) {
                     unitNames.forEachIndexed { index, name ->
                         DropdownMenuItem(
-                            text = { Text(name) },
+                            text = { Text(name, style = Typography.titleSmall) },
                             onClick = {
                                 selectedUnit = index
                                 expanded = false

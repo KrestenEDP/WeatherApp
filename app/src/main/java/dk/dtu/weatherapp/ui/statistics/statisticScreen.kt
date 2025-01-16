@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dk.dtu.weatherapp.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +43,7 @@ fun StatisticScreen() {
                     ),
                     onClick = { selectedIndex = index },
                     selected = index == selectedIndex,
-                    label = { Text(label) }
+                    label = { Text(label, style = Typography.bodyLarge) }
                 )
             }
         }

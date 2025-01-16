@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import dk.dtu.weatherapp.ui.theme.Typography
 
 /**
  * A circular list that can be scrolled infinitely in both directions.
@@ -68,7 +68,7 @@ fun CircularList(
             ) {
                 Text(
                     text = items[index],
-                    fontSize = textSize.sp,
+                    style = Typography.titleLarge,
                     color =  if(lastSelectedIndex == index) {
                         MaterialTheme.colorScheme.onBackground
                     } else {

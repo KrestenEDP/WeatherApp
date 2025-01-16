@@ -67,13 +67,22 @@ fun WeatherTopAppBar(
                     positionProvider = TooltipDefaults.rememberRichTooltipPositionProvider(),
                     tooltip = {
                         RichTooltip(
-                            title = { Text(stringResource(R.string.statsTooltipTitle)) },
-                            text = { Text(stringResource(R.string.statsTooltipText)) },
+                            title = { Text(
+                                text = stringResource(R.string.statsTooltipTitle),
+                                style = Typography.titleSmall
+                            ) },
+                            text = { Text(
+                                text = stringResource(R.string.statsTooltipText),
+                                style = Typography.bodyLarge
+                            ) },
                             action = {
                                 TextButton(
                                     onClick = { tooltipState.dismiss() }
                                 ) {
-                                    Text(stringResource(R.string.statsTooltipButton))
+                                    Text(
+                                        text = stringResource(R.string.statsTooltipButton),
+                                        style = Typography.bodyLarge
+                                    )
                                 }
                             },
                             modifier = Modifier
