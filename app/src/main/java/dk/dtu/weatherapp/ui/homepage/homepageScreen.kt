@@ -10,6 +10,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,45 +39,36 @@ fun Homepage(
     onSearchClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val location = remember { mutableStateOf<Location?>(null) }
     val homepageViewModel: HomepageViewModel = viewModel()
     LaunchedEffect(Unit) {
         fetchCurrentLocation()
         homepageViewModel.setup()
+        location.value = getCurrentLocation()
     }
-
-    when (val weatherUIModel = homepageViewModel.weatherUIState.collectAsState().value) {
-        WeatherUIModel.RequestError -> RequestErrorScreen()
-        WeatherUIModel.Empty -> EmptyScreen("No data")
-        WeatherUIModel.Loading -> LoadingScreen()
-        is WeatherUIModel.Data ->{
-            HomePageContent(weatherUIModel, onDayClicked, onSearchClicked,
-                getCurrentLocation(), modifier)
-        }
-    }
-}
-
-@Composable
-fun HomePageContent(
-    weatherUIModel: WeatherUIModel.Data,
-    onDayClicked: (Int) -> Unit,
-    onSearchClicked: () -> Unit,
-    location: Location,
-    modifier: Modifier = Modifier
-) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(8.dp, top=0.dp)
     ) {
-        Location(
-            onSearchClicked = onSearchClicked,
-            location = location.name
-        )
-        Spacer(Modifier.height(20.dp))
-        CurrentWeather(weatherUIModel.currentWeather)
-        Spacer(modifier = Modifier.height(40.dp))
-        HourlyForecast(weatherUIModel.hourly)
-        Spacer(modifier = Modifier.height(20.dp))
-        DailyForecast(onDayClicked = onDayClicked, weatherUIModel.daily, modifier = Modifier.fillMaxWidth())
+        if (location.value != null) {
+            Location(
+                onSearchClicked = onSearchClicked,
+                location = location.value!!.name
+            )
+        }
+        when (val weatherUIModel = homepageViewModel.weatherUIState.collectAsState().value) {
+            WeatherUIModel.RequestError -> RequestErrorScreen()
+            WeatherUIModel.Empty -> EmptyScreen("No data")
+            WeatherUIModel.Loading -> LoadingScreen()
+            is WeatherUIModel.Data ->{
+                Spacer(Modifier.height(20.dp))
+                CurrentWeather(weatherUIModel.currentWeather)
+                Spacer(modifier = Modifier.height(40.dp))
+                HourlyForecast(weatherUIModel.hourly)
+                Spacer(modifier = Modifier.height(20.dp))
+                DailyForecast(onDayClicked = onDayClicked, weatherUIModel.daily, modifier = Modifier.fillMaxWidth())
+            }
+        }
     }
 }
