@@ -31,7 +31,11 @@ fun MonthStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
         statsViewModel.getMonthStats(month)
     }
 
-    Column {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         MonthPicker(onMonthChange = { month = it })
 
         when (val statsMonthUIModel = statsViewModel.monthUIState.collectAsState().value) {
