@@ -17,6 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.models.Location
+import dk.dtu.weatherapp.ui.components.EmptyScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 import dk.dtu.weatherapp.ui.theme.Typography
@@ -50,9 +51,9 @@ fun LocationList(
         }
 
         when (locationsUIModel) {
-            LocationsUIModel.Empty -> Text(type.noElementsText)
+            LocationsUIModel.Empty -> EmptyScreen(type.noElementsText)
             LocationsUIModel.Loading -> LoadingScreen()
-            locationsUIModel.RequestError -> RequestErrorScreen()
+            LocationsUIModel.RequestError -> RequestErrorScreen()
             is LocationsUIModel.Data -> {
                 locationsUIModel.locations.forEach { location ->
                     LocationElement(

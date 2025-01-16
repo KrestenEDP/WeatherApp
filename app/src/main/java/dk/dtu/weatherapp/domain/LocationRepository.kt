@@ -21,10 +21,10 @@ class LocationRepository(private val userId: String) {
     private val mutableLocationFlow = MutableSharedFlow<List<Location>>()
     val locationFlow = mutableLocationFlow.asSharedFlow()
 
-    private val mutableFavoriteLocationFlow = MutableSharedFlow<List<Location>>()
+    private val mutableFavoriteLocationFlow = MutableSharedFlow<List<Location>?>()
     val favoriteLocationFlow = mutableFavoriteLocationFlow.asSharedFlow()
 
-    private val mutableRecentLocationFlow = MutableSharedFlow<List<Location>>()
+    private val mutableRecentLocationFlow = MutableSharedFlow<List<Location>?>()
     val recentLocationFlow = mutableRecentLocationFlow.asSharedFlow()
 
     suspend fun getLocations(input: String) = mutableLocationFlow.emit(
@@ -100,41 +100,16 @@ class LocationRepository(private val userId: String) {
         }
     }
 
-    suspend fun fetchCollection(tableId: String): List<Location> {
-        if (tableId == "favorites") favorites = emptyList()
-        val collection = firestore.collection("users")
-            .document(userId)
-            .collection(tableId)
+    suspend fun fetchCollection(tableId: String): List<Location>? {
+        try {
+            if (tableId == "favorites") favorites = emptyList()
+            val collection = firestore.collection("users")
+                .document(userId)
+                .collection(tableId)
 
-        val initialCities = collection.get()
-            .await()
-            .documents.map { document ->
-                val cityName = document.id
-                val lat: String = document["latitude"] as String
-                val lon: String = document["longitude"] as String
-                val timestamp = document["timestamp"] as? com.google.firebase.Timestamp
-                if (tableId == "favorites") favorites += cityName
-                Location(
-                    name = cityName,
-                    lat = lat,
-                    lon = lon,
-                    isFavorite = if (tableId == "favorites") true else favorites.contains(cityName)
-                ) to timestamp?.seconds            }
-
-        val sortedInitialCities = if (tableId == "recent") {
-            initialCities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
-                .map { it.first } // Extract sorted Location objects (ignore timestamps)
-        } else {
-            initialCities.map { it.first } // Just map Location objects without sorting
-        }
-
-        collection.addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                val cities = snapshot.documents.map { document ->
+            val initialCities = collection.get()
+                .await()
+                .documents.map { document ->
                     val cityName = document.id
                     val lat: String = document["latitude"] as String
                     val lon: String = document["longitude"] as String
@@ -145,23 +120,53 @@ class LocationRepository(private val userId: String) {
                         lat = lat,
                         lon = lon,
                         isFavorite = if (tableId == "favorites") true else favorites.contains(cityName)
-                    ) to timestamp?.seconds
+                    ) to timestamp?.seconds            }
+
+            val sortedInitialCities = if (tableId == "recent") {
+                initialCities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
+                    .map { it.first } // Extract sorted Location objects (ignore timestamps)
+            } else {
+                initialCities.map { it.first } // Just map Location objects without sorting
+            }
+
+            collection.addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    return@addSnapshotListener
                 }
 
-                val sortedCities = if (tableId == "recent") {
-                    cities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
-                        .map { it.first } // Extract sorted Location objects (ignore timestamps)
-                } else {
-                    cities.map { it.first } // Just map Location objects without sorting
-                }
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val cities = snapshot.documents.map { document ->
+                        val cityName = document.id
+                        val lat: String = document["latitude"] as String
+                        val lon: String = document["longitude"] as String
+                        val timestamp = document["timestamp"] as? com.google.firebase.Timestamp
+                        if (tableId == "favorites") favorites += cityName
+                        Location(
+                            name = cityName,
+                            lat = lat,
+                            lon = lon,
+                            isFavorite = if (tableId == "favorites") true else favorites.contains(cityName)
+                        ) to timestamp?.seconds
+                    }
 
-                customScope.launch {
-                    if (tableId == "favorites") mutableFavoriteLocationFlow.emit(sortedCities)
-                    else mutableRecentLocationFlow.emit(sortedCities)
+                    val sortedCities = if (tableId == "recent") {
+                        cities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
+                            .map { it.first } // Extract sorted Location objects (ignore timestamps)
+                    } else {
+                        cities.map { it.first } // Just map Location objects without sorting
+                    }
+
+                    customScope.launch {
+                        if (tableId == "favorites") mutableFavoriteLocationFlow.emit(sortedCities)
+                        else mutableRecentLocationFlow.emit(sortedCities)
+                    }
                 }
             }
-        }
 
-        return sortedInitialCities
+            return sortedInitialCities
+        } catch (e: Exception) {
+            println("Error fetching collection: ${e.message}")
+            return null
+        }
     }
 }

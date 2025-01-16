@@ -11,7 +11,7 @@ interface LocationListType {
 object SearchLocations : LocationListType {
     override val icon: Int = R.drawable.location
     override val title: String = "Search"
-    override val noElementsText: String = "No locations found"
+    override val noElementsText: String = "No locations found with the current search keyword"
 }
 
 object RecentLocations : LocationListType {

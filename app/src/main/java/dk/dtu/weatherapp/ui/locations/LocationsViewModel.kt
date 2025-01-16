@@ -43,11 +43,9 @@ class LocationsViewModel(userId: String) : ViewModel() {
             locationRepository.favoriteLocationFlow
                 .collect { data ->
                     favoriteLocationMutable.update {
-                        if (data.isEmpty()) {
-                            LocationsUIModel.Empty
-                        } else {
-                            LocationsUIModel.Data(data)
-                        }
+                        if (data == null) LocationsUIModel.RequestError
+                        else if (data.isEmpty()) LocationsUIModel.Empty
+                        else LocationsUIModel.Data(data)
                     }
                 }
         }
@@ -55,11 +53,9 @@ class LocationsViewModel(userId: String) : ViewModel() {
             locationRepository.recentLocationFlow
                 .collect { data ->
                     recentLocationMutable.update {
-                        if (data.isEmpty()) {
-                            LocationsUIModel.Empty
-                        } else {
-                            LocationsUIModel.Data(data)
-                        }
+                        if (data == null) LocationsUIModel.RequestError
+                        else if (data.isEmpty()) LocationsUIModel.Empty
+                        else LocationsUIModel.Data(data)
                     }
                 }
         }
