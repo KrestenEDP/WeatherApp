@@ -9,20 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
-import androidx.compose.material3.TooltipState
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,9 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,14 +31,9 @@ import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.StatsDay
 import dk.dtu.weatherapp.ui.components.CircularList
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
-    val tooltipState = rememberTooltipState(isPersistent = true)
     var day by remember { mutableIntStateOf(1) }
     var month by remember { mutableIntStateOf(1) }
     var statsDay by remember { mutableStateOf<StatsDay?>(null) }
@@ -62,7 +45,6 @@ fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .then(if (tooltipState.isVisible) Modifier.blur(2.dp) else Modifier)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -72,35 +54,6 @@ fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
                 .padding(bottom = 16.dp)
         ) {
             DayPicker(day, month, onDayChange = { day = it }, onMonthChange = { month = it })
-            TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                tooltip = {
-                    RichTooltip(
-                        title = { Text(stringResource(R.string.statsTooltipTitle)) },
-                        text = { Text(stringResource(R.string.statsTooltipText)) },
-                        action = {
-                            TextButton(
-                                onClick = { tooltipState.dismiss() }
-                            ) {
-                                Text(stringResource(R.string.statsTooltipButton))
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f)
-                    )
-                },
-                state = tooltipState,
-            ) {
-                IconButton(
-                    onClick = { CoroutineScope(Dispatchers.Main).launch { tooltipState.show() } }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = "Information about what to see on this page",
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
         }
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
