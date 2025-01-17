@@ -69,7 +69,7 @@ fun StatsDayInformation(
         modifier = Modifier.fillMaxSize()
     ) {
         statsDay?.let {
-            item { StatsCard(title = "Temperature", value = it.temp.mean, R.drawable.i01d, GlobalUnits.temp) }
+            item { StatsCard(title = "Temperature", value = it.temp.mean, R.drawable.thermostat, GlobalUnits.temp) }
             item { StatsCard(title = "Wind", value = it.wind.mean, R.drawable.wind, GlobalUnits.wind) }
             item { StatsCard(title = "Precipitation", value = it.precipitation.mean, R.drawable.i09d, GlobalUnits.precipitation) }
             item { StatsCard(title = "Humidity", value = it.humidity.mean, R.drawable.humidity, "%") }

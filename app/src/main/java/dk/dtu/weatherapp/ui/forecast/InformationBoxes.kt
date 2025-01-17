@@ -14,8 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -24,7 +22,6 @@ import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.Day
 import dk.dtu.weatherapp.ui.theme.Typography
-import dk.dtu.weatherapp.ui.util.getPainterResource
 
 @Composable
 fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
@@ -39,11 +36,17 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
             modifier = Modifier.fillMaxWidth()
         ) {
             InformationCard(
-                title = "Sunrise", text = forecast.sunrise, R.drawable.sunrise, "",
+                title = "Sunrise",
+                text = forecast.sunrise,
+                icon = R.drawable.sunrise,
+                unit = "",
                 modifier = Modifier.weight(0.5f)
             )
             InformationCard(
-                title = "Sunset", text = forecast.sunset, R.drawable.sunset, "",
+                title = "Sunset",
+                text = forecast.sunset,
+                icon = R.drawable.sunset,
+                unit = "",
                 modifier = Modifier.weight(0.5f)
             )
         }
@@ -53,12 +56,17 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 InformationCard(
-                    title = "Temperature", text = "${forecast.dayTemp} / ${forecast.nightTemp}",
-                    getPainterResource(forecast.iconURL, LocalContext.current), GlobalUnits.temp,
+                    title = "Temperature",
+                    text = "${forecast.dayTemp} / ${forecast.nightTemp}",
+                    icon = R.drawable.thermostat,
+                    unit = GlobalUnits.temp,
                     modifier = Modifier.weight(0.5f)
                 )
                 InformationCard(
-                    title = "Wind", text = "${forecast.windSpeed} (${forecast.windGusts})", R.drawable.wind, GlobalUnits.wind,
+                    title = "Wind",
+                    text = "${forecast.windSpeed} (${forecast.windGusts})",
+                    icon = R.drawable.wind,
+                    unit = GlobalUnits.wind,
                     modifier = Modifier.weight(0.5f)
                 )
             }
@@ -68,11 +76,17 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
             modifier = Modifier.fillMaxWidth()
         ) {
             InformationCard(
-                title = "Precipitation", text = forecast.precipitation.toString(), R.drawable.i09d, GlobalUnits.precipitation,
+                title = "Precipitation",
+                text = forecast.precipitation.toString(),
+                icon = R.drawable.i09d,
+                unit = GlobalUnits.precipitation,
                 modifier = Modifier.weight(0.5f)
             )
             InformationCard(
-                title = "Humidity", text = forecast.humidity.toString(), R.drawable.humidity, "%",
+                title = "Humidity",
+                text = forecast.humidity.toString(),
+                icon = R.drawable.humidity,
+                unit = "%",
                 modifier = Modifier.weight(0.5f)
             )
         }
@@ -81,11 +95,17 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
             modifier = Modifier.fillMaxWidth()
         ) {
             InformationCard(
-                title = "Pressure", text = forecast.pressure.toString(), R.drawable.compress, "hPa",
+                title = "Pressure",
+                text = forecast.pressure.toString(),
+                icon = R.drawable.compress,
+                unit = "hPa",
                 modifier = Modifier.weight(0.5f)
             )
             InformationCard(
-                title = "Cloudiness", text = forecast.cloudiness.toString(), R.drawable.i03d, "%",
+                title = "Cloudiness",
+                text = forecast.cloudiness.toString(),
+                icon = R.drawable.i03d,
+                unit = "%",
                 modifier = Modifier.weight(0.5f)
             )
         }
