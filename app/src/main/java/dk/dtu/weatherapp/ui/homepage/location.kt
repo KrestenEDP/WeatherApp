@@ -15,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.ui.theme.Typography
 
@@ -26,7 +26,7 @@ fun Location(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
@@ -43,7 +43,11 @@ fun Location(
         Text(
             text = location,
             style = Typography.displaySmall,
-            modifier = Modifier.clickable { onSearchClicked() }
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .weight(1f)
+                .clickable { onSearchClicked() }
+                .padding(end = 36.dp)
         )
     }
 }
