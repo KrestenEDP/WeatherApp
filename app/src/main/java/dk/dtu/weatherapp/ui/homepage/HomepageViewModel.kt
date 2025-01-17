@@ -13,10 +13,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomepageViewModel : ViewModel() {
-    private val currentWeatherRepository = CurrentWeatherRepository()
-    private val dayRepository = DayRepository()
-    private val hourRepository = HourRepository()
+class HomepageViewModel(
+    private val currentWeatherRepository: CurrentWeatherRepository = CurrentWeatherRepository(),
+    private val dayRepository: DayRepository = DayRepository(),
+    private val hourRepository: HourRepository = HourRepository()
+) : ViewModel() {
 
     private val weatherMutableCurrent = MutableStateFlow<WeatherUIModel>(WeatherUIModel.Loading)
     val weatherUIState: StateFlow<WeatherUIModel> = weatherMutableCurrent

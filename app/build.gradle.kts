@@ -84,6 +84,10 @@ dependencies {
 
     implementation(libs.gson)
     implementation(libs.androidx.security.crypto)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.turbine)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -92,4 +96,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(kotlin("test"))
 }

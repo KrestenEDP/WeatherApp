@@ -2,6 +2,7 @@
 agp = "8.7.3"
 appcompat = "1.7.0"
 appcompatV7 = "28.0.0"
+coreTesting = "2.2.0"
 datastorePreferences = "1.1.1"
 firebaseAnalytics = "22.1.2"
 firebaseAuth = "23.1.0"
@@ -13,9 +14,11 @@ coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+kotlinxCoroutinesTest = "1.9.0"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
+mockk = "1.12.0"
 navigationCompose = "2.8.3"
 navigationRuntimeKtx = "2.8.3"
 coilCompose = "3.0.1"
@@ -26,10 +29,12 @@ kotlinSerialization = "1.7.3"
 firebaseFirestoreKtx = "25.1.1"
 gms = "4.4.2"
 securityCryptoVersion = "1.0.0"
+turbine = "0.11.0"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -58,11 +63,14 @@ firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-fires
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
 coil-httpok = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilCompose" }
 
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 kotlin-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref="retrofit" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

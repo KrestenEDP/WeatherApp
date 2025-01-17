@@ -13,10 +13,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @SuppressLint("StaticFieldLeak")
-class AlertsViewModel : ViewModel() {
+class AlertsViewModel(
+    private val alertRepository: AlertRepository = AlertRepository()
+) : ViewModel() {
 
     val context: Context = getAppContext()
-    private val alertRepository = AlertRepository()
     private val mutableCurrent = MutableStateFlow<AlertsUIModel>(AlertsUIModel.Loading)
     val alertsUIState: StateFlow<AlertsUIModel> = mutableCurrent
 
@@ -43,7 +44,7 @@ class AlertsViewModel : ViewModel() {
         getAlerts()
     }
 
-    private fun getAlerts() = viewModelScope.launch {
+    fun getAlerts() = viewModelScope.launch {
         alertRepository.getAlerts()
     }
 }
