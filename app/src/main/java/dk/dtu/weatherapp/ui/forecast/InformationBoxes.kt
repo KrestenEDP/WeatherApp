@@ -33,6 +33,19 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            InformationCard(
+                title = "Sunrise", text = forecast.sunrise, R.drawable.sunrise, "",
+                modifier = Modifier.weight(0.5f)
+            )
+            InformationCard(
+                title = "Sunset", text = forecast.sunset, R.drawable.sunset, "",
+                modifier = Modifier.weight(0.5f)
+            )
+        }
         if (showMoreInformation) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -49,7 +62,6 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
                 )
             }
         }
-
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth()
@@ -63,7 +75,6 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
                 modifier = Modifier.weight(0.5f)
             )
         }
-
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth()
@@ -74,20 +85,6 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
             )
             InformationCard(
                 title = "Cloudiness", text = forecast.cloudiness.toString(), R.drawable.i03d, "%",
-                modifier = Modifier.weight(0.5f)
-            )
-        }
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            InformationCard(
-                title = "Sunrise", text = forecast.sunrise, R.drawable.sunrise, "",
-                modifier = Modifier.weight(0.5f)
-            )
-            InformationCard(
-                title = "Sunset", text = forecast.sunset, R.drawable.sunset, "",
                 modifier = Modifier.weight(0.5f)
             )
         }
