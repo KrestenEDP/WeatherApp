@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -42,7 +43,10 @@ fun CurrentWeather(data: Current) {
                 color = Color.Gray
             )
             Spacer(modifier = Modifier.height(6.dp))
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 Icon(
                     painterResource(R.drawable.wind), // @TODO maybe change to arrow to show direction
                     contentDescription = "Current wind strength",
@@ -51,7 +55,10 @@ fun CurrentWeather(data: Current) {
                 Text("${data.wind} " + GlobalUnits.wind, style = Typography.titleMedium)
             }
             Spacer(modifier = Modifier.height(6.dp))
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 Icon(
                     painterResource(R.drawable.i09d),
                     contentDescription = "Current rain fall",

@@ -142,8 +142,10 @@ fun DynamicBackgroundSetting(context: Context) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Dynamic Background", style = Typography.titleSmall)
-
+        Text(
+            text = "Dynamic Background",
+            style = Typography.titleSmall
+        )
         Switch(
             checked = isDynamicBackgroundEnabled,
             onCheckedChange = { newValue ->

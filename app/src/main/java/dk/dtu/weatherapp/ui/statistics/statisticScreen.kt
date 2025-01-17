@@ -22,7 +22,7 @@ import dk.dtu.weatherapp.ui.theme.Typography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticScreen() {
-    var selectedIndex by remember { mutableIntStateOf(2) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
     val options = listOf("Day", "Month", "Year")
 
     val statsViewModel: StatsViewModel = viewModel()

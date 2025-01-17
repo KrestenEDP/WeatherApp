@@ -34,7 +34,12 @@ import java.util.Locale
                         modifier = Modifier.size(30.dp)
                     )
                 },
-                label = { Text(style = Typography.bodyLarge, text = screen.route.replaceFirstChar { it.titlecase(Locale.ENGLISH) }) },
+                label = {
+                    Text(
+                        style = Typography.bodyLarge,
+                        text = screen.route.replaceFirstChar { it.titlecase(Locale.ENGLISH) },
+                        maxLines = 1,
+                        ) },
                 selected = currentScreen == screen,
                 onClick = {
                     onTabSelected(screen)

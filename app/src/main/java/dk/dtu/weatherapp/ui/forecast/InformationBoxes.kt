@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
@@ -118,12 +119,20 @@ fun InformationCard(title: String, text: String, icon: Int, unit: String, modifi
                 modifier = Modifier
                     .size(16.dp)
             )
-            Text(title, style = Typography.bodyMedium, modifier = Modifier.padding(start = 4.dp))
+            Text(
+                title,
+                style = Typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(start = 4.dp)
+            )
         }
         Text(
             text = "$text $unit",
             style = Typography.bodyLarge,
             fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         )
     }
