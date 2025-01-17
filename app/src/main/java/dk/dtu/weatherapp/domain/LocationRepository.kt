@@ -91,7 +91,7 @@ class LocationRepository(private val userId: String) {
             reader.lineSequence()
                 .drop(1)
                 .filter { it.split(",")[0].contains(query, ignoreCase = true) }
-                .take(15)
+                .take(30)
                 .map {
                     val parameters = it.split(",")
                     Location(name = parameters[0], parameters[1], parameters[2], isFavorite = favorites.contains(parameters[0]))

@@ -29,6 +29,7 @@ import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.DotProperties
+import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 
@@ -125,9 +126,13 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
                 ),
             )
         },
+        labelHelperProperties = LabelHelperProperties(
+            enabled = true,
+            textStyle = MaterialTheme.typography.bodyLarge,
+        ),
         labelProperties = LabelProperties(
             enabled = true,
-            textStyle = MaterialTheme.typography.labelSmall,
+            textStyle = MaterialTheme.typography.bodyLarge,
             labels = monthList,
             builder = {modifier,label,shouldRotate,index->
                 Text(modifier=modifier,text=label)
