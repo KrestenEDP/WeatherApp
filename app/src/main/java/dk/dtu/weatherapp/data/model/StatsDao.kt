@@ -26,26 +26,36 @@ data class StatsTempDao(
 @Serializable
 data class StatsPressureDao(
     val mean: Double,
+    val min: Double,
+    val max: Double,
 )
 
 @Serializable
 data class StatsHumidityDao(
     val mean: Double,
+    val min: Double,
+    val max: Double,
 )
 
 @Serializable
 data class StatsWindDao(
     val mean: Double,
+    val min: Double,
+    val max: Double,
 )
 
 @Serializable
 data class StatsPrecipitationDao(
     val mean: Double,
+    val min: Double,
+    val max: Double,
 )
 
 @Serializable
 data class StatsCloudsDao(
     val mean: Double,
+    val min: Double,
+    val max: Double,
 )
 
 @Serializable

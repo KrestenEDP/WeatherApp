@@ -40,7 +40,9 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
                     .padding(end = 16.dp)
                     .size(36.dp)
             )
-            Column {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
                 Text(date, style = Typography.bodyLarge)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(

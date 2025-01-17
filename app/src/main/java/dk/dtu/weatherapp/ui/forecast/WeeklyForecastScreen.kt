@@ -87,7 +87,7 @@ fun WeeklyForecastContent(
                     HourlyUIModel.Loading -> item { LoadingScreen(modifier = Modifier.padding(vertical = 100.dp)) }
                     is HourlyUIModel.Data -> {
                         if (it < forecastHourlyUiModel.hours.size) {
-                            HourlyForecast(forecastHourlyUiModel.hours[it])
+                            hourlyForecast(forecastHourlyUiModel.hours[it])
                         } else showMoreInformationBoxes = true
                     }
                 }

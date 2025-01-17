@@ -49,7 +49,7 @@ fun Hour(
                 contentDescription = "Wind degree $windDegree",
                 Modifier
                     .rotate(windDegree.toFloat()+90)
-                    .size(16.dp)
+                    .size(20.dp)
             )
             Text(text = "$wind " + GlobalUnits.wind, style = Typography.bodyLarge)
         }

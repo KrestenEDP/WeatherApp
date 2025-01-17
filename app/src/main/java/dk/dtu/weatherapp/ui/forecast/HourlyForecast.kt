@@ -27,7 +27,7 @@ import dk.dtu.weatherapp.models.Hour
 import dk.dtu.weatherapp.ui.theme.Typography
 import dk.dtu.weatherapp.ui.util.getPainterResource
 
-fun LazyListScope.HourlyForecast(forecast: List<Hour>) {
+fun LazyListScope.hourlyForecast(forecast: List<Hour>) {
 
     items(forecast.size) {
         ForecastElement(forecast[it])

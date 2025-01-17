@@ -2,13 +2,8 @@ package dk.dtu.weatherapp.domain
 
 import dk.dtu.weatherapp.data.model.StatsDao
 import dk.dtu.weatherapp.data.remote.RemoteStatisticsDataSource
+import dk.dtu.weatherapp.models.StatsDataObject
 import dk.dtu.weatherapp.models.StatsDay
-import dk.dtu.weatherapp.models.StatsDayClouds
-import dk.dtu.weatherapp.models.StatsDayHumidity
-import dk.dtu.weatherapp.models.StatsDayPrecipitation
-import dk.dtu.weatherapp.models.StatsDayPressure
-import dk.dtu.weatherapp.models.StatsDayTemp
-import dk.dtu.weatherapp.models.StatsDayWind
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
@@ -40,15 +35,35 @@ class StatsRepository {
 suspend fun StatsDao.mapToStatsList(): StatsDay {
     return StatsDay(
         month = month,
-        temp = StatsDayTemp(
+        temp = StatsDataObject(
             mean = convertTempUnit(temp.mean),
-            averageMax = convertTempUnit(temp.averageMax),
-            averageMin = convertTempUnit(temp.averageMin)
+            max = convertTempUnit(temp.averageMax),
+            min = convertTempUnit(temp.averageMin)
         ),
-        pressure = StatsDayPressure(mean = pressure.mean),
-        humidity = StatsDayHumidity(mean = humidity.mean),
-        wind = StatsDayWind(mean = convertSpeedUnit(wind.mean)),
-        precipitation = StatsDayPrecipitation(mean = convertPrecipitationUnit(precipitation.mean)),
-        clouds = StatsDayClouds(mean = clouds.mean)
+        pressure = StatsDataObject(
+            mean = pressure.mean,
+            max = pressure.max,
+            min = pressure.min
+        ),
+        humidity = StatsDataObject(
+            mean = humidity.mean,
+            max = humidity.max,
+            min = humidity.min
+        ),
+        wind = StatsDataObject(
+            mean = convertSpeedUnit(wind.mean),
+            max = convertSpeedUnit(wind.max),
+            min = convertSpeedUnit(wind.min)
+        ),
+        precipitation = StatsDataObject(
+            mean = convertPrecipitationUnit(precipitation.mean),
+            max = convertPrecipitationUnit(precipitation.max),
+            min = convertPrecipitationUnit(precipitation.min)
+        ),
+        clouds = StatsDataObject(
+            mean = clouds.mean,
+            max = clouds.max,
+            min = clouds.min
+        ),
     )
 }

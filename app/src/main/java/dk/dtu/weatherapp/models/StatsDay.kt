@@ -2,36 +2,16 @@ package dk.dtu.weatherapp.models
 
 data class StatsDay (
     val month: Int,
-    val temp: StatsDayTemp,
-    val pressure: StatsDayPressure,
-    val humidity: StatsDayHumidity,
-    val wind: StatsDayWind,
-    val precipitation: StatsDayPrecipitation,
-    val clouds: StatsDayClouds
+    val temp: StatsDataObject,
+    val pressure: StatsDataObject,
+    val humidity: StatsDataObject,
+    val wind: StatsDataObject,
+    val precipitation: StatsDataObject,
+    val clouds: StatsDataObject
 )
 
-data class StatsDayTemp (
+data class StatsDataObject (
     val mean: Double,
-    val averageMin: Double,
-    val averageMax: Double,
-)
-
-data class StatsDayPressure (
-    val mean: Double
-)
-
-data class StatsDayHumidity (
-    val mean: Double
-)
-
-data class StatsDayWind (
-    val mean: Double
-)
-
-data class StatsDayPrecipitation (
-    val mean: Double
-)
-
-data class StatsDayClouds (
-    val mean: Double
+    val min: Double,
+    val max: Double,
 )

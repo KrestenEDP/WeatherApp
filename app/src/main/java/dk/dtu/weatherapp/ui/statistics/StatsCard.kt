@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.ui.theme.Typography
 
@@ -38,12 +39,16 @@ fun StatsCard(title: String, value: Double, icon: Int, unit: String) {
                 Text(
                     text = title,
                     style = Typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(start = 4.dp)
                 )
             }
             Text(
                 text = "$value $unit",
                 style = Typography.bodyLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 8.dp)
             )
