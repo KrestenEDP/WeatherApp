@@ -32,7 +32,7 @@ fun CurrentWeather(data: Current) {
     ) {
         Icon(
             painter = painterResource(getPainterResource(data.icon, LocalContext.current)),
-            contentDescription = "Dynamic weather icon", // @TODO use description from API
+            contentDescription = null,
             modifier = Modifier.size(150.dp)
         )
         Spacer(modifier = Modifier.width(14.dp))
@@ -48,7 +48,7 @@ fun CurrentWeather(data: Current) {
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Icon(
-                    painterResource(R.drawable.wind), // @TODO maybe change to arrow to show direction
+                    painterResource(R.drawable.wind),
                     contentDescription = "Current wind strength",
                     modifier = Modifier.size(20.dp)
                 )

@@ -38,7 +38,7 @@ fun Hour(
         Text(text = time, style = Typography.bodyLarge)
         Icon(
             painterResource(getPainterResource(icon, LocalContext.current)),
-            contentDescription = null, // @TODO use dynamic icon and description
+            contentDescription = null,
             modifier = Modifier.size(48.dp)
         )
         Text(text = "$temp " + GlobalUnits.temp, style = Typography.bodyLarge)

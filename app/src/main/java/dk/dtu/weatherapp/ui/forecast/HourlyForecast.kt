@@ -56,7 +56,7 @@ fun ForecastElement(hour: Hour) {
             )
             Icon(
                 imageVector = ImageVector.vectorResource(getPainterResource(hour.iconURL, LocalContext.current)),
-                contentDescription = null, // TODO: Add weather type as content description
+                contentDescription = null,
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .size(28.dp)
@@ -85,7 +85,7 @@ fun ForecastElement(hour: Hour) {
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = null, // TODO: Add more options as content description
+                contentDescription = null,
                 modifier = Modifier
                     .rotate(hour.windDegree.toFloat()+90)
             )

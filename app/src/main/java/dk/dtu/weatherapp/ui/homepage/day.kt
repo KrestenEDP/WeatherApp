@@ -34,8 +34,8 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
             modifier = Modifier
         ) {
             Icon(
-                painterResource(getPainterResource(icon, LocalContext.current)), // @TODO use dynamic icon and desc
-                contentDescription = "Dynamic weather icon",
+                painterResource(getPainterResource(icon, LocalContext.current)),
+                contentDescription = null,
                 Modifier
                     .padding(end = 16.dp)
                     .size(36.dp)

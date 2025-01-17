@@ -34,15 +34,6 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
             .padding(16.dp)
     ) {
         if (showMoreInformation) {
-            // TODO: Add sunrise and sunset in either one box that takes up the
-            //  whole row or one small box and some other data in the other box
-            /*Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                InformationCard(title = "Temperature", text = forecast., R.drawable.i01d, GlobalUnits.temp) // TODO use imported values
-            }*/
-
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
