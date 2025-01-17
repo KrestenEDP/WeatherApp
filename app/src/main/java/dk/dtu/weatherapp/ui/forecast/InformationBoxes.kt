@@ -85,6 +85,20 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
                 modifier = Modifier.weight(0.5f)
             )
         }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            InformationCard(
+                title = "Sunrise", text = forecast.sunrise, R.drawable.sunrise, "",
+                modifier = Modifier.weight(0.5f)
+            )
+            InformationCard(
+                title = "Sunset", text = forecast.sunset, R.drawable.sunsetsvg, "",
+                modifier = Modifier.weight(0.5f)
+            )
+        }
     }
 }
 
