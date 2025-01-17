@@ -46,7 +46,7 @@ data class WeatherHourDao(
     val wind: WindDao = WindDao(0.0),
     val rain: RainDao = RainDao(0.0),
     val snow: SnowDao = SnowDao(0.0),
-    val dt_txt: String? = null
+    val dt: Long
 )
 
 @Serializable
@@ -67,13 +67,20 @@ data class WeatherDayDao(
 )
 
 @Serializable
+data class CityDao(
+    val timezone: Long
+)
+
+@Serializable
 data class HourlyWeatherDao(
     @SerialName("list")
-    val hours: List<WeatherHourDao>
+    val hours: List<WeatherHourDao>,
+    val city: CityDao
 )
 
 @Serializable
 data class DailyWeatherDao(
     @SerialName("list")
-    val days: List<WeatherDayDao>
+    val days: List<WeatherDayDao>,
+    val city: CityDao
 )

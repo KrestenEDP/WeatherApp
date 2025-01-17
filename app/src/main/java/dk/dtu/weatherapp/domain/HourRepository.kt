@@ -20,7 +20,7 @@ class HourRepository {
 suspend fun HourlyWeatherDao.mapToHours(): List<Hour> {
     return hours.map {
         Hour(
-            time = it.dt_txt?.split(" ")[1]?.substring(0,5) ?: "",
+            time = getTimeFromUnixTimestamp(it.dt, city.timezone),
             iconURL = "i" + it.weather[0].icon,
             temp = convertTempUnit(it.main.temp),
             precipitation = convertPrecipitationUnit(it.rain.amount + it.snow.amount),
