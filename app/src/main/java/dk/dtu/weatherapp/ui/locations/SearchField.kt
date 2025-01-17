@@ -30,6 +30,7 @@ fun SearchField(onValueChange: (String) -> Unit) {
                     .size(36.dp)
             )
                       },
+        maxLines = 1,
         value = text,
         onValueChange = {
             text = it
