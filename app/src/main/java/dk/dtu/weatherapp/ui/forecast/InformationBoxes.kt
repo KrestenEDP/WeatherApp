@@ -105,7 +105,6 @@ fun InformationCard(title: String, text: String, icon: Int, unit: String, modifi
             Icon(
                 painter = painterResource(icon),
                 contentDescription = "null",
-                tint = Color.Unspecified,
                 modifier = Modifier
                     .size(16.dp)
             )

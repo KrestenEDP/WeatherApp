@@ -34,7 +34,6 @@ fun StatsCard(title: String, value: Double, icon: Int, unit: String) {
                 Icon(
                     painter = painterResource(icon),
                     contentDescription = "null",
-                    tint = Color.Unspecified,
                     modifier = Modifier
                         .size(16.dp)
                 )

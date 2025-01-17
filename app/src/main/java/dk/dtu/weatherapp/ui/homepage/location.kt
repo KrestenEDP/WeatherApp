@@ -34,7 +34,6 @@ fun Location(
         Icon(
             Icons.Default.Search,
             contentDescription = "Search button",
-            tint = Color.Unspecified,
             modifier = Modifier
                 .padding(0.dp)
                 .size(36.dp)

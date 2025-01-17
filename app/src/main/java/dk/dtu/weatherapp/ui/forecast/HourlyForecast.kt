@@ -88,7 +88,6 @@ fun ForecastElement(hour: Hour) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
-                tint = Color.Unspecified,
                 modifier = Modifier
                     .rotate(hour.windDegree.toFloat()+90)
             )

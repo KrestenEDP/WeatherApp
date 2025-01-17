@@ -54,7 +54,6 @@ fun WeatherTopAppBar(
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
-                        tint = Color.Unspecified,
                         modifier = Modifier
                             .size(28.dp)
                             //.padding(start = 4.dp)

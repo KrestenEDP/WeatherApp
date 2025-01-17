@@ -205,7 +205,7 @@ fun UnitSetting(context: Context) {
                 Icon(
                     Icons.Default.KeyboardArrowDown,
                     contentDescription = "Dropdown Menu",
-                    tint = Color.Unspecified)
+                )
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }

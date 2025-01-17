@@ -49,7 +49,6 @@ fun LocationElement(
             Icon(
                 imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 contentDescription = "Favorite $isFavorite",
-                tint = Color.Unspecified
             )
         }
 

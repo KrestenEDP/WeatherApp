@@ -29,7 +29,6 @@ fun SearchField(onValueChange: (String) -> Unit) {
             Icon(
                 Icons.Default.Search,
                 contentDescription = "Search icon",
-                tint = Color.Unspecified,
                 modifier = Modifier.size(36.dp)
             ) },
         maxLines = 1,

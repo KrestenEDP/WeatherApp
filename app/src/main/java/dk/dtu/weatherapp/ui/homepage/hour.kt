@@ -49,7 +49,6 @@ fun Hour(
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "Wind degree $windDegree",
-                tint = Color.Unspecified,
                 modifier = Modifier
                     .rotate(windDegree.toFloat()+90)
                     .size(20.dp)

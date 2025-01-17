@@ -41,7 +41,6 @@ fun LocationList(
             Icon(
                 imageVector = ImageVector.vectorResource(type.icon),
                 contentDescription = "Weather icon",
-                tint = Color.Unspecified,
                 modifier = Modifier.size(36.dp)
             )
             Text(

@@ -32,7 +32,6 @@ import java.util.Locale
                     Icon(
                         imageVector = ImageVector.vectorResource(screen.icon),
                         contentDescription = null,
-                        tint = Color.Unspecified,
                         modifier = Modifier.size(30.dp)
                     )
                 },

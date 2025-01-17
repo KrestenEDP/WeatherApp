@@ -58,7 +58,6 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
         Icon(
             Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Arrow right",
-            tint = Color.Unspecified,
             modifier = Modifier.size(36.dp)
         )
     }
