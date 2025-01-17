@@ -95,7 +95,7 @@ fun InformationBoxes(forecast: Day, showMoreInformation: Boolean = false) {
                 modifier = Modifier.weight(0.5f)
             )
             InformationCard(
-                title = "Sunset", text = forecast.sunset, R.drawable.sunsetsvg, "",
+                title = "Sunset", text = forecast.sunset, R.drawable.sunset, "",
                 modifier = Modifier.weight(0.5f)
             )
         }
