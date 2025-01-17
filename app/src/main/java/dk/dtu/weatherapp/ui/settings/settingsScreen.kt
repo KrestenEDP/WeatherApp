@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -198,8 +199,13 @@ fun UnitSetting(context: Context) {
                     .clickable { expanded = true }
                     .padding(start = 16.dp)
             ) {
-                Text(text = Units[selectedUnit], style = Typography.titleSmall)
-                Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Dropdown Menu")
+                Text(
+                    text = Units[selectedUnit],
+                    style = Typography.titleSmall)
+                Icon(
+                    Icons.Default.KeyboardArrowDown,
+                    contentDescription = "Dropdown Menu",
+                    tint = Color.Unspecified)
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }

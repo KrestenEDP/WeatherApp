@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.ui.theme.Typography
 
@@ -33,7 +34,8 @@ fun Location(
         Icon(
             Icons.Default.Search,
             contentDescription = "Search button",
-            Modifier
+            tint = Color.Unspecified,
+            modifier = Modifier
                 .padding(0.dp)
                 .size(36.dp)
                 .clickable { onSearchClicked() }

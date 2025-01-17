@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +40,7 @@ fun Hour(
         Icon(
             painterResource(getPainterResource(icon, LocalContext.current)),
             contentDescription = null,
+            tint = Color.Unspecified,
             modifier = Modifier.size(48.dp)
         )
         Text(text = "$temp " + GlobalUnits.temp, style = Typography.bodyLarge)
@@ -47,7 +49,8 @@ fun Hour(
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "Wind degree $windDegree",
-                Modifier
+                tint = Color.Unspecified,
+                modifier = Modifier
                     .rotate(windDegree.toFloat()+90)
                     .size(20.dp)
             )

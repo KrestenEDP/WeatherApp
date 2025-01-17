@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,9 +35,10 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
             modifier = Modifier
         ) {
             Icon(
-                painterResource(getPainterResource(icon, LocalContext.current)),
+                painterResource(getPainterResource(icon, LocalContext.current)), // @TODO use dynamic icon and desc
                 contentDescription = null,
-                Modifier
+                tint = Color.Unspecified,
+                modifier = Modifier
                     .padding(end = 16.dp)
                     .size(36.dp)
             )
@@ -56,6 +58,7 @@ fun Day(date: String, dayTemp: Double, nightTemp: Double, rain: Double, icon: St
         Icon(
             Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Arrow right",
+            tint = Color.Unspecified,
             modifier = Modifier.size(36.dp)
         )
     }

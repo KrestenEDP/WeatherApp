@@ -33,6 +33,7 @@ fun CurrentWeather(data: Current) {
         Icon(
             painter = painterResource(getPainterResource(data.icon, LocalContext.current)),
             contentDescription = null,
+            tint = Color.Unspecified,
             modifier = Modifier.size(150.dp)
         )
         Spacer(modifier = Modifier.width(14.dp))
@@ -48,8 +49,9 @@ fun CurrentWeather(data: Current) {
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Icon(
-                    painterResource(R.drawable.wind),
+                    painterResource(R.drawable.wind), // @TODO maybe change to arrow to show direction
                     contentDescription = "Current wind strength",
+                    tint = Color.Unspecified,
                     modifier = Modifier.size(20.dp)
                 )
                 Text("${data.wind} " + GlobalUnits.wind, style = Typography.titleMedium)
@@ -62,6 +64,7 @@ fun CurrentWeather(data: Current) {
                 Icon(
                     painterResource(R.drawable.i09d),
                     contentDescription = "Current rain fall",
+                    tint = Color.Unspecified,
                     modifier = Modifier.size(20.dp)
                 )
                 Text("${data.precipitation} " + GlobalUnits.precipitation, style = Typography.titleMedium)

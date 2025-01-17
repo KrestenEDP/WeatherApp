@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -57,6 +58,7 @@ fun ForecastElement(hour: Hour) {
             Icon(
                 imageVector = ImageVector.vectorResource(getPainterResource(hour.iconURL, LocalContext.current)),
                 contentDescription = null,
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .size(28.dp)
@@ -86,6 +88,7 @@ fun ForecastElement(hour: Hour) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .rotate(hour.windDegree.toFloat()+90)
             )
