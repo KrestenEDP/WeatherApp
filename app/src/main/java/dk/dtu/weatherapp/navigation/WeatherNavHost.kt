@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -85,9 +84,9 @@ fun WeatherNavHost(
 
 fun NavHostController.navigateSingleTopTo(route: String, restore: Boolean = true) {
     this.navigate(route) {
-        popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
+        /*popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
             saveState = true
-        }
+        }*/
         launchSingleTop = true
         restoreState = restore
     }
