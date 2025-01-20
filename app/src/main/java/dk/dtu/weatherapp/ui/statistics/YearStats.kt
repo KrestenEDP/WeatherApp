@@ -24,11 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.models.StatsDay
-import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
+import dk.dtu.weatherapp.ui.theme.Typography
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.DotProperties
+import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
 import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
@@ -99,7 +101,7 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     )
     LineChart(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(8.dp),
         data = remember {
             listOf(
                 Line(
@@ -129,19 +131,22 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
         },
         labelHelperProperties = LabelHelperProperties(
             enabled = true,
-            textStyle = MaterialTheme.typography.bodyLarge,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
         ),
         labelProperties = LabelProperties(
             enabled = true,
-            textStyle = MaterialTheme.typography.bodyLarge,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
             labels = monthList,
             rotation = LabelProperties.Rotation(
-                mode = LabelProperties.Rotation.Mode.Force,
-                degree = 45f
+                mode = LabelProperties.Rotation.Mode.IfNecessary,
+                degree = 25f
             ),
             builder = {modifier,label,_,_->
-                Text(modifier=modifier,text=label)
+                Text(modifier=modifier,text=label, style = Typography.labelSmall)
             }
+        ),
+        indicatorProperties = HorizontalIndicatorProperties(
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
         )
     )
 }
