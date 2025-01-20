@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dk.dtu.weatherapp.domain.StatsRepository
 import dk.dtu.weatherapp.models.StatsDay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StatsViewModel : ViewModel() {
     private val statsRepo = StatsRepository()
@@ -77,7 +79,9 @@ class StatsViewModel : ViewModel() {
     private fun getYearStats() = viewModelScope.launch {
         yearMutable.value = StatsYearUIModel.Loading
         viewModelScope.launch {
-            statsRepo.getYearStats()
+            withContext(Dispatchers.IO) {
+                statsRepo.getYearStats()
+            }
         }
     }
 }

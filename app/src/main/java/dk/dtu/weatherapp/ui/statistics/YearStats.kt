@@ -135,6 +135,10 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
             enabled = true,
             textStyle = MaterialTheme.typography.bodyLarge,
             labels = monthList,
+            rotation = LabelProperties.Rotation(
+                mode = LabelProperties.Rotation.Mode.Force,
+                degree = 45f
+            ),
             builder = {modifier,label,_,_->
                 Text(modifier=modifier,text=label)
             }
