@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherApp</string>
+    <string name="app_name">06 - WeatherApp</string>
     <string name="channel_name">alertChannel\n</string>
     <string name="channel_description">alertChannelDescription</string>
     <string name="statsTooltipText">

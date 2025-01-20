@@ -28,19 +28,17 @@ import dk.dtu.weatherapp.ui.theme.Typography
 /**
  * A circular list that can be scrolled infinitely in both directions.
  * @param items The items to display in the list.
- * @param textSize The size of the text in the list.
  * @param itemHeight The height of each item in the wheel.
  * @param itemDisplayCount The number of items to display at once. Should be an odd number.
  */
 @Composable
 fun CircularList(
     items: MutableList<String>,
-    textSize: Int = 24,
-    itemHeight: Int = 40,
-    itemDisplayCount: Int = 3,
-    width: Int = 140,
+    itemHeight: Int,
+    itemDisplayCount: Int,
+    width: Int,
     modifier: Modifier = Modifier,
-    onItemSelected: (String) -> Unit = {}
+    onItemSelected: (String) -> Unit = {},
 ) {
     val scrollState = rememberLazyListState(0)
     var lastSelectedIndex by remember { mutableIntStateOf(0) }
@@ -110,5 +108,6 @@ fun CircularListPreview() {
             "July", "August", "September", "October", "November", "December").toMutableList(),
         itemHeight = 60,
         itemDisplayCount = 3,
+        width = 100
     )
 }

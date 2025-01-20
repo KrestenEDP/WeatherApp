@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,8 +26,8 @@ import dk.dtu.weatherapp.ui.theme.Typography
 @Composable
 fun LocationElement(
     location: Location,
+    modifier: Modifier = Modifier,
     onToggleFavorite: (Location) -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     var isFavorite by remember { mutableStateOf(location.isFavorite) }
 
@@ -51,24 +50,6 @@ fun LocationElement(
                 contentDescription = "Favorite $isFavorite",
             )
         }
-
-        /*Text(
-            style = Typography.bodyLarge,
-            textAlign = TextAlign.Right,
-            text = "${location.temperature}°C",
-            modifier = Modifier
-                .padding(end = 32.dp)
-                .weight(1f)
-        )*/
-
-        /*Icon(
-            imageVector = ImageVector.vectorResource(id = location.iconURL),
-            contentDescription = "Weather icon",
-            Modifier
-                .padding(start = 24.dp, end = 24.dp)
-                .size(36.dp)
-                .weight(1f)
-        )*/
 
         Text(
             style = Typography.bodyLarge,

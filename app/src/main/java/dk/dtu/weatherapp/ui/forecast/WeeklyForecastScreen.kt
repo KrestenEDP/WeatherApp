@@ -32,7 +32,7 @@ import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.data.mock.MockHourlyFourDayForecast
 import dk.dtu.weatherapp.navigation.WeeklyForecast
-import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 import java.text.SimpleDateFormat
@@ -47,7 +47,7 @@ fun WeeklyForecastScreen(
 
     when (val dayUIModel = weeklyForecastViewModel.dayUIState.collectAsState().value) {
         DayUIModel.RequestError -> RequestErrorScreen()
-        DayUIModel.Empty -> EmptyScreen("No available data")
+        DayUIModel.Empty -> NoDataScreen("No available data")
         DayUIModel.Loading -> LoadingScreen()
         is DayUIModel.Data -> {
             WeeklyForecastContent(
@@ -83,7 +83,7 @@ fun WeeklyForecastContent(
                 var showMoreInformationBoxes = false
                 when (forecastHourlyUiModel) {
                     HourlyUIModel.RequestError -> item { RequestErrorScreen() }
-                    HourlyUIModel.Empty -> item { EmptyScreen("No available data") }
+                    HourlyUIModel.Empty -> item { NoDataScreen("No available data") }
                     HourlyUIModel.Loading -> item { LoadingScreen(modifier = Modifier.padding(vertical = 100.dp)) }
                     is HourlyUIModel.Data -> {
                         if (it < forecastHourlyUiModel.hours.size) {

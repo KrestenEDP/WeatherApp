@@ -1,11 +1,11 @@
-package dk.dtu.weatherapp.Firebase
+package dk.dtu.weatherapp.firebase
 
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
 object FirebaseHelper {
-    fun isLocationInFirestore(
+    fun isLocationInFireStore(
         userId: String,
         tableId: String,
         cityName: String,
@@ -26,7 +26,7 @@ object FirebaseHelper {
             }
     }
 
-    suspend fun limitEntriesInFirestoreCollection(
+    suspend fun limitEntriesInFireStoreCollection(
         userId: String,
         tableId: String,
         amount: Int
@@ -49,7 +49,7 @@ object FirebaseHelper {
         }
     }
 
-    fun saveLocationToFirestore(
+    fun saveLocationToFireStore(
         userId: String,
         tableId: String,
         cityName: String,
@@ -81,7 +81,7 @@ object FirebaseHelper {
             .addOnFailureListener { onFailure(it) }
     }
 
-    fun removeLocationFromFirestore(
+    fun removeLocationFromFireStore(
         userId: String,
         tableId: String,
         cityName: String,

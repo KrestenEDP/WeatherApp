@@ -16,8 +16,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dk.dtu.weatherapp.GlobalUnits.edgymode
-import dk.dtu.weatherapp.GlobalUnits.noticeme
+import dk.dtu.weatherapp.GlobalUnits.edgyMode
+import dk.dtu.weatherapp.GlobalUnits.noticeMe
 import dk.dtu.weatherapp.domain.dataStore
 import dk.dtu.weatherapp.navigation.Settings
 import dk.dtu.weatherapp.navigation.Weather
@@ -27,7 +27,7 @@ import dk.dtu.weatherapp.navigation.navBarScreens
 import dk.dtu.weatherapp.navigation.navigateSingleTopTo
 import dk.dtu.weatherapp.ui.alerts.createNotificationChannel
 import dk.dtu.weatherapp.ui.components.NavBar
-import dk.dtu.weatherapp.ui.components.WeatherTopAppBar
+import dk.dtu.weatherapp.ui.components.WeatherAppTopBar
 import dk.dtu.weatherapp.ui.theme.WeatherAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,8 +56,8 @@ object GlobalUnits {
     var temp: String = ""
     var wind: String = ""
     var precipitation: String = ""
-    var edgymode: Boolean = true
-    var noticeme: Boolean = true
+    var edgyMode: Boolean = true
+    var noticeMe: Boolean = true
 }
 
 private fun initializeGlobalUnits(context: Context) {
@@ -66,8 +66,8 @@ private fun initializeGlobalUnits(context: Context) {
         val darkSetting = getDarkSetting(context)
         val pushSetting = getPushSetting(context)
         GlobalUnitUtils.updateGlobalUnits(unitSetting)
-        edgymode = darkSetting
-        noticeme = pushSetting
+        edgyMode = darkSetting
+        noticeMe = pushSetting
     }
 }
 
@@ -125,7 +125,7 @@ object GlobalUnitUtils {
 fun WeatherApp() {
     appContext = LocalContext.current.applicationContext
 
-    WeatherAppTheme(edgymode) {
+    WeatherAppTheme(edgyMode) {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
@@ -142,7 +142,7 @@ fun WeatherApp() {
 
         Scaffold(
             topBar = {
-                WeatherTopAppBar(currentScreen, navController)
+                WeatherAppTopBar(currentScreen, navController)
             },
             bottomBar = {
                 NavBar(

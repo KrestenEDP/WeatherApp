@@ -1,4 +1,4 @@
-package dk.dtu.weatherapp.Firebase
+package dk.dtu.weatherapp.firebase
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

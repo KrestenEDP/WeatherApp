@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dk.dtu.weatherapp.Firebase.FirebaseHelper.isLocationInFirestore
-import dk.dtu.weatherapp.Firebase.FirebaseHelper.limitEntriesInFirestoreCollection
-import dk.dtu.weatherapp.Firebase.FirebaseHelper.saveLocationToFirestore
-import dk.dtu.weatherapp.Firebase.getUserId
+import dk.dtu.weatherapp.firebase.FirebaseHelper.isLocationInFireStore
+import dk.dtu.weatherapp.firebase.FirebaseHelper.limitEntriesInFireStoreCollection
+import dk.dtu.weatherapp.firebase.FirebaseHelper.saveLocationToFireStore
+import dk.dtu.weatherapp.firebase.getUserId
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.models.Location
 import kotlinx.coroutines.CoroutineScope
@@ -36,13 +36,13 @@ suspend fun fetchCurrentLocation() {
             )
 
             val userId = getUserId(getAppContext())
-            isLocationInFirestore(
+            isLocationInFireStore(
                 userId = userId,
                 tableId = "recent",
                 cityName = location.name,
                 onSuccess = { exists ->
                     if (!exists) {
-                        saveLocationToFirestore(
+                        saveLocationToFireStore(
                             userId = userId,
                             tableId = "recent",
                             cityName = location.name,
@@ -50,14 +50,11 @@ suspend fun fetchCurrentLocation() {
                             longitude = location.lon,
                             saveTimeStamp = true,
                             onSuccess = { },
-                            onFailure = { exception ->
-                                // Handle error
-                            }
+                            onFailure = { }
                         )
 
                         customScope.launch {
-                            // Removes oldest entry if there are more than 15 entries
-                            limitEntriesInFirestoreCollection(
+                            limitEntriesInFireStoreCollection(
                                 userId = userId,
                                 tableId = "recent",
                                 amount = 8
@@ -65,9 +62,7 @@ suspend fun fetchCurrentLocation() {
                         }
                     }
                 },
-                onFailure = { exception ->
-                    // Handle error
-                }
+                onFailure = { }
             )
 
             location

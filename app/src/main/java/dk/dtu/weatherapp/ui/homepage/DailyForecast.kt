@@ -16,6 +16,7 @@ fun DailyForecast(onDayClicked: (Int) -> Unit, days: List<Day>, modifier: Modifi
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+        modifier = modifier
     ) {
         days.forEachIndexed { index, day ->
             Day(

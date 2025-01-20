@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,13 +32,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import dk.dtu.weatherapp.GlobalUnitUtils
-import dk.dtu.weatherapp.GlobalUnits.edgymode
+import dk.dtu.weatherapp.GlobalUnits.edgyMode
 import dk.dtu.weatherapp.domain.dataStore
 import dk.dtu.weatherapp.ui.theme.Typography
 import kotlinx.coroutines.flow.map
@@ -105,7 +105,7 @@ fun DarkModeSetting(context: Context) {
                 }
 
 
-                edgymode = newValue
+                edgyMode = newValue
 
                 // Delay or chaos
                 if (context is Activity) {
@@ -168,7 +168,7 @@ fun UnitSetting(context: Context) {
     val coroutineScope = rememberCoroutineScope()
     val preferredUnitKey = intPreferencesKey("preferred_unit")
 
-    var selectedUnit by remember { mutableStateOf(0) }
+    var selectedUnit by remember { mutableIntStateOf(0) }
     var expanded by remember { mutableStateOf(false) }
 
     // Read value from DataStore

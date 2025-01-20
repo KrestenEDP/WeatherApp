@@ -1,7 +1,7 @@
 package dk.dtu.weatherapp.domain
 
 import com.google.firebase.firestore.FirebaseFirestore
-import dk.dtu.weatherapp.Firebase.FirebaseHelper
+import dk.dtu.weatherapp.firebase.FirebaseHelper
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.getAppContext
 import dk.dtu.weatherapp.models.Location
@@ -40,14 +40,13 @@ class LocationRepository(private val userId: String) {
     )
 
     fun toggleFavorite(location: Location) {
-        FirebaseHelper.isLocationInFirestore(
+        FirebaseHelper.isLocationInFireStore(
             userId = userId,
             tableId = "favorites",
             cityName = location.name,
             onSuccess = { favorite ->
                 if (favorite) {
-                    // Remove the favorite
-                    FirebaseHelper.removeLocationFromFirestore(
+                    FirebaseHelper.removeLocationFromFireStore(
                         userId = userId,
                         tableId = "favorites",
                         cityName = location.name,
@@ -61,7 +60,7 @@ class LocationRepository(private val userId: String) {
                         }
                     )
                 } else {
-                    FirebaseHelper.saveLocationToFirestore(
+                    FirebaseHelper.saveLocationToFireStore(
                         userId = userId,
                         tableId = "favorites",
                         cityName = location.name,
@@ -84,7 +83,7 @@ class LocationRepository(private val userId: String) {
         )
     }
 
-    fun searchForCities(query: String): List<Location> {
+    private fun searchForCities(query: String): List<Location> {
         val inputStream = getAppContext().resources.openRawResource(R.raw.cities)
 
         return inputStream.bufferedReader().use { reader ->
@@ -100,7 +99,7 @@ class LocationRepository(private val userId: String) {
         }
     }
 
-    suspend fun fetchCollection(tableId: String): List<Location>? {
+    private suspend fun fetchCollection(tableId: String): List<Location>? {
         try {
             if (tableId == "favorites") favorites = emptyList()
             val collection = firestore.collection("users")
@@ -122,11 +121,12 @@ class LocationRepository(private val userId: String) {
                         isFavorite = if (tableId == "favorites") true else favorites.contains(cityName)
                     ) to timestamp?.seconds            }
 
+            // Sort by timestamp if recent
             val sortedInitialCities = if (tableId == "recent") {
-                initialCities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
-                    .map { it.first } // Extract sorted Location objects (ignore timestamps)
+                initialCities.sortedByDescending { it.second }
+                    .map { it.first }
             } else {
-                initialCities.map { it.first } // Just map Location objects without sorting
+                initialCities.map { it.first }
             }
 
             collection.addSnapshotListener { snapshot, error ->
@@ -150,10 +150,10 @@ class LocationRepository(private val userId: String) {
                     }
 
                     val sortedCities = if (tableId == "recent") {
-                        cities.sortedByDescending { it.second } // Sort by the timestamp (second part of the pair)
-                            .map { it.first } // Extract sorted Location objects (ignore timestamps)
+                        cities.sortedByDescending { it.second }
+                            .map { it.first }
                     } else {
-                        cities.map { it.first } // Just map Location objects without sorting
+                        cities.map { it.first }
                     }
 
                     customScope.launch {

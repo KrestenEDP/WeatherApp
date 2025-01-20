@@ -12,13 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.models.Location
-import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 import dk.dtu.weatherapp.ui.theme.Typography
@@ -28,9 +27,9 @@ import dk.dtu.weatherapp.ui.theme.Typography
 fun LocationList(
     locationsUIModel: LocationsUIModel,
     type: LocationListType,
+    modifier: Modifier = Modifier,
     onToggleFavorite: (Location) -> Unit = {},
     onLocationClicked: (Location) -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(16.dp)) {
         Row(
@@ -52,7 +51,7 @@ fun LocationList(
         }
 
         when (locationsUIModel) {
-            LocationsUIModel.Empty -> EmptyScreen(type.noElementsText)
+            LocationsUIModel.Empty -> NoDataScreen(type.noElementsText)
             LocationsUIModel.Loading -> LoadingScreen()
             LocationsUIModel.RequestError -> RequestErrorScreen()
             is LocationsUIModel.Data -> {

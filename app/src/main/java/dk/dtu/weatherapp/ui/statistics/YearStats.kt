@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.models.StatsDay
-import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 import ir.ehsannarmani.compose_charts.LineChart
@@ -38,7 +38,7 @@ import ir.ehsannarmani.compose_charts.models.Line
 fun YearStats(statsViewModel: StatsViewModel) {
     var expanded by remember { mutableStateOf(false) }
     val options: List<String> = listOf("Temperature", "Precipitation", "Wind speed", "Pressure", "Humidity", "Cloudiness")
-    var textFieldState = remember { mutableStateOf(options[0]) }
+    val textFieldState = remember { mutableStateOf(options[0]) }
 
     Column {
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
@@ -80,7 +80,7 @@ fun YearStats(statsViewModel: StatsViewModel) {
 
         when (val statsYearUIModel = statsViewModel.yearUIState.collectAsState().value) {
             StatsYearUIModel.RequestError -> RequestErrorScreen()
-            StatsYearUIModel.Empty -> EmptyScreen("No available data from the server")
+            StatsYearUIModel.Empty -> NoDataScreen("No available data from the server")
             StatsYearUIModel.Loading -> LoadingScreen()
             is StatsYearUIModel.Data -> {
                 val stats = statsYearUIModel.months
@@ -99,6 +99,7 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     )
     LineChart(
+        modifier = Modifier.padding(16.dp),
         data = remember {
             listOf(
                 Line(
@@ -134,7 +135,7 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
             enabled = true,
             textStyle = MaterialTheme.typography.bodyLarge,
             labels = monthList,
-            builder = {modifier,label,shouldRotate,index->
+            builder = {modifier,label,_,_->
                 Text(modifier=modifier,text=label)
             }
         )

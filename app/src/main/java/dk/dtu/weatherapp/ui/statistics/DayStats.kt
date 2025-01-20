@@ -22,7 +22,7 @@ import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.StatsDay
 import dk.dtu.weatherapp.ui.components.CircularList
-import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
@@ -44,12 +44,12 @@ fun DayStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            DayPicker(day, month, onDayChange = { day = it }, onMonthChange = { month = it })
+            DayPicker(month, onDayChange = { day = it }, onMonthChange = { month = it })
         }
 
         when (val statsDayUIModel = statsViewModel.dayUIState.collectAsState().value) {
             StatsDayUIModel.RequestError -> RequestErrorScreen()
-            StatsDayUIModel.Empty -> EmptyScreen("No available data for this day")
+            StatsDayUIModel.Empty -> NoDataScreen("No available data for this day")
             StatsDayUIModel.Loading -> LoadingScreen()
             is StatsDayUIModel.Data -> {
                 StatsDayInformation(statsDayUIModel.day)
@@ -80,7 +80,7 @@ fun StatsDayInformation(
 }
 
 @Composable
-fun DayPicker(day: Int, month: Int, onDayChange: (Int) -> Unit, onMonthChange: (Int) -> Unit) {
+fun DayPicker(month: Int, onDayChange: (Int) -> Unit, onMonthChange: (Int) -> Unit) {
     var listOfDays: MutableList<String> by remember { mutableStateOf(MutableList(1) { "" }) }
     val listOfMonths = listOf(
         "January", "February", "March", "April", "May", "June", "July", "August", "September",

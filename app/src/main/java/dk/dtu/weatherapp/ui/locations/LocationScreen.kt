@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dk.dtu.weatherapp.Firebase.LocationsViewModelFactory
-import dk.dtu.weatherapp.Firebase.getUserId
+import dk.dtu.weatherapp.firebase.LocationsViewModelFactory
+import dk.dtu.weatherapp.firebase.getUserId
 import dk.dtu.weatherapp.models.Location
 
 
@@ -21,7 +21,7 @@ fun LocationPage(onLocationClicked: (Location) -> Unit) {
     val userId = getUserId(LocalContext.current)
     val locationsViewModel: LocationsViewModel = viewModel(factory = LocationsViewModelFactory(userId))
     
-    var showFavoriteRecent = remember { mutableStateOf(true) }
+    val showFavoriteRecent = remember { mutableStateOf(true) }
     Column {
         SearchField(onValueChange = {
             locationsViewModel.search(it)

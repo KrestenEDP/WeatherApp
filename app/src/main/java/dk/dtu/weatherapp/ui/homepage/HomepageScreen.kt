@@ -19,7 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dk.dtu.weatherapp.domain.fetchCurrentLocation
 import dk.dtu.weatherapp.domain.getCurrentLocation
 import dk.dtu.weatherapp.models.Location
-import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
@@ -59,7 +59,7 @@ fun Homepage(
         }
         when (val weatherUIModel = homepageViewModel.weatherUIState.collectAsState().value) {
             WeatherUIModel.RequestError -> RequestErrorScreen()
-            WeatherUIModel.Empty -> EmptyScreen("No data")
+            WeatherUIModel.Empty -> NoDataScreen("No data")
             WeatherUIModel.Loading -> LoadingScreen()
             is WeatherUIModel.Data ->{
                 Spacer(Modifier.height(20.dp))

@@ -18,7 +18,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +34,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherTopAppBar(
+fun WeatherAppTopBar(
     currentDestination: WeatherDestination,
     navController: NavController
 ) {
@@ -112,5 +111,5 @@ fun WeatherTopAppBar(
 @Composable
 fun TopBarPreview() {
     val navController = rememberNavController()
-    WeatherTopAppBar(Alerts, navController)
+    WeatherAppTopBar(Alerts, navController)
 }

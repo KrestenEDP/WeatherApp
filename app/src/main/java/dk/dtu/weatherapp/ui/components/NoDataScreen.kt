@@ -9,20 +9,10 @@ import androidx.compose.ui.unit.dp
 import dk.dtu.weatherapp.ui.theme.Typography
 
 @Composable
-fun EmptyScreen(text: String) {
+fun NoDataScreen(text: String) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = text,
-            style = Typography.bodyLarge
-        )
-    }
-}
-
-@Composable
-fun RequestErrorScreen() {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text(
-            text = "Couldn't retrieve data from server and no data in cache, please check your internet connection",
             style = Typography.bodyLarge
         )
     }

@@ -60,7 +60,6 @@ class RemoteAlertsDataSource {
 
             val response = chain.proceed(request)
 
-            // Log whether the response is coming from the cache or network
             if (response.cacheResponse != null) {
                 Log.d("RemoteTest","Serving from Cache")
             } else {

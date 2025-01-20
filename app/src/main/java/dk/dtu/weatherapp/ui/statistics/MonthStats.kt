@@ -20,7 +20,7 @@ import dk.dtu.weatherapp.GlobalUnits
 import dk.dtu.weatherapp.R
 import dk.dtu.weatherapp.models.StatsDay
 import dk.dtu.weatherapp.ui.components.CircularList
-import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
@@ -41,7 +41,7 @@ fun MonthStats(statsViewModel: StatsViewModel = remember { StatsViewModel() }) {
 
         when (val statsMonthUIModel = statsViewModel.monthUIState.collectAsState().value) {
             StatsMonthUIModel.RequestError -> RequestErrorScreen()
-            StatsMonthUIModel.Empty -> EmptyScreen("No available data for this month")
+            StatsMonthUIModel.Empty -> NoDataScreen("No available data for this month")
             StatsMonthUIModel.Loading -> LoadingScreen()
             is StatsMonthUIModel.Data -> {
                 StatsMonthInformation(statsMonthUIModel.month)
@@ -83,6 +83,7 @@ fun MonthPicker(onMonthChange: (Int) -> Unit) {
     ) {
         CircularList(
             items = months,
+            itemHeight = 40,
             itemDisplayCount = 3,
             width = 150,
             onItemSelected = {

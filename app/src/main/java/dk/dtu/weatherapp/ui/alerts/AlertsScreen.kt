@@ -13,8 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dk.dtu.weatherapp.models.Alert
-import dk.dtu.weatherapp.ui.components.EmptyScreen
+import dk.dtu.weatherapp.ui.components.NoDataScreen
 import dk.dtu.weatherapp.ui.components.LoadingScreen
 import dk.dtu.weatherapp.ui.components.RequestErrorScreen
 
@@ -26,27 +25,19 @@ fun AlertsScreen(
     val alertViewModel: AlertsViewModel = viewModel()
     when (val alertsUIModel = alertViewModel.alertsUIState.collectAsState().value) {
         AlertsUIModel.RequestError -> RequestErrorScreen()
-        AlertsUIModel.Empty -> EmptyScreen(text = "Currently no weather alerts at your location")
+        AlertsUIModel.Empty -> NoDataScreen(text = "Currently no weather alerts at your location")
         AlertsUIModel.Loading -> Column {
             LoadingScreen()
         }
         is AlertsUIModel.Data -> {
-            AlertsContent(alertsUIModel.alerts, modifier)
-        }
-    }
-}
-
-@Composable
-private fun AlertsContent(
-    alerts: List<Alert>,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier.padding(top = 16.dp)
-    ) {
-        items(alerts) { alert ->
-            Alert(alert)
-            Spacer(modifier = Modifier.height(20.dp))
+            LazyColumn(
+                modifier = modifier.padding(top = 16.dp)
+            ) {
+                items(alertsUIModel.alerts) { alert ->
+                    Alert(alert)
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
         }
     }
 }

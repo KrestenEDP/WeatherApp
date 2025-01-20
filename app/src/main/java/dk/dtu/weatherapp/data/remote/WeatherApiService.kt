@@ -10,7 +10,6 @@ interface WeatherApiService {
     suspend fun getCurrentWeather(
         @Query("lat") lat: String = "55.77",
         @Query("lon") lon: String = "12.50",
-        //@Query("units") units: String = "metric"
     ): WeatherHourDao?
 
     @GET("/data/2.5/forecast/daily?cont=16&appid=$WeatherApiKey")
