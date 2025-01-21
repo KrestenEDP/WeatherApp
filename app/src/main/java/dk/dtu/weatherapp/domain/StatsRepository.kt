@@ -56,9 +56,9 @@ suspend fun StatsDao.mapToStatsList(): StatsDay {
             min = convertSpeedUnit(wind.min)
         ),
         precipitation = StatsDataObject(
-            mean = convertPrecipitationUnit(precipitation.mean),
-            max = convertPrecipitationUnit(precipitation.max),
-            min = convertPrecipitationUnit(precipitation.min)
+            mean = convertPrecipitationUnit(precipitation.mean, 2),
+            max = convertPrecipitationUnit(precipitation.max, 2),
+            min = convertPrecipitationUnit(precipitation.min, 2)
         ),
         clouds = StatsDataObject(
             mean = clouds.mean,

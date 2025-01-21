@@ -57,7 +57,6 @@ class StatsViewModel : ViewModel() {
         }
         getDayStats(1, 1)
         getMonthStats(1)
-        getYearStats()
     }
 
     fun getDayStats(day: Int, month: Int) = viewModelScope.launch {
@@ -76,9 +75,10 @@ class StatsViewModel : ViewModel() {
             statsRepo.getMonthStats(month = month)
         }
     }
-    private fun getYearStats() = viewModelScope.launch {
-        yearMutable.value = StatsYearUIModel.Loading
-        viewModelScope.launch {
+    fun getYearStats() = viewModelScope.launch {
+        if (yearMutable.value is StatsYearUIModel.Data) yearMutable.value
+        else {
+            yearMutable.value = StatsYearUIModel.Loading
             withContext(Dispatchers.IO) {
                 statsRepo.getYearStats()
             }

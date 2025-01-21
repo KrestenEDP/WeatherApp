@@ -14,8 +14,8 @@ suspend fun convertTempUnit(temp: Double): Double {
     ).toDouble()
 }
 
-suspend fun convertPrecipitationUnit(precipitation: Double): Double {
-    return String.format(Locale.ENGLISH, "%.1f",
+suspend fun convertPrecipitationUnit(precipitation: Double, decimals: Int = 1): Double {
+    return String.format(Locale.ENGLISH, "%.${decimals}f",
         when (getUnitSetting(getAppContext())) {
         0 -> precipitation
         1 -> mmToInches(precipitation)

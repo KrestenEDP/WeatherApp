@@ -13,6 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -34,6 +35,7 @@ import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
 import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
+import ir.ehsannarmani.compose_charts.models.PopupProperties
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +43,8 @@ fun YearStats(statsViewModel: StatsViewModel) {
     var expanded by remember { mutableStateOf(false) }
     val options: List<String> = listOf("Temperature", "Precipitation", "Wind speed", "Pressure", "Humidity", "Cloudiness")
     val textFieldState = remember { mutableStateOf(options[0]) }
+
+    LaunchedEffect(Unit) { statsViewModel.getYearStats() }
 
     Column {
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
@@ -147,6 +151,17 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
         ),
         indicatorProperties = HorizontalIndicatorProperties(
             textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+        ),
+        popupProperties = PopupProperties(
+            enabled = true,
+            textStyle = MaterialTheme.typography.labelSmall.copy(
+                color = Color.White
+            ),
+
+            contentBuilder = { value->
+                if (textFieldState == "Precipitation") "%.2f".format(value)
+                else "%.1f".format(value)
+            }
         )
     )
 }
