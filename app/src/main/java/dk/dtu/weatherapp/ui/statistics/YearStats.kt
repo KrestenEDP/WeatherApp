@@ -151,13 +151,16 @@ fun StatsChart(textFieldState: String, stats: List<StatsDay>) {
         ),
         indicatorProperties = HorizontalIndicatorProperties(
             textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+            contentBuilder = { value->
+                if (textFieldState == "Precipitation") "%.2f".format(value)
+                else "%.1f".format(value)
+            }
         ),
         popupProperties = PopupProperties(
             enabled = true,
             textStyle = MaterialTheme.typography.labelSmall.copy(
                 color = Color.White
             ),
-
             contentBuilder = { value->
                 if (textFieldState == "Precipitation") "%.2f".format(value)
                 else "%.1f".format(value)
