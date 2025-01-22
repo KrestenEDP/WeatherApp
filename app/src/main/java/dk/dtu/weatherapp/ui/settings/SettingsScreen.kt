@@ -61,7 +61,7 @@ fun WeatherSettingsPage(context: Context) {
             .padding(16.dp)
     ) {
         DarkModeSetting(context)
-        DynamicBackgroundSetting(context)
+        // DynamicBackgroundSetting(context)
         UnitSetting(context)
         PushNotificationsSetting(context)
     }
